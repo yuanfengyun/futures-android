@@ -70,6 +70,7 @@ import static com.shinnytech.futures.constants.ServerConstants.REQ_TRANSFER;
 import static com.shinnytech.futures.constants.BroadcastConstants.TD_MESSAGE_BROKER_INFO;
 import static com.shinnytech.futures.constants.BroadcastConstants.TD_MESSAGE_LOGIN_FAIL;
 
+// 交易服务器
 public class TDWebSocket extends WebSocketBase {
 
     public TDWebSocket(List<String> urls, int index) {
@@ -116,7 +117,7 @@ public class TDWebSocket extends WebSocketBase {
         sDataManager.TD_SESSION++;
         sDataManager.TD_PACK_COUNT = 0;
 
-        LogUtils.e("reConnectTD", true);
+        LogUtils.e(("reConnectTD"), true);
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put(AMP_EVENT_RECONNECT_SERVER_TYPE, AMP_EVENT_RECONNECT_SERVER_TYPE_VALUE_TD);
@@ -141,7 +142,7 @@ public class TDWebSocket extends WebSocketBase {
             String date = (String) SPUtils.get(context, SettingConstants.CONFIG_LOGIN_DATE, "");
             String name = (String) SPUtils.get(context, SettingConstants.CONFIG_ACCOUNT, "");
             String password = (String) SPUtils.get(context, SettingConstants.CONFIG_PASSWORD, "");
-            String broker = (String) SPUtils.get(context, SettingConstants.CONFIG_BROKER, "");
+            String broker = SettingConstants.CONFIG_BROKER;
             boolean isPermissionDenied = ContextCompat.checkSelfPermission(BaseApplication.getContext(),
                 Manifest.permission.READ_PHONE_STATE)
                     != PackageManager.PERMISSION_GRANTED

@@ -24,6 +24,7 @@ import static com.shinnytech.futures.constants.ServerConstants.PARSE_MARKET_KEY_
 import static com.shinnytech.futures.constants.ServerConstants.REQ_SET_CHART;
 import static com.shinnytech.futures.constants.ServerConstants.REQ_SUBSCRIBE_QUOTE;
 
+// 行情服务器
 public class MDWebSocket extends WebSocketBase {
 
     public MDWebSocket(List<String> urls, int index) {

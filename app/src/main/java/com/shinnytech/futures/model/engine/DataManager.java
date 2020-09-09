@@ -152,7 +152,7 @@ public class DataManager {
      * date: 2019/6/24
      * description: client_app_id
      */
-    public String CLIENT_APP_ID = "android-github";
+    public String CLIENT_APP_ID = "SHINNY_TQ_1.0";
     /**
      * date: 2018/11/7
      * description: 用户下单价格类型

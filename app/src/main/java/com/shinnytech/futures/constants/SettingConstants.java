@@ -13,7 +13,7 @@ public final class SettingConstants {
     public static final String CONFIG_MD5 = "isMD5";
     public static final String CONFIG_PASSWORD = "password";
     public static final String CONFIG_ACCOUNT = "phone";
-    public static final String CONFIG_BROKER = "brokerName";
+    public static final String CONFIG_BROKER = "X先锋期货";
     public static final String CONFIG_LOGIN_DATE = "loginDate";
     public static final String CONFIG_RECOMMEND_OPTIONAL = "recommendOptional";
     public static final String CONFIG_RECOMMEND = "recommend";

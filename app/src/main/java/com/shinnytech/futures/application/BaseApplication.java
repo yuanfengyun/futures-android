@@ -73,10 +73,7 @@ import static com.shinnytech.futures.constants.AmpConstants.AMP_USER_TYPE_FIRST_
 import static com.shinnytech.futures.constants.AmpConstants.AMP_USER_TYPE_FIRST_TRADER_VALUE;
 import static com.shinnytech.futures.constants.CommonConstants.BROKER_ID_SIMULATION;
 import static com.shinnytech.futures.constants.CommonConstants.JSON_FILE_URL;
-import static com.shinnytech.futures.constants.CommonConstants.MARKET_URL_1;
-import static com.shinnytech.futures.constants.CommonConstants.MARKET_URL_2;
-import static com.shinnytech.futures.constants.CommonConstants.MARKET_URL_3;
-import static com.shinnytech.futures.constants.CommonConstants.MARKET_URL_4;
+import static com.shinnytech.futures.constants.CommonConstants.MARKET_URL;
 import static com.shinnytech.futures.constants.CommonConstants.OPTIONAL_INS_LIST;
 import static com.shinnytech.futures.constants.CommonConstants.TRANSACTION_URL;
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_AVERAGE_LINE;
@@ -228,39 +225,7 @@ public class BaseApplication extends Application {
      * description: 初始化服务器地址
      */
     private void initTMDUrl() {
-        List<String> MDUrlGroup = new ArrayList<>();
-        MDUrlGroup.add(MARKET_URL_2);
-        MDUrlGroup.add(MARKET_URL_3);
-        MDUrlGroup.add(MARKET_URL_4);
-        try {
-            Class cl = Class.forName("com.shinnytech.futures.constants.LocalCommonConstants");
-            String MARKET_URL_5 = (String) cl.getMethod("getMarketUrl5").invoke(null);
-            String MARKET_URL_6 = (String) cl.getMethod("getMarketUrl6").invoke(null);
-            String MARKET_URL_7 = (String) cl.getMethod("getMarketUrl7").invoke(null);
-            String MARKET_URL_8 = (String) cl.getMethod("getMarketUrl8").invoke(null);
-            String TRANSACTION_URL_L = (String) cl.getMethod("getTransactionUrl").invoke(null);
-            String JSON_FILE_URL_L = (String) cl.getMethod("getJsonFileUrl").invoke(null);
-            MDUrlGroup.add(MARKET_URL_5);
-            MDUrlGroup.add(MARKET_URL_6);
-            MDUrlGroup.add(MARKET_URL_7);
-            mMDURLs.add(MARKET_URL_8);
-            TRANSACTION_URL = TRANSACTION_URL_L;
-            JSON_FILE_URL = JSON_FILE_URL_L;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            mMDURLs.add(MARKET_URL_1);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            mMDURLs.add(MARKET_URL_1);
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-            mMDURLs.add(MARKET_URL_1);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-            mMDURLs.add(MARKET_URL_1);
-        }
-        Collections.shuffle(MDUrlGroup);
-        mMDURLs.addAll(MDUrlGroup);
+        mMDURLs.add(MARKET_URL);
         mTDURLs.add(TRANSACTION_URL);
         mMDWebSocket = new MDWebSocket(mMDURLs, 0);
         mTDWebSocket = new TDWebSocket(mTDURLs, 0);

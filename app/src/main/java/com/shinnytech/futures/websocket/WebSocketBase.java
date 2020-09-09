@@ -39,7 +39,7 @@ public class WebSocketBase extends WebSocketAdapter {
     @Override
     public void onConnected(WebSocket websocket, Map<String, List<String>> headers) throws Exception {
         super.onConnected(websocket, headers);
-        LogUtils.e("onConnected", true);
+        LogUtils.e("onConnected "+mUrls.get(0), true);
         mPongCount = 0;
         mTimer = new Timer();
         mTimerTask = new TimerTask() {
@@ -61,7 +61,7 @@ public class WebSocketBase extends WebSocketAdapter {
     @Override
     public void onDisconnected(WebSocket websocket, WebSocketFrame serverCloseFrame, WebSocketFrame clientCloseFrame, boolean closedByServer) throws Exception {
         super.onDisconnected(websocket, serverCloseFrame, clientCloseFrame, closedByServer);
-        LogUtils.e("onDisconnected", true);
+        LogUtils.e("onDisconnected "+mUrls.get(0), true);
         reConnect();
     }
 
@@ -112,9 +112,9 @@ public class WebSocketBase extends WebSocketAdapter {
                     .createSocket(mUrls.get(mIndex))
                     .setMissingCloseFrameAllowed(false)
                     .addListener(this)
-                    .addHeader("User-Agent", sDataManager.USER_AGENT + " " + sDataManager.APP_VERSION)
-                    .addHeader("SA-Machine", Amplitude.getInstance().getDeviceId())
-                    .addHeader("SA-Session", Amplitude.getInstance().getDeviceId())
+                    .addHeader("User-Agent", "tqsdk-python 1.8.3")
+                    .addHeader("Accept", "application/json")
+                    .addHeader("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJobi1MZ3ZwbWlFTTJHZHAtRmlScjV5MUF5MnZrQmpLSFFyQVlnQ0UwR1JjIn0.eyJqdGkiOiIwY2UwOTM2Ny0xYjk2LTQ0NTktOGU2My1hYWM1ZTA3Mjc1ZTIiLCJleHAiOjE2MTU1Mzk1MTQsIm5iZiI6MCwiaWF0IjoxNTg0MDAzNTE0LCJpc3MiOiJodHRwczovL2F1dGguc2hpbm55dGVjaC5jb20vYXV0aC9yZWFsbXMvc2hpbm55dGVjaCIsInN1YiI6IjYzMzJhZmUwLWU5OWQtNDc1OC04MjIzLWY5OTBiN2RmOGY4NSIsInR5cCI6IkJlYXJlciIsImF6cCI6InNoaW5ueV90cSIsImF1dGhfdGltZSI6MCwic2Vzc2lvbl9zdGF0ZSI6IjUzYTEyYmNkLTc3M2EtNDcyZC1iZWVlLWZlMmQ1ODAzYjU0YyIsImFjciI6IjEiLCJzY29wZSI6ImF0dHJpYnV0ZXMiLCJncmFudHMiOnsiZmVhdHVyZXMiOlsiY21iIiwiYWR2Il0sImFjY291bnRzIjpbIioiXX19.BmqzmorwITPd2YLP9EbhlIxkTDNTAY-PNPfM9LwOkOc5XJlSK34nHZwW14mmIScYiohhN5iaVtPrPNsohFfPcH-FxhFmmr9M_xIJLDf4zw2ObcZwVGTQFnIExjdpj2ej82bPT0yoBBFoOH3NhFuK0agifE0WOp0lXf2kzQsQncZ-y9djCEuwbuZapNmdVhGsWWGt7gMd9ZJNrmViZifSWkOrpiowIQ4fOPp1L2DJju8QldwHtyPnYTZtN56x14Xd7v-4-VB3vWEoHB99r36bjhlXJsxuiZrQom0esahgtV_7gx_G95bN04XevriRXG9JzOSoHhpYQFKqjZlSQ4L7vw")
                     .addExtension(WebSocketExtension.PERMESSAGE_DEFLATE);
         } catch (IOException e) {
             e.printStackTrace();
