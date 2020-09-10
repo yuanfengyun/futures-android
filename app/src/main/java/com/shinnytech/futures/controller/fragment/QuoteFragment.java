@@ -263,31 +263,50 @@ public class QuoteFragment extends LazyLoadFragment {
      */
     private void initEvent() {
 
+        mBinding.tvBid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    switch (mBinding.tvBid.getText().toString()) {
+                        case "买价 ⇲":
+                            mBinding.tvBid.setText("买量 ⇲");
+                            mAdapter.switchBidView();
+                            break;
+                        case "买量 ⇲":
+                            mBinding.tvBid.setText("买价 ⇲");
+                            mAdapter.switchBidView();
+                            break;
+                    }
+                }
+        });
+
         mBinding.tvChangePercent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (DALIANZUHE.equals(mTitle) || ZHENGZHOUZUHE.equals(mTitle)) {
-                    switch (mBinding.tvChangePercent.getText().toString()) {
-                        case "买价 ⇲":
-                            mBinding.tvChangePercent.setText("买量 ⇲");
-                            mAdapter.switchChangeView();
-                            break;
-                        case "买量 ⇲":
-                            mBinding.tvChangePercent.setText("买价 ⇲");
-                            mAdapter.switchChangeView();
-                            break;
-                    }
-                } else {
-                    switch (mBinding.tvChangePercent.getText().toString()) {
-                        case "涨跌幅% ⇲":
-                            mBinding.tvChangePercent.setText("涨跌 ⇲");
-                            mAdapter.switchChangeView();
-                            break;
-                        case "涨跌 ⇲":
-                            mBinding.tvChangePercent.setText("涨跌幅% ⇲");
-                            mAdapter.switchChangeView();
-                            break;
-                    }
+                switch (mBinding.tvChangePercent.getText().toString()) {
+                    case "涨跌幅% ⇲":
+                        mBinding.tvChangePercent.setText("涨跌 ⇲");
+                        mAdapter.switchChangeView();
+                        break;
+                    case "涨跌 ⇲":
+                        mBinding.tvChangePercent.setText("涨跌幅% ⇲");
+                        mAdapter.switchChangeView();
+                        break;
+                }
+            }
+        });
+
+        mBinding.tvAsk.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick (View view){
+                switch (mBinding.tvAsk.getText().toString()) {
+                    case "卖价 ⇲":
+                        mBinding.tvAsk.setText("卖量 ⇲");
+                        mAdapter.switchAskView();
+                        break;
+                    case "卖量 ⇲":
+                        mBinding.tvAsk.setText("卖价 ⇲");
+                        mAdapter.switchAskView();
+                        break;
                 }
             }
         });

@@ -48,7 +48,40 @@
                 android:text="@string/quote_fragment_latest"
                 android:textColor="@color/title_white"
                 android:textSize="@dimen/font_size_normal" />
-
+            <TextView
+                android:id="@+id/tv_bid"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/black_light"
+                android:gravity="end|center_vertical"
+                android:maxLines="1"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMinTextSize="@dimen/font_size_tiny_high"
+                app:autoSizeMaxTextSize="@dimen/font_size_normal"
+                app:autoSizeStepGranularity="1sp"
+                android:paddingEnd="@dimen/padding_5dp"
+                android:paddingStart="@dimen/padding_0dp"
+                android:text="@string/quote_fragment_bid_price1"
+                android:textColor="@color/title_white"
+                android:textSize="@dimen/font_size_normal" />
+            <TextView
+                android:id="@+id/tv_ask"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/black_light"
+                android:gravity="end|center_vertical"
+                android:maxLines="1"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMinTextSize="@dimen/font_size_tiny_high"
+                app:autoSizeMaxTextSize="@dimen/font_size_normal"
+                app:autoSizeStepGranularity="1sp"
+                android:paddingEnd="@dimen/padding_5dp"
+                android:paddingStart="@dimen/padding_0dp"
+                android:text="@string/quote_fragment_ask_price1"
+                android:textColor="@color/title_white"
+                android:textSize="@dimen/font_size_normal" />
             <TextView
                 android:id="@+id/tv_change_percent"
                 android:layout_width="0dp"

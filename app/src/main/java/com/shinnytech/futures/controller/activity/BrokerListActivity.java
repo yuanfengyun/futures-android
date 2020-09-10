@@ -16,6 +16,7 @@ import com.shinnytech.futures.model.listener.SimpleRecyclerViewItemClickListener
 import com.shinnytech.futures.utils.DividerItemDecorationUtils;
 import com.shinnytech.futures.utils.ToastUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.shinnytech.futures.constants.CommonConstants.BROKER_LIST;
@@ -39,8 +40,8 @@ public class BrokerListActivity extends BaseActivity {
                 new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         mBinding.rv.addItemDecoration(
                 new DividerItemDecorationUtils(this, DividerItemDecorationUtils.VERTICAL_LIST));
-        List<String> brokers = LatestFileManager
-                .getBrokerIdFromBuildConfig(sDataManager.getBroker().getBrokers());
+        List<String> brokers = new ArrayList<>();
+        brokers.add("X先锋期货");
         mBrokerAdapter = new BrokerAdapter(this, brokers);
         mBinding.rv.setAdapter(mBrokerAdapter);
         try {

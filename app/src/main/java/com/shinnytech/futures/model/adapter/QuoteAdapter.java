@@ -37,6 +37,8 @@ public class QuoteAdapter extends RecyclerView.Adapter<QuoteAdapter.ItemViewHold
     private Context sContext;
     private List<QuoteEntity> mData;
     private String mTitle;
+    private boolean mSwitchBid = false;
+    private boolean mSwitchAsk = false;
     private boolean mSwitchChange = false;
     private boolean mSwitchVolume = false;
     private List<String> highlightList = new ArrayList<>();
@@ -63,11 +65,16 @@ public class QuoteAdapter extends RecyclerView.Adapter<QuoteAdapter.ItemViewHold
         }
     }
 
-    /**
-     * date: 7/9/17
-     * author: chenli
-     * description: 涨跌/涨跌幅切换
-     */
+    public void switchBidView() {
+        mSwitchBid = !mSwitchBid;
+        notifyDataSetChanged();
+    }
+
+    public void switchAskView() {
+        mSwitchAsk = !mSwitchAsk;
+        notifyDataSetChanged();
+    }
+
     public void switchChangeView() {
         mSwitchChange = !mSwitchChange;
         notifyDataSetChanged();
@@ -167,30 +174,27 @@ public class QuoteAdapter extends RecyclerView.Adapter<QuoteAdapter.ItemViewHold
                 String bidPrice1 = LatestFileManager.saveScaleByPtick(quoteEntity.getBid_price1(), instrumentId);
 
                 setTextColor(mBinding.quoteLatest, latest, pre_settlement);
-                if (DALIANZUHE.equals(mTitle) || ZHENGZHOUZUHE.equals(mTitle)) {
-                    if (mSwitchChange) {
-                        mBinding.quoteChangePercent.setText(quoteEntity.getBid_volume1());
-                        mBinding.quoteChangePercent.setTextColor(ContextCompat.getColor(sContext, R.color.text_white));
-                    } else {
-                        setTextColor(mBinding.quoteChangePercent, bidPrice1, pre_settlement);
-                    }
-                    if (mSwitchVolume) {
-                        mBinding.quoteOpenInterest.setText(quoteEntity.getAsk_volume1());
-                        mBinding.quoteOpenInterest.setTextColor(ContextCompat.getColor(sContext, R.color.text_white));
-                    } else {
-                        setTextColor(mBinding.quoteOpenInterest, askPrice1, pre_settlement);
-                    }
+                if (mSwitchBid) {
+                    mBinding.quoteBid.setText(quoteEntity.getBid_volume1());
+                    mBinding.quoteBid.setTextColor(ContextCompat.getColor(sContext, R.color.text_white));
                 } else {
-                    if (mSwitchChange) {
-                        setChangeTextColor(mBinding.quoteChangePercent, change);
-                    } else {
-                        setChangeTextColor(mBinding.quoteChangePercent, changePercent);
-                    }
-                    if (mSwitchVolume) {
-                        mBinding.quoteOpenInterest.setText(quoteEntity.getVolume());
-                    } else {
-                        mBinding.quoteOpenInterest.setText(quoteEntity.getOpen_interest());
-                    }
+                    setTextColor(mBinding.quoteBid, bidPrice1, pre_settlement);
+                }
+                if (mSwitchAsk) {
+                    mBinding.quoteAsk.setText(quoteEntity.getAsk_volume1());
+                    mBinding.quoteAsk.setTextColor(ContextCompat.getColor(sContext, R.color.text_white));
+                } else {
+                    setTextColor(mBinding.quoteAsk, askPrice1, pre_settlement);
+                }
+                if (mSwitchChange) {
+                    setChangeTextColor(mBinding.quoteChangePercent, change);
+                } else {
+                    setChangeTextColor(mBinding.quoteChangePercent, changePercent);
+                }
+                if (mSwitchVolume) {
+                    mBinding.quoteOpenInterest.setText(quoteEntity.getVolume());
+                } else {
+                    mBinding.quoteOpenInterest.setText(quoteEntity.getOpen_interest());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -228,25 +232,25 @@ public class QuoteAdapter extends RecyclerView.Adapter<QuoteAdapter.ItemViewHold
                         }
                         break;
                     case "bid_price1":
-                        if ((DALIANZUHE.equals(mTitle) || ZHENGZHOUZUHE.equals(mTitle)) && !mSwitchChange) {
-                            setTextColor(mBinding.quoteChangePercent, value, bundle.getString("pre_settlement"));
+                        if (!mSwitchBid) {
+                            setTextColor(mBinding.quoteBid, value, bundle.getString("pre_settlement"));
                         }
                         break;
                     case "bid_volume1":
-                        if ((DALIANZUHE.equals(mTitle) || ZHENGZHOUZUHE.equals(mTitle)) && mSwitchChange) {
-                            mBinding.quoteChangePercent.setText(value);
-                            mBinding.quoteChangePercent.setTextColor(ContextCompat.getColor(sContext, R.color.text_white));
+                        if (mSwitchBid) {
+                            mBinding.quoteBid.setText(value);
+                            mBinding.quoteBid.setTextColor(ContextCompat.getColor(sContext, R.color.text_white));
                         }
                         break;
                     case "ask_price1":
-                        if ((DALIANZUHE.equals(mTitle) || ZHENGZHOUZUHE.equals(mTitle)) && !mSwitchVolume) {
-                            setTextColor(mBinding.quoteOpenInterest, value, bundle.getString("pre_settlement"));
+                        if (!mSwitchAsk) {
+                            setTextColor(mBinding.quoteAsk, value, bundle.getString("pre_settlement"));
                         }
                         break;
                     case "ask_volume1":
-                        if ((DALIANZUHE.equals(mTitle) || ZHENGZHOUZUHE.equals(mTitle)) && mSwitchVolume) {
-                            mBinding.quoteOpenInterest.setText(value);
-                            mBinding.quoteOpenInterest.setTextColor(ContextCompat.getColor(sContext, R.color.text_white));
+                        if (mSwitchVolume) {
+                            mBinding.quoteAsk.setText(value);
+                            mBinding.quoteAsk.setTextColor(ContextCompat.getColor(sContext, R.color.text_white));
                         }
                         break;
                     default:
