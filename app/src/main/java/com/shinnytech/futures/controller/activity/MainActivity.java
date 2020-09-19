@@ -23,7 +23,6 @@ import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.shinnytech.futures.R;
-import com.shinnytech.futures.amplitude.api.Amplitude;
 import com.shinnytech.futures.application.BaseApplication;
 import com.shinnytech.futures.controller.fragment.AccountFragment;
 import com.shinnytech.futures.controller.fragment.LazyLoadFragment;
@@ -82,15 +81,6 @@ import static com.shinnytech.futures.constants.ConditionConstants.CONDITION_STAT
 import static com.shinnytech.futures.constants.ConditionConstants.CONDITION_STATUS_SUSPEND;
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_IS_CONDITION;
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_VERSION_CODE;
-
-/**
- * date: 6/14/17
- * author: chenli
- * description: 问题1：viewpager会初始化两个fragment，如何让它不初始化屏幕外的fragment？运行过程中有两个fragment在同时运行
- * 问题2：如何合理减小navigationView的宽高，定制菜单字体
- * version:
- * state: basically done
- */
 
 public class MainActivity extends BaseActivity {
     private long mExitTime = 0;
@@ -185,21 +175,17 @@ public class MainActivity extends BaseActivity {
                     }
                 } else {
                     try {
-                        JSONObject jsonObject = new JSONObject();
                         String mInstrumentId = mMainActivityPresenter.getmInstrumentId();
                         String name = mInstrumentId;
                         SearchEntity searchEntity = LatestFileManager.getSearchEntities().get(name);
                         if (searchEntity != null) name = searchEntity.getInstrumentName();
-                        jsonObject.put(AMP_EVENT_OPTIONAL_INSTRUMENT_ID, mInstrumentId);
                         Map<String, QuoteEntity> insList = LatestFileManager.getOptionalInsList();
                         if (insList.containsKey(mInstrumentId)) {
-                            jsonObject.put(AMP_EVENT_OPTIONAL_DIRECTION, AMP_EVENT_OPTIONAL_DIRECTION_VALUE_DELETE);
                             insList.remove(mInstrumentId);
                             LatestFileManager.saveInsListToFile(new ArrayList<>(insList.keySet()));
                             ToastUtils.showToast(BaseApplication.getContext(), name + "合约已移除");
                             view.setImageResource(R.mipmap.ic_favorite_border_white_24dp);
                         } else {
-                            jsonObject.put(AMP_EVENT_OPTIONAL_DIRECTION, AMP_EVENT_OPTIONAL_DIRECTION_VALUE_ADD);
                             QuoteEntity quoteEntity = new QuoteEntity();
                             quoteEntity.setInstrument_id(mInstrumentId);
                             insList.put(mInstrumentId, quoteEntity);
@@ -207,8 +193,7 @@ public class MainActivity extends BaseActivity {
                             ToastUtils.showToast(BaseApplication.getContext(), name + "合约已添加");
                             view.setImageResource(R.mipmap.ic_favorite_white_24dp);
                         }
-                        Amplitude.getInstance().logEventWrap(AMP_OPTIONAL_FUTURE_INFO, jsonObject);
-                    } catch (JSONException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }

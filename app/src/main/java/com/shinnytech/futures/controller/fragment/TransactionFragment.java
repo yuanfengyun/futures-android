@@ -28,7 +28,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.shinnytech.futures.R;
-import com.shinnytech.futures.amplitude.api.Amplitude;
 import com.shinnytech.futures.application.BaseApplication;
 import com.shinnytech.futures.constants.CommonConstants;
 import com.shinnytech.futures.constants.SettingConstants;
@@ -354,7 +353,6 @@ public class TransactionFragment extends LazyLoadFragment implements View.OnClic
                     return;
                 }
 
-                Amplitude.getInstance().logEventWrap(AMP_CONDITION_BUTTON, new JSONObject());
                 Intent intent = new Intent(getActivity(), ConditionOrderActivity.class);
                 intent.putExtra(INS_BETWEEN_ACTIVITY, mInstrumentId);
                 startActivity(intent);
@@ -1396,16 +1394,10 @@ public class TransactionFragment extends LazyLoadFragment implements View.OnClic
             @Override
             public void onKey(int primaryCode, int[] keyCodes) {
                 try {
-                    JSONObject jsonObject = new JSONObject();
                     Editable editable = mEditText.getText();
                     String text = mEditText.getText().toString();
                     int start = mEditText.length();
                     if (primaryCode == Keyboard.KEYCODE_DELETE) {
-                        if (idKeyboard == R.xml.future_price) {
-                            jsonObject.put(AMP_EVENT_PRICE_KEY, AMP_EVENT_PRICE_KEY_VALUE_DEL);
-                        } else {
-                            jsonObject.put(AMP_EVENT_VOLUME_KEY, AMP_EVENT_VOLUME_KEY_VALUE_DEL);
-                        }
                         if (editable.length() > 0) {
                             if (!QUEUED_PRICE.equals(text) && !OPPONENT_PRICE.equals(text)
                                     && !MARKET_PRICE.equals(text) && !LATEST_PRICE.equals(text)) {
@@ -1415,36 +1407,26 @@ public class TransactionFragment extends LazyLoadFragment implements View.OnClic
                             }
                         }
                     } else if (primaryCode == mEditText.getContext().getResources().getInteger(R.integer.keycode_empty_text)) {
-                        jsonObject.put(AMP_EVENT_VOLUME_KEY, AMP_EVENT_VOLUME_KEY_VALUE_CLEAR);
                         editable.clear();
                     } else if (primaryCode == Keyboard.KEYCODE_DONE) {
                         mPriceDialog.dismiss();
                     } else if (primaryCode == mEditText.getContext().getResources().getInteger(R.integer.keycode_line_up_price)) {
-                        jsonObject.put(AMP_EVENT_PRICE_KEY, AMP_EVENT_PRICE_KEY_VALUE_QUEUED);
                         editable.clear();
                         editable.insert(0, QUEUED_PRICE);
                         mPriceDialog.dismiss();
                     } else if (primaryCode == mEditText.getContext().getResources().getInteger(R.integer.keycode_opponent_price)) {
-                        jsonObject.put(AMP_EVENT_PRICE_KEY, AMP_EVENT_PRICE_KEY_VALUE_OPPONENT);
                         editable.clear();
                         editable.insert(0, OPPONENT_PRICE);
                         mPriceDialog.dismiss();
                     } else if (primaryCode == mEditText.getContext().getResources().getInteger(R.integer.keycode_last_price)) {
-                        jsonObject.put(AMP_EVENT_PRICE_KEY, AMP_EVENT_PRICE_KEY_VALUE_LAST);
                         editable.clear();
                         editable.insert(0, LATEST_PRICE);
                         mPriceDialog.dismiss();
                     } else if (primaryCode == mEditText.getContext().getResources().getInteger(R.integer.keycode_market_price)) {
-                        jsonObject.put(AMP_EVENT_PRICE_KEY, AMP_EVENT_PRICE_KEY_VALUE_MARKET);
                         editable.clear();
                         editable.insert(0, MARKET_PRICE);
                         mPriceDialog.dismiss();
                     } else if (primaryCode == mEditText.getContext().getResources().getInteger(R.integer.keycode_add)) {
-                        if (idKeyboard == R.xml.future_price) {
-                            jsonObject.put(AMP_EVENT_PRICE_KEY, AMP_EVENT_PRICE_KEY_VALUE_PLUS);
-                        } else {
-                            jsonObject.put(AMP_EVENT_VOLUME_KEY, AMP_EVENT_VOLUME_KEY_VALUE_PLUS);
-                        }
                         QuoteEntity quoteEntity = DataManager.getInstance().getRtnData().getQuotes()
                                 .get(mInstrumentId);
                         switch (text) {
@@ -1500,11 +1482,6 @@ public class TransactionFragment extends LazyLoadFragment implements View.OnClic
                                 break;
                         }
                     } else if (primaryCode == mEditText.getContext().getResources().getInteger(R.integer.keycode_sub)) {
-                        if (idKeyboard == R.xml.future_price) {
-                            jsonObject.put(AMP_EVENT_PRICE_KEY, AMP_EVENT_PRICE_KEY_VALUE_MINUS);
-                        } else {
-                            jsonObject.put(AMP_EVENT_VOLUME_KEY, AMP_EVENT_VOLUME_KEY_VALUE_MINUS);
-                        }
                         QuoteEntity quoteEntity = DataManager.getInstance().getRtnData().getQuotes().
                                 get(mInstrumentId);
                         switch (text) {
@@ -1568,83 +1545,6 @@ public class TransactionFragment extends LazyLoadFragment implements View.OnClic
                         }
                     } else {
                         String insertStr = Character.toString((char) primaryCode);
-                        switch (insertStr) {
-                            case ".":
-                                jsonObject.put(AMP_EVENT_PRICE_KEY, AMP_EVENT_PRICE_KEY_VALUE_POINT);
-                                break;
-                            case "0":
-                                if (idKeyboard == R.xml.future_price) {
-                                    jsonObject.put(AMP_EVENT_PRICE_KEY, AMP_EVENT_PRICE_KEY_VALUE_0);
-                                } else {
-                                    jsonObject.put(AMP_EVENT_VOLUME_KEY, AMP_EVENT_VOLUME_KEY_VALUE_0);
-                                }
-                                break;
-                            case "1":
-                                if (idKeyboard == R.xml.future_price) {
-                                    jsonObject.put(AMP_EVENT_PRICE_KEY, AMP_EVENT_PRICE_KEY_VALUE_1);
-                                } else {
-                                    jsonObject.put(AMP_EVENT_VOLUME_KEY, AMP_EVENT_VOLUME_KEY_VALUE_1);
-                                }
-                                break;
-                            case "2":
-                                if (idKeyboard == R.xml.future_price) {
-                                    jsonObject.put(AMP_EVENT_PRICE_KEY, AMP_EVENT_PRICE_KEY_VALUE_2);
-                                } else {
-                                    jsonObject.put(AMP_EVENT_VOLUME_KEY, AMP_EVENT_VOLUME_KEY_VALUE_2);
-                                }
-                                break;
-                            case "3":
-                                if (idKeyboard == R.xml.future_price) {
-                                    jsonObject.put(AMP_EVENT_PRICE_KEY, AMP_EVENT_PRICE_KEY_VALUE_3);
-                                } else {
-                                    jsonObject.put(AMP_EVENT_VOLUME_KEY, AMP_EVENT_VOLUME_KEY_VALUE_3);
-                                }
-                                break;
-                            case "4":
-                                if (idKeyboard == R.xml.future_price) {
-                                    jsonObject.put(AMP_EVENT_PRICE_KEY, AMP_EVENT_PRICE_KEY_VALUE_4);
-                                } else {
-                                    jsonObject.put(AMP_EVENT_VOLUME_KEY, AMP_EVENT_VOLUME_KEY_VALUE_4);
-                                }
-                                break;
-                            case "5":
-                                if (idKeyboard == R.xml.future_price) {
-                                    jsonObject.put(AMP_EVENT_PRICE_KEY, AMP_EVENT_PRICE_KEY_VALUE_5);
-                                } else {
-                                    jsonObject.put(AMP_EVENT_VOLUME_KEY, AMP_EVENT_VOLUME_KEY_VALUE_5);
-                                }
-                                break;
-                            case "6":
-                                if (idKeyboard == R.xml.future_price) {
-                                    jsonObject.put(AMP_EVENT_PRICE_KEY, AMP_EVENT_PRICE_KEY_VALUE_6);
-                                } else {
-                                    jsonObject.put(AMP_EVENT_VOLUME_KEY, AMP_EVENT_VOLUME_KEY_VALUE_6);
-                                }
-                                break;
-                            case "7":
-                                if (idKeyboard == R.xml.future_price) {
-                                    jsonObject.put(AMP_EVENT_PRICE_KEY, AMP_EVENT_PRICE_KEY_VALUE_7);
-                                } else {
-                                    jsonObject.put(AMP_EVENT_VOLUME_KEY, AMP_EVENT_VOLUME_KEY_VALUE_7);
-                                }
-                                break;
-                            case "8":
-                                if (idKeyboard == R.xml.future_price) {
-                                    jsonObject.put(AMP_EVENT_PRICE_KEY, AMP_EVENT_PRICE_KEY_VALUE_8);
-                                } else {
-                                    jsonObject.put(AMP_EVENT_VOLUME_KEY, AMP_EVENT_VOLUME_KEY_VALUE_8);
-                                }
-                                break;
-                            case "9":
-                                if (idKeyboard == R.xml.future_price) {
-                                    jsonObject.put(AMP_EVENT_PRICE_KEY, AMP_EVENT_PRICE_KEY_VALUE_9);
-                                } else {
-                                    jsonObject.put(AMP_EVENT_VOLUME_KEY, AMP_EVENT_VOLUME_KEY_VALUE_9);
-                                }
-                                break;
-                            default:
-                                break;
-                        }
                         String str = editable.toString();
                         if (QUEUED_PRICE.equals(text) || OPPONENT_PRICE.equals(text) ||
                                 MARKET_PRICE.equals(text) || LATEST_PRICE.equals(text) || mIsInit) {
@@ -1663,11 +1563,6 @@ public class TransactionFragment extends LazyLoadFragment implements View.OnClic
                                 editable.insert(0, insertStr);
                             } else editable.insert(start, insertStr);
                         }
-                    }
-                    if (idKeyboard == R.xml.future_price) {
-                        Amplitude.getInstance().logEventWrap(AMP_PRICE_KEY, jsonObject);
-                    } else {
-                        Amplitude.getInstance().logEventWrap(AMP_VOLUME_KEY, jsonObject);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

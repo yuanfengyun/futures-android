@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="com.shinnytech.futures.utils.MathUtils"></import>
+
+        <variable
+            name="account"
+            type="com.shinnytech.futures.model.bean.accountinfobean.AccountEntity"></variable>
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:background="@color/quote_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

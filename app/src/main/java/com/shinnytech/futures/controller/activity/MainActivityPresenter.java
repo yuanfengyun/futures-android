@@ -39,7 +39,6 @@ import com.app.hubert.guide.listener.OnHighlightDrewListener;
 import com.app.hubert.guide.model.GuidePage;
 import com.app.hubert.guide.model.HighlightOptions;
 import com.shinnytech.futures.R;
-import com.shinnytech.futures.amplitude.api.Amplitude;
 import com.shinnytech.futures.application.BaseApplication;
 import com.shinnytech.futures.constants.CommonConstants;
 import com.shinnytech.futures.constants.SettingConstants;
@@ -174,6 +173,7 @@ public class MainActivityPresenter {
         fragmentList.add(new QuotePagerFragment());
         fragmentList.add(new AccountFragment());
         fragmentList.add(new FutureInfoFragment());
+        fragmentList.add(new AutoGrideFragment());
         //初始化适配器类
         mViewPagerFragmentAdapter = new ViewPagerFragmentAdapter(mMainActivity.getSupportFragmentManager(), fragmentList);
         mBinding.vpContent.setAdapter(mViewPagerFragmentAdapter);
@@ -309,86 +309,42 @@ public class MainActivityPresenter {
             @Override
             public void onItemClick(View view, int position) {
                 String title = (String) view.getTag();
-                JSONObject jsonObject = new JSONObject();
                 switch (title) {
                     case LOGOUT:
                         BaseApplication.getmTDWebSocket().reConnect();
                         SPUtils.putAndApply(sContext, SettingConstants.CONFIG_PASSWORD, "");
-                        try {
-                            jsonObject.put(AMP_EVENT_LOGIN_TYPE, sDataManager.LOGIN_TYPE);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Amplitude.getInstance().logEventWrap(AMP_LOGOUT, jsonObject);
-                        mMainActivity.startActivity(new Intent(mMainActivity, LoginActivity.class));
+                          mMainActivity.startActivity(new Intent(mMainActivity, LoginActivity.class));
                         mMainActivity.finish();
                         break;
                     case SETTING:
-                        try {
-                            jsonObject.put(AMP_EVENT_MENU, SETTING);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Amplitude.getInstance().logEventWrap(AMP_MENU, jsonObject);
                         Intent intentSetting = new Intent(mMainActivity, SettingActivity.class);
                         mMainActivity.startActivityForResult(intentSetting, MAIN_ACTIVITY_TO_SETTING_ACTIVITY);
                         break;
                     case OPTIONAL_SETTING:
-                        try {
-                            jsonObject.put(AMP_EVENT_MENU, OPTIONAL_SETTING);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Amplitude.getInstance().logEventWrap(AMP_MENU, jsonObject);
                         Intent intentSettingOptional = new Intent(mMainActivity, OptionalActivity.class);
                         mMainActivity.startActivityForResult(intentSettingOptional, MAIN_ACTIVITY_TO_OPTIONAL_SETTING_ACTIVITY);
                         break;
                     case ACCOUNT:
-                        try {
-                            jsonObject.put(AMP_EVENT_MENU, ACCOUNT);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Amplitude.getInstance().logEventWrap(AMP_MENU, jsonObject);
                         Intent intentAcc = new Intent(mMainActivity, AccountActivity.class);
                         mMainActivity.startActivity(intentAcc);
                         break;
                     case PASSWORD:
-                        try {
-                            jsonObject.put(AMP_EVENT_MENU, PASSWORD);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Amplitude.getInstance().logEventWrap(AMP_MENU, jsonObject);
                         Intent intentChange = new Intent(mMainActivity, ChangePasswordActivity.class);
                         mMainActivity.startActivity(intentChange);
                         break;
                     case TRANSFER_IN:
-                        try {
-                            jsonObject.put(AMP_EVENT_MENU, TRANSFER_IN);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Amplitude.getInstance().logEventWrap(AMP_MENU, jsonObject);
                         Intent intentBank = new Intent(mMainActivity, BankTransferActivity.class);
                         intentBank.putExtra(TRANSFER_DIRECTION, TRANSFER_IN);
                         mMainActivity.startActivity(intentBank);
                         break;
                     case TRANSFER_OUT:
-                        try {
-                            jsonObject.put(AMP_EVENT_MENU, TRANSFER_OUT);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Amplitude.getInstance().logEventWrap(AMP_MENU, jsonObject);
                         Intent intentBankOut = new Intent(mMainActivity, BankTransferActivity.class);
                         intentBankOut.putExtra(TRANSFER_DIRECTION, TRANSFER_OUT);
                         mMainActivity.startActivity(intentBankOut);
                         break;
                     case CONDITIONAL_ORDER:
                         if (!mMainActivity.checkConditionResponsibility())break;
-                        Amplitude.getInstance().logEventWrap(AMP_CONDITION_MENU, jsonObject);
-                        String name = sDataManager.USER_ID;
+                                 String name = sDataManager.USER_ID;
                         String password = (String) SPUtils.get(sContext, CONFIG_PASSWORD, "");
                         if (TDUtils.isVisitor(name, password)){
                             ToastUtils.showToast(sContext, "游客模式暂不支持条件单/止盈止损");
@@ -398,12 +354,6 @@ public class MainActivityPresenter {
                         mMainActivity.startActivity(intentConditionOrder);
                         break;
                     case OPEN_ACCOUNT:
-                        try {
-                            jsonObject.put(AMP_EVENT_MENU, OPEN_ACCOUNT);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Amplitude.getInstance().logEventWrap(AMP_MENU, jsonObject);
                         Intent intentOpenAccount = mMainActivity.getPackageManager().getLaunchIntentForPackage("com.cfmmc.app.sjkh");
                         if (intentOpenAccount != null)
                             mMainActivity.startActivity(intentOpenAccount);
@@ -413,22 +363,10 @@ public class MainActivityPresenter {
                         }
                         break;
                     case FEEDBACK:
-                        try {
-                            jsonObject.put(AMP_EVENT_MENU, FEEDBACK);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Amplitude.getInstance().logEventWrap(AMP_MENU, jsonObject);
                         Intent intentFeed = new Intent(mMainActivity, FeedBackActivity.class);
                         mMainActivity.startActivity(intentFeed);
                         break;
                     case ABOUT:
-                        try {
-                            jsonObject.put(AMP_EVENT_MENU, ABOUT);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Amplitude.getInstance().logEventWrap(AMP_MENU, jsonObject);
                         Intent intentAbout = new Intent(mMainActivity, AboutActivity.class);
                         mMainActivity.startActivity(intentAbout);
                         break;
@@ -529,27 +467,9 @@ public class MainActivityPresenter {
                 switch (item.getItemId()) {
                     case R.id.market:
                         switchToMarket();
-                        JSONObject jsonObject = new JSONObject();
-                        try {
-                            jsonObject.put(AMP_EVENT_PAGE_ID, AMP_EVENT_PAGE_ID_VALUE_MAIN);
-                            jsonObject.put(AMP_EVENT_SWITCH_FROM, AMP_EVENT_TAB_ACCOUNT);
-                            jsonObject.put(AMP_EVENT_SWITCH_TO, AMP_EVENT_TAB_MARKET);
-                            Amplitude.getInstance().logEventWrap(AMP_SWITCH_TAB, jsonObject);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
                         break;
                     case R.id.trade:
                         switchToAccount();
-                        JSONObject jsonObject1 = new JSONObject();
-                        try {
-                            jsonObject1.put(AMP_EVENT_PAGE_ID, AMP_EVENT_PAGE_ID_VALUE_MAIN);
-                            jsonObject1.put(AMP_EVENT_SWITCH_FROM, AMP_EVENT_TAB_MARKET);
-                            jsonObject1.put(AMP_EVENT_SWITCH_TO, AMP_EVENT_TAB_ACCOUNT);
-                            Amplitude.getInstance().logEventWrap(AMP_SWITCH_TAB, jsonObject1);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
                         break;
                     default:
                         break;
@@ -824,6 +744,18 @@ public class MainActivityPresenter {
         mBinding.vpContent.setCurrentItem(2, false);
     }
 
+
+    /**
+     * 切换到网格刷单页
+     */
+    public void switchToAutoGride() {
+        mMainActivity.setTitle("gride");
+        mBinding.llNavigation.setVisibility(View.GONE);
+        mBinding.bottomNavigation.setVisibility(View.VISIBLE);
+        mBinding.vpContent.setCurrentItem(3, false);
+        mToolbarTitle.setText("gride");
+        mToolbarTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+    }
     /**
      * date: 2019/4/17
      * author: chenli

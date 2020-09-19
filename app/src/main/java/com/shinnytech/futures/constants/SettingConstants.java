@@ -11,10 +11,15 @@ public final class SettingConstants {
     public static final String CONFIG_ORDER_LINE = "isPending";
     public static final String CONFIG_AVERAGE_LINE = "isAverage";
     public static final String CONFIG_MD5 = "isMD5";
+    public static final String CONFIG_BROKER = "broker";
+    public static final String CONFIG_ACCOUNT = "account";
     public static final String CONFIG_PASSWORD = "password";
-    public static final String CONFIG_ACCOUNT = "phone";
-    public static final String CONFIG_BROKER = "X先锋期货";
     public static final String CONFIG_LOGIN_DATE = "loginDate";
+
+    public static final String CONFIG_SIM_ACCOUNT = "sim_account";
+    public static final String CONFIG_SIM_PASSWORD = "sim_password";
+    public static final String CONFIG_SIM_LOGIN_DATE = "sim_loginDate";
+
     public static final String CONFIG_RECOMMEND_OPTIONAL = "recommendOptional";
     public static final String CONFIG_RECOMMEND = "recommend";
     public static final String CONFIG_INIT_TIME = "initTime";

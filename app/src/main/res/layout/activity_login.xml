@@ -113,7 +113,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:text=""
+                    android:text="X先锋期货"
                     android:id="@+id/broker"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

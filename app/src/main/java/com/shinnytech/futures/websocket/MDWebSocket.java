@@ -2,7 +2,6 @@ package com.shinnytech.futures.websocket;
 
 import com.alibaba.fastjson.JSON;
 import com.neovisionaries.ws.client.WebSocket;
-import com.shinnytech.futures.amplitude.api.Amplitude;
 import com.shinnytech.futures.application.BaseApplication;
 import com.shinnytech.futures.model.bean.reqbean.ReqSetChartEntity;
 import com.shinnytech.futures.model.bean.reqbean.ReqSetChartKlineEntity;
@@ -66,13 +65,6 @@ public class MDWebSocket extends WebSocketBase {
         sDataManager.MD_PACK_COUNT = 0;
 
         LogUtils.e("reConnectMD", true);
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put(AMP_EVENT_RECONNECT_SERVER_TYPE, AMP_EVENT_RECONNECT_SERVER_TYPE_VALUE_MD);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Amplitude.getInstance().logEventWrap(AMP_RECONNECT, jsonObject);
     }
 
     /**

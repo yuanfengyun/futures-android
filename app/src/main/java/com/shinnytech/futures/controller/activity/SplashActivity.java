@@ -38,13 +38,8 @@ import static com.shinnytech.futures.constants.BroadcastConstants.TD_MESSAGE_LOG
 import static com.shinnytech.futures.utils.ScreenUtils.getStatusBarHeight;
 
 public class SplashActivity extends AppCompatActivity {
-    private static final int TIME_OUT = 1;
-    private static final int EXIT_APP = 2;
-    private BroadcastReceiver mReceiverLogin;
-    private Handler mHandler;
     private Timer mTimer;
     private Context sContext;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,57 +49,28 @@ public class SplashActivity extends AppCompatActivity {
         changeStatusBarColor(isFirm);
 
         if (isTaskRoot()) {
-            mHandler = new MyHandler(this);
             mTimer = new Timer();
             sContext = BaseApplication.getContext();
             mTimer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    mHandler.sendEmptyMessage(TIME_OUT);
+                    toLogin();
                 }
-            }, 20000);
+            }, 2000);
         } else finish();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        checkNetwork();
-        registerBroaderCast();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (mReceiverLogin != null)
-            LocalBroadcastManager.getInstance(this).unregisterReceiver(mReceiverLogin);
     }
 
-    /**
-     * date: 7/7/17
-     * author: chenli
-     * description: 检查网络的状态
-     */
-    public void checkNetwork() {
-        if (!NetworkUtils.isNetworkConnected(sContext)) {
-            if (mTimer != null) {
-                mTimer.cancel();
-                mTimer = null;
-            }
-            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-            dialog.setTitle("登录结果");
-            dialog.setMessage("网络故障，无法连接到服务器");
-            dialog.setCancelable(false);
-            dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    mHandler.sendEmptyMessage(EXIT_APP);
-                }
-            });
-            dialog.show();
-        }
-    }
+
 
     private void changeStatusBarColor(boolean isFirm) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
@@ -133,38 +99,6 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * date: 2019/4/24
-     * author: chenli
-     * description: 监听登录成功、失败事件
-     */
-    private void registerBroaderCast() {
-
-        mReceiverLogin = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String msg = intent.getStringExtra("msg");
-                switch (msg) {
-                    case TD_MESSAGE_LOGIN_SUCCEED:
-                        //登录成功
-                        toMain();
-                        break;
-                    case TD_MESSAGE_LOGIN_FAIL:
-                        //登录失败
-                        toLogin();
-                    case TD_MESSAGE_LOGIN_TIMEOUT:
-                        //登录超时
-                        toLogin();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        };
-        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiverLogin, new IntentFilter(TD_BROADCAST_ACTION));
-
-    }
-
     private void toLogin() {
         if (mTimer != null) {
             mTimer.cancel();
@@ -173,56 +107,5 @@ public class SplashActivity extends AppCompatActivity {
         Intent loginIntent = new Intent(SplashActivity.this, LoginActivity.class);
         SplashActivity.this.startActivity(loginIntent);
         SplashActivity.this.finish();
-    }
-
-    private void toMain() {
-        if (mTimer != null) {
-            mTimer.cancel();
-            mTimer = null;
-        }
-
-        Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
-        SplashActivity.this.startActivity(mainIntent);
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        SplashActivity.this.finish();
-    }
-
-    /**
-     * date: 6/1/18
-     * author: chenli
-     * description: 点击登录后服务器返回处理
-     * version:
-     * state:
-     */
-    static class MyHandler extends Handler {
-        WeakReference<SplashActivity> mActivityReference;
-
-        MyHandler(SplashActivity activity) {
-            mActivityReference = new WeakReference<>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            final SplashActivity activity = mActivityReference.get();
-            if (activity != null) {
-                switch (msg.what) {
-                    case 1:
-                        if (BaseApplication.getmTDWebSocket().isOpen()){
-                            ToastUtils.showToast(activity.sContext, "登录失败，请重新登录");
-                            activity.toLogin();
-                        }
-                        else {
-                            ToastUtils.showToast(activity.sContext, "无法连接到服务器，请尝试重新打开");
-                            activity.mHandler.sendEmptyMessageDelayed(EXIT_APP, 2000);
-                        }
-                        break;
-                    case 2:
-                        SystemUtils.exitApp(activity);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
     }
 }

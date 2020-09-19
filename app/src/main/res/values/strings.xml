@@ -281,6 +281,11 @@
     <string name="query_his_condition">正在查询历史条件单</string>
     <string name="trigger_take_profit">止盈触发</string>
     <string name="trigger_stop_loss">止损触发</string>
+    <string name="title_activity_auto_gride">AutoGrideActivity</string>
+    <string name="title_activity_test">TestActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

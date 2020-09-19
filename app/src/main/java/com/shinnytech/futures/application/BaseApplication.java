@@ -12,8 +12,6 @@ import com.aliyun.sls.android.sdk.SLSLog;
 import com.aliyun.sls.android.sdk.core.auth.PlainTextAKSKCredentialProvider;
 import com.sfit.ctp.info.DeviceInfoManager;
 import com.shinnytech.futures.BuildConfig;
-import com.shinnytech.futures.amplitude.api.Amplitude;
-import com.shinnytech.futures.amplitude.api.Identify;
 import com.shinnytech.futures.constants.CommonConstants;
 import com.shinnytech.futures.constants.SettingConstants;
 import com.shinnytech.futures.model.bean.accountinfobean.AccountEntity;
@@ -336,28 +334,8 @@ public class BaseApplication extends Application {
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
-        initAMP(AMP_KEY);
         initBugly(BUGLY_KEY);
         initAliLog(AK, SK);
-    }
-
-    /**
-     * date: 2019/6/18
-     * author: chenli
-     * description: 配置AMP
-     */
-    private void initAMP(String AMP_KEY){
-        Amplitude.getInstance().initialize(this, AMP_KEY).enableForegroundTracking(this);
-        Identify identify = new Identify()
-                .setOnce(AMP_USER_PACKAGE_ID_FIRST, BuildConfig.FLAVOR)
-                .set(AMP_USER_PACKAGE_ID_LAST, BuildConfig.FLAVOR)
-                .setOnce(AMP_USER_INIT_TIME_FIRST, TimeUtils.getNowTimeSecond());
-        Amplitude.getInstance().identify(identify);
-        sDataManager.INIT_TIME = System.currentTimeMillis();
-        sDataManager.LAST_TIME =  sDataManager.INIT_TIME;
-        sDataManager.SOURCE = "none";
-        LogUtils.e("AMP_INIT", true);
-        Amplitude.getInstance().logEventWrap(AMP_INIT, new JSONObject());
     }
 
     /**
@@ -370,16 +348,6 @@ public class BaseApplication extends Application {
         strategy.setCrashHandleCallback(new CrashReport.CrashHandleCallback() {
             public Map<String, String> onCrashHandleStart(int crashType, String errorType,
                                                           String errorMessage, String errorStack) {
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put(AMP_EVENT_CRASH_TYPE, crashType);
-                    jsonObject.put(AMP_EVENT_ERROR_TYPE, errorType);
-                    jsonObject.put(AMP_EVENT_ERROR_MESSAGE, errorMessage);
-                    jsonObject.put(AMP_EVENT_ERROR_STACK, errorStack);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Amplitude.getInstance().logEventWrap(AMP_CRASH, jsonObject);
                 LinkedHashMap<String, String> map = new LinkedHashMap<>();
                 map.put("user-agent", sDataManager.USER_AGENT);
                 return map;
@@ -504,31 +472,6 @@ public class BaseApplication extends Application {
         long currentTime = System.currentTimeMillis();
         long initTime = (long) SPUtils.get(sContext, CONFIG_INIT_TIME, currentTime);
         long survivalTime = currentTime - initTime;
-        Identify identify = new Identify();
-        identify.set(AMP_USER_SURVIVAL_TIME_TOTAL, survivalTime);
-        UserEntity userEntity = sDataManager.getTradeBean().getUsers().get(sDataManager.USER_ID);
-        if (userEntity != null) {
-            AccountEntity accountEntity = userEntity.getAccounts().get("CNY");
-            if (accountEntity != null) {
-                String static_balance = MathUtils.round(accountEntity.getStatic_balance(), 2);
-                String pre_balance = MathUtils.round(accountEntity.getPre_balance(), 2);
-                if (!"-".equals(static_balance)) {
-                    identify.setOnce(AMP_USER_BALANCE_FIRST, static_balance)
-                            .set(AMP_USER_BALANCE_LAST, static_balance);
-                }
-                String settlement = sDataManager.getBroker().getSettlement();
-                if (!"-".equals(pre_balance)) {
-                    if (MathUtils.isZero(pre_balance) && settlement == null) {
-                        identify.setOnce(AMP_USER_TYPE_FIRST, AMP_USER_TYPE_FIRST_PURE_NEWBIE_VALUE);
-                    } else {
-                        identify.setOnce(AMP_USER_TYPE_FIRST, AMP_USER_TYPE_FIRST_TRADER_VALUE);
-                    }
-                }
-            }
-        }
-        Amplitude.getInstance().identify(identify);
-        Amplitude.getInstance().logEventWrap(AMP_BACKGROUND, new JSONObject());
-
         Intent intent = new Intent(sContext, ForegroundService.class);
         startService(intent);
     }

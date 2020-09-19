@@ -68,6 +68,6 @@ public final class CommonConstants {
 
     //登录页
     public static final String BROKER_ID_VISITOR = "游客";
-    public static final String BROKER_ID_SIMULATION = "X先锋期货";
+    public static final String BROKER_ID_SIMULATION = "快期模拟";
     public static final String BROKER_ID_SIMNOW = "simnow";
 }

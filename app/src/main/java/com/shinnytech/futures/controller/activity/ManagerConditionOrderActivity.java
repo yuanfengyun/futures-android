@@ -18,7 +18,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.shinnytech.futures.R;
-import com.shinnytech.futures.amplitude.api.Amplitude;
 import com.shinnytech.futures.application.BaseApplication;
 import com.shinnytech.futures.databinding.ActivityManagerConditionOrderBinding;
 import com.shinnytech.futures.model.adapter.ConditionOrderAdapter;
@@ -89,7 +88,6 @@ public class ManagerConditionOrderActivity extends BaseActivity {
         mBinding.historyCondition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Amplitude.getInstance().logEventWrap(AMP_CONDITION_HISTORY, new JSONObject());
                 Intent intent = new Intent(ManagerConditionOrderActivity.this, HistoryConditionActivity.class);
                 ManagerConditionOrderActivity.this.startActivity(intent);
             }
@@ -98,7 +96,6 @@ public class ManagerConditionOrderActivity extends BaseActivity {
         mBinding.newCondition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Amplitude.getInstance().logEventWrap(AMP_CONDITION_ADD, new JSONObject());
                 Intent intent = new Intent(ManagerConditionOrderActivity.this, ConditionOrderActivity.class);
                 String ins;
                 List<String> optional = LatestFileManager.readInsListFromFile();
@@ -222,12 +219,6 @@ public class ManagerConditionOrderActivity extends BaseActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    jsonObject.put(AMP_EVENT_CONDITION_EDIT_ACTION_TYPE, AMP_EVENT_CONDITION_EDIT_ACTION_TYPE_DELETE);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Amplitude.getInstance().logEventWrap(AMP_CONDITION_EDIT, jsonObject);
                 BaseApplication.getmTDWebSocket().sendReqControlConditionOrder(
                         REQ_CANCEL_CONDITION_ORDER, order_id);
                 popWindow.dismiss();
@@ -239,22 +230,10 @@ public class ManagerConditionOrderActivity extends BaseActivity {
             public void onClick(View v) {
                 switch (status){
                     case CONDITION_STATUS_LIVE:
-                        try {
-                            jsonObject.put(AMP_EVENT_CONDITION_EDIT_ACTION_TYPE, AMP_EVENT_CONDITION_EDIT_ACTION_TYPE_PAUSE);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Amplitude.getInstance().logEventWrap(AMP_CONDITION_EDIT, jsonObject);
                         BaseApplication.getmTDWebSocket().sendReqControlConditionOrder(
                                 REQ_PAUSE_CONDITION_ORDER, order_id);
                         break;
                     case CONDITION_STATUS_SUSPEND:
-                        try {
-                            jsonObject.put(AMP_EVENT_CONDITION_EDIT_ACTION_TYPE, AMP_EVENT_CONDITION_EDIT_ACTION_TYPE_START);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Amplitude.getInstance().logEventWrap(AMP_CONDITION_EDIT, jsonObject);
                         BaseApplication.getmTDWebSocket().sendReqControlConditionOrder(
                                 REQ_RESUME_CONDITION_ORDER, order_id);
                         break;

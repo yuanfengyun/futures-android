@@ -9,8 +9,6 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.utils.Transformer;
-import com.shinnytech.futures.amplitude.api.Amplitude;
-import com.shinnytech.futures.amplitude.api.Identify;
 import com.shinnytech.futures.application.BaseApplication;
 import com.shinnytech.futures.constants.MarketConstants;
 import com.shinnytech.futures.utils.SPUtils;
@@ -77,9 +75,6 @@ public class CoupleChartGestureListener implements OnChartGestureListener {
         transformer.pointValuesToPixel(mBodyBuffers);
         float px = mBodyBuffers[2] - mBodyBuffers[0];
         int width = ScreenUtils.px2dp(BaseApplication.getContext(), px);
-        Identify identify = new Identify();
-        identify.set(AMP_USER_KLINE_WIDTH, width);
-        Amplitude.getInstance().identify(identify);
 
         float[] srcVals = new float[9];
         Matrix srcMatrix = srcChart.getViewPortHandler().getMatrixTouch();

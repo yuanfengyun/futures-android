@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.shinnytech.futures.R;
-import com.shinnytech.futures.amplitude.api.Amplitude;
 import com.shinnytech.futures.application.BaseApplication;
 import com.shinnytech.futures.controller.activity.MainActivity;
 import com.shinnytech.futures.databinding.FragmentQuotePagerBinding;
@@ -66,11 +65,7 @@ public class QuotePagerFragment extends LazyLoadFragment {
             }
             mIsInit = false;
 
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put(AMP_EVENT_PAGE_ID, AMP_EVENT_PAGE_ID_VALUE_MAIN);
-            jsonObject.put(AMP_EVENT_SOURCE, DataManager.getInstance().SOURCE);
             DataManager.getInstance().SOURCE = AMP_EVENT_PAGE_ID_VALUE_MAIN;
-            Amplitude.getInstance().logEventWrap(AMP_SHOW_PAGE, jsonObject);
         } catch (Exception e) {
             e.printStackTrace();
         }

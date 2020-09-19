@@ -27,7 +27,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.shinnytech.futures.R;
-import com.shinnytech.futures.amplitude.api.Amplitude;
 import com.shinnytech.futures.application.BaseApplication;
 import com.shinnytech.futures.controller.activity.MainActivity;
 import com.shinnytech.futures.controller.activity.MainActivityPresenter;
@@ -205,14 +204,6 @@ public class QuoteFragment extends LazyLoadFragment {
             initInsList();
             refreshMD();
             refreshTD();
-
-            if (DALIANZUHE.equals(mTitle) || ZHENGZHOUZUHE.equals(mTitle)) {
-                mBinding.tvChangePercent.setText(R.string.quote_fragment_bid_price1);
-                mBinding.tvOpenInterest.setText(R.string.quote_fragment_ask_price1);
-            } else {
-                mBinding.tvChangePercent.setText(R.string.quote_fragment_up_down_rate);
-                mBinding.tvOpenInterest.setText(R.string.quote_fragment_open_interest);
-            }
 
             //返回订阅之前的合约
             MainActivityPresenter mainActivityPresenter = ((MainActivity) getActivity()).getmMainActivityPresenter();
@@ -519,11 +510,8 @@ public class QuoteFragment extends LazyLoadFragment {
                         add.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                JSONObject jsonObject = new JSONObject();
                                 try {
-                                    jsonObject.put(AMP_EVENT_OPTIONAL_INSTRUMENT_ID, instrument_id);
                                     if (isAdd) {
-                                        jsonObject.put(AMP_EVENT_OPTIONAL_DIRECTION, AMP_EVENT_OPTIONAL_DIRECTION_VALUE_ADD);
                                         QuoteEntity quoteEntity = new QuoteEntity();
                                         quoteEntity.setInstrument_id(instrument_id);
                                         insList.put(instrument_id, quoteEntity);
@@ -541,7 +529,6 @@ public class QuoteFragment extends LazyLoadFragment {
                                             }
                                         });
                                     } else {
-                                        jsonObject.put(AMP_EVENT_OPTIONAL_DIRECTION, AMP_EVENT_OPTIONAL_DIRECTION_VALUE_DELETE);
                                         insList.remove(instrument_id);
                                         LatestFileManager.saveInsListToFile(new ArrayList<>(insList.keySet()));
                                         if (OPTIONAL.equals(mTitle)) show();
@@ -558,8 +545,7 @@ public class QuoteFragment extends LazyLoadFragment {
                                             }
                                         });
                                     }
-                                    Amplitude.getInstance().logEventWrap(AMP_OPTIONAL_QUOTE, jsonObject);
-                                } catch (JSONException e) {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             }

@@ -20,7 +20,6 @@ import android.view.WindowManager;
 import android.widget.DatePicker;
 
 import com.shinnytech.futures.R;
-import com.shinnytech.futures.amplitude.api.Amplitude;
 import com.shinnytech.futures.application.BaseApplication;
 import com.shinnytech.futures.databinding.ActivityHistoryConditionBinding;
 import com.shinnytech.futures.model.adapter.ConditionOrderAdapter;
@@ -93,8 +92,6 @@ public class HistoryConditionActivity extends BaseActivity {
                 try {
                     int time = Integer.parseInt(mBinding.textViewActionDay.getText().toString());
                     BaseApplication.getmTDWebSocket().sendReqQueryConditionOrder(time);
-
-                    Amplitude.getInstance().logEventWrap(AMP_CONDITION_QUERY, new JSONObject());
 
                     if (mDialog == null){
                         mDialog = new Dialog(HistoryConditionActivity.this, R.style.Theme_Light_Dialog);

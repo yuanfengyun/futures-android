@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.shinnytech.futures.R;
-import com.shinnytech.futures.amplitude.api.Amplitude;
 import com.shinnytech.futures.application.BaseApplication;
 import com.shinnytech.futures.constants.SettingConstants;
 import com.shinnytech.futures.controller.activity.MainActivity;
@@ -143,18 +142,11 @@ public class FutureInfoFragment extends LazyLoadFragment {
             mBinding.rbTransactionInfo.setText(R.string.future_info_activity_transaction_up);
         }
 
-        JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(AMP_EVENT_PAGE_ID, AMP_EVENT_PAGE_ID_VALUE_FUTURE_INFO);
-            jsonObject.put(AMP_EVENT_SOURCE, sDataManager.SOURCE);
-            jsonObject.put(AMP_EVENT_SYMBOL, mInstrumentId);
-            sDataManager.SOURCE = AMP_EVENT_PAGE_ID_VALUE_FUTURE_INFO;
+             sDataManager.SOURCE = AMP_EVENT_PAGE_ID_VALUE_FUTURE_INFO;
             boolean isInsInOptional = LatestFileManager.getOptionalInsList().containsKey(mInstrumentId);
-            jsonObject.put(AMP_EVENT_IS_INS_IN_OPTIONAL, isInsInOptional);
             UserEntity userEntity = sDataManager.getTradeBean().getUsers().get(sDataManager.USER_ID);
             boolean isInsInPosition = userEntity.getPositions().containsKey(mInstrumentId);
-            jsonObject.put(AMP_EVENT_IS_INS_IN_POSITION, isInsInPosition);
-            Amplitude.getInstance().logEventWrap(AMP_SHOW_PAGE, jsonObject);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -423,15 +415,6 @@ public class FutureInfoFragment extends LazyLoadFragment {
                 sDataManager.IS_SHOW_VP_CONTENT = false;
             }
         } else {
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put(AMP_EVENT_PAGE_ID, AMP_EVENT_PAGE_ID_VALUE_FUTURE_INFO);
-                jsonObject.put(AMP_EVENT_SWITCH_FROM, getTabTitle(mBinding.vpInfoContent.getCurrentItem()));
-                jsonObject.put(AMP_EVENT_SWITCH_TO, getTabTitle(index));
-                Amplitude.getInstance().logEventWrap(AMP_SWITCH_TAB, jsonObject);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
             if (mBinding.vpInfoContent.getVisibility() == View.GONE) {
                 mBinding.vpInfoContent.setVisibility(View.VISIBLE);
                 mBinding.rbHandicapInfo.setText(R.string.future_info_activity_handicap_down);

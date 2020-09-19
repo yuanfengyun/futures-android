@@ -22,7 +22,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.shinnytech.futures.R;
-import com.shinnytech.futures.amplitude.api.Amplitude;
 import com.shinnytech.futures.application.BaseApplication;
 import com.shinnytech.futures.databinding.ActivitySearchBinding;
 import com.shinnytech.futures.model.adapter.SearchAdapter;
@@ -144,20 +143,16 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
             public void OnItemCollect(View view, String instrument_id) {
                 if (instrument_id == null || "".equals(instrument_id)) return;
                 Map<String, QuoteEntity> insList = LatestFileManager.getOptionalInsList();
-                JSONObject jsonObject = new JSONObject();
                 try {
                     String name = instrument_id;
                     SearchEntity searchEntity = LatestFileManager.getSearchEntities().get(instrument_id);
                     if (searchEntity != null) name = searchEntity.getInstrumentName();
-                    jsonObject.put(AMP_EVENT_OPTIONAL_INSTRUMENT_ID, instrument_id);
                     if (insList.containsKey(instrument_id)) {
-                        jsonObject.put(AMP_EVENT_OPTIONAL_DIRECTION, AMP_EVENT_OPTIONAL_DIRECTION_VALUE_DELETE);
                         insList.remove(instrument_id);
                         LatestFileManager.saveInsListToFile(new ArrayList<>(insList.keySet()));
                         ToastUtils.showToast(BaseApplication.getContext(), name + "合约已移除");
                         ((ImageView) view).setImageResource(R.mipmap.ic_favorite_border_white_24dp);
                     } else {
-                        jsonObject.put(AMP_EVENT_OPTIONAL_DIRECTION, AMP_EVENT_OPTIONAL_DIRECTION_VALUE_ADD);
                         QuoteEntity quoteEntity = new QuoteEntity();
                         quoteEntity.setInstrument_id(instrument_id);
                         insList.put(instrument_id, quoteEntity);
@@ -165,8 +160,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
                         ToastUtils.showToast(BaseApplication.getContext(), name + "合约已添加");
                         ((ImageView) view).setImageResource(R.mipmap.ic_favorite_white_24dp);
                     }
-                    Amplitude.getInstance().logEventWrap(AMP_OPTIONAL_SEARCH, jsonObject);
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

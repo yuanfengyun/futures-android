@@ -31,7 +31,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.shinnytech.futures.R;
-import com.shinnytech.futures.amplitude.api.Amplitude;
 import com.shinnytech.futures.application.BaseApplication;
 import com.shinnytech.futures.databinding.ActivityConditionOrderBinding;
 import com.shinnytech.futures.model.adapter.DialogAdapter;
@@ -595,7 +594,6 @@ public class ConditionOrderActivity extends BaseActivity {
         mBinding.triggerSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                JSONObject jsonObject = new JSONObject();
                 boolean isInsertOrder = true;
 
                 //报单列表
@@ -700,16 +698,6 @@ public class ConditionOrderActivity extends BaseActivity {
                 orderEntity.setVolume_type(volumeType);
                 orderEntity.setVolume(volumeInt);
                 orderEntity.setClose_today_prior(true);
-                try {
-                    jsonObject.put(AMP_EVENT_CONDITION_INSTRUMENT_ID, instrument_id);
-                    if (volumeType.equals(CONDITION_VOLUME_TYPE_NUM)) jsonObject.put(AMP_EVENT_CONDITION_TRIGGER_VOLUME, volumeInt);
-                    else if (volumeType.equals(CONDITION_VOLUME_TYPE_ALL))jsonObject.put(AMP_EVENT_CONDITION_TRIGGER_VOLUME, volumeType);
-                    jsonObject.put(AMP_EVENT_CONDITION_TRIGGER_INSERT_PRICE, priceTypeTitle);
-                    jsonObject.put(AMP_EVENT_CONDITION_DIRECTION, directionTitle);
-                    jsonObject.put(AMP_EVENT_CONDITION_OFFSET, offsetTitle);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
                 //条件列表
                 int GTD_date = 0;
@@ -724,11 +712,6 @@ public class ConditionOrderActivity extends BaseActivity {
                         break;
                     default:
                         break;
-                }
-                try {
-                    jsonObject.put(AMP_EVENT_CONDITION_EXPIRY, time_condition_type);
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
                 boolean is_cancel_ori_close_order = true;
                 String conditions_logic_oper = CONDITION_LOGIC_OR;
@@ -769,13 +752,6 @@ public class ConditionOrderActivity extends BaseActivity {
                         }
                         conditionEntity.setContingent_price(contingentPrice);
                         conditionEntity.setPrice_relation(priceRelation);
-                        try {
-                            jsonObject.put(AMP_EVENT_CONDITION_TYPE, AMP_EVENT_CONDITION_TYPE_VALUE_PRICE_TRIGGER);
-                            String trigger_price = (String) mBinding.spinnerTriggerPriceRange.getSelectedItem();
-                            jsonObject.put(AMP_EVENT_CONDITION_TRIGGER_PRICE, trigger_price + " " + contingentPriceS);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
                         break;
                     case CONDITION_WAY_TIME:
                         contingentType = CONDITION_CONTINGENT_TYPE_TIME;
@@ -790,19 +766,8 @@ public class ConditionOrderActivity extends BaseActivity {
                             isInsertOrder = false;
                         }
                         conditionEntity.setContingent_time(contingentTime);
-                        try {
-                            jsonObject.put(AMP_EVENT_CONDITION_TYPE, AMP_EVENT_CONDITION_TYPE_VALUE_TIME_TRIGGER);
-                            jsonObject.put(AMP_EVENT_CONDITION_TRIGGER_TIME, contingentTimeS);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
                         break;
                     case CONDITION_WAY_OPEN:
-                        try {
-                            jsonObject.put(AMP_EVENT_CONDITION_TYPE, AMP_EVENT_CONDITION_TYPE_VALUE_OPENING_TRIGGER);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
                         contingentType = CONDITION_CONTINGENT_TYPE_MARKET_OPEN;
                         break;
                     case CONDITION_WAY_RANGE:
@@ -825,21 +790,11 @@ public class ConditionOrderActivity extends BaseActivity {
                         }
                         conditionEntity.setContingent_price_range_left(contingentPriceRangeLeft);
                         conditionEntity.setContingent_price_range_right(contingentPriceRangeRight);
-                        try {
-                            jsonObject.put(AMP_EVENT_CONDITION_TYPE, AMP_EVENT_CONDITION_TYPE_VALUE_PRICE_RANGE_TRIGGER);
-                            String price_relation = getResources().getString(R.string.trigger_lower_equal);
-                            price_relation = contingentPriceRangeLeftS + " " + price_relation + " 最新价 " + price_relation + " " + contingentPriceRangeRightS;
-                            jsonObject.put(AMP_EVENT_CONDITION_TRIGGER_PRICE, price_relation);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
                         break;
                     default:
                         break;
                 }
                 conditionEntity.setContingent_type(contingentType);
-
-                Amplitude.getInstance().logEventWrap(AMP_CONDITION_SAVE, jsonObject);
 
                 if (!isInsertOrder)return;
                 ReqConditionEntity conditionList[] = {conditionEntity};

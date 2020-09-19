@@ -37,8 +37,6 @@ import android.widget.TextView;
 
 import com.sfit.ctp.info.DeviceInfoManager;
 import com.shinnytech.futures.R;
-import com.shinnytech.futures.amplitude.api.Amplitude;
-import com.shinnytech.futures.amplitude.api.Identify;
 import com.shinnytech.futures.application.BaseApplication;
 import com.shinnytech.futures.constants.SettingConstants;
 import com.shinnytech.futures.databinding.ActivityLoginBinding;
@@ -80,6 +78,10 @@ import static com.shinnytech.futures.constants.SettingConstants.CONFIG_INIT_TIME
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_IS_FIRM;
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_LOGIN_DATE;
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_PASSWORD;
+import static com.shinnytech.futures.constants.SettingConstants.CONFIG_SIM_LOGIN_DATE;
+
+import static com.shinnytech.futures.constants.SettingConstants.CONFIG_SIM_ACCOUNT;
+import static com.shinnytech.futures.constants.SettingConstants.CONFIG_SIM_PASSWORD;
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_SYSTEM_INFO;
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_VERSION_CODE;
 import static com.shinnytech.futures.constants.CommonConstants.LOGIN_ACTIVITY_TO_BROKER_LIST_ACTIVITY;
@@ -89,14 +91,6 @@ import static com.shinnytech.futures.constants.BroadcastConstants.TD_MESSAGE_LOG
 import static com.shinnytech.futures.constants.BroadcastConstants.TD_MESSAGE_LOGIN_SUCCEED;
 import static com.shinnytech.futures.constants.BroadcastConstants.TD_MESSAGE_WEAK_PASSWORD;
 import static com.shinnytech.futures.utils.ScreenUtils.getStatusBarHeight;
-
-/**
- * date: 6/1/17
- * author: chenli
- * description: 待优化：在用户名框和密码框两边加上图片,还可以添加一键删除功能
- * version:
- * state: basically done
- */
 
 public class LoginActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST = 1;
@@ -145,7 +139,6 @@ public class LoginActivity extends AppCompatActivity {
         mIsVisitEnable = true;
         mExitTime = 0;
         mIsShowPassword = false;
-        //登录入口
         sDataManager.LOGIN_TYPE = AMP_EVENT_LOGIN_TYPE_VALUE_AUTO;
 
         mLoginDialog = new Dialog(this, R.style.Theme_Light_Dialog);
@@ -165,11 +158,6 @@ public class LoginActivity extends AppCompatActivity {
         hint.setText("登录进行中，请稍等片刻......");
     }
 
-    /**
-     * date: 2019/5/30
-     * author: chenli
-     * description: 初始化期货公司、账户
-     */
     private void initBrokerAccount() {
         mIsFirm = (boolean) SPUtils.get(sContext, CONFIG_IS_FIRM, true);
         if (mIsFirm) switchFirm();
@@ -177,7 +165,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initEvent() {
-
         mBinding.llFirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -198,48 +185,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 hideHint();
-                if (!mIsVisitEnable){
-                    ToastUtils.showToast(sContext, "登录请求已发送，请稍候");
-                    return;
-                }
-                mIsVisitEnable = false;
-                //随机生成8位字符串
-                String data = "";
-                Random random = new Random();
-                for (int i = 0; i < 8; i++) {
-                    data += random.nextInt(10);
-                }
-                String generatedString = BROKER_ID_VISITOR + "_" + data;
-                mBrokerName = BROKER_ID_SIMULATION;
-                mPhoneNumber = generatedString;
-                mPassword = generatedString;
-                sDataManager.LOGIN_TYPE = AMP_EVENT_LOGIN_TYPE_VALUE_VISIT;
-                sDataManager.BROKER_ID = mBrokerName;
-                sDataManager.USER_ID = mPhoneNumber;
-                changeStatusBarColor(false);
-                mIsFirm = false;
-                //直接保存，解决实盘<->模拟登录不上的问题
-                SPUtils.putAndApply(sContext, CONFIG_LOGIN_DATE, "");
-                SPUtils.putAndApply(sContext, CONFIG_ACCOUNT, mPhoneNumber);
-                SPUtils.putAndApply(sContext, CONFIG_PASSWORD, mPassword);
-                SPUtils.putAndApply(sContext, CONFIG_BROKER, mBrokerName);
-                SPUtils.putAndApply(sContext, CONFIG_IS_FIRM, mIsFirm);
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put(AMP_EVENT_LOGIN_TYPE, AMP_EVENT_LOGIN_TYPE_VALUE_VISIT);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Amplitude.getInstance().logEventWrap(AMP_LOGIN, jsonObject);
-                BaseApplication.getmTDWebSocket().sendReqLogin(mBrokerName, mPhoneNumber, mPassword);
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        ToastUtils.showToast(sContext, "游客模式账户信息和持仓隔日会重置");
-                    }
-                });
-
-            }
+                Intent intent1 = new Intent(LoginActivity.this, MainActivity.class);
+                LoginActivity.this.startActivity(intent1);
+                LoginActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                LoginActivity.this.finish();
+              }
         });
 
         mBinding.broker.setOnClickListener(new View.OnClickListener() {
@@ -277,11 +227,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 hideHint();
                 mBinding.account.getEditableText().clear();
-                String account = (String) SPUtils.get(sContext, CONFIG_ACCOUNT, "");
-                if (!account.isEmpty()) {
-                    SPUtils.putAndApply(sContext, CONFIG_ACCOUNT, "");
-                    ToastUtils.showToast(sContext, "删除账号信息");
-                }
             }
         });
 
@@ -357,11 +302,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * date: 7/7/17
-     * author: chenli
-     * description:
-     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -380,15 +320,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         checkNetwork();
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put(AMP_EVENT_PAGE_ID, AMP_EVENT_PAGE_ID_VALUE_LOGIN);
-            jsonObject.put(AMP_EVENT_SOURCE, sDataManager.SOURCE);
-            sDataManager.SOURCE = AMP_EVENT_PAGE_ID_VALUE_LOGIN;
-            Amplitude.getInstance().logEventWrap(AMP_SHOW_PAGE, jsonObject);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        sDataManager.SOURCE = AMP_EVENT_PAGE_ID_VALUE_LOGIN;
     }
 
     @Override
@@ -398,17 +330,10 @@ public class LoginActivity extends AppCompatActivity {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(mReceiverLogin);
     }
 
-    /**
-     * Attempts to sign in or register the activity_account specified by the fragment_home form.
-     * If there are form errors (invalid phone, missing fields, etc.), the
-     * errors are presented and no actual fragment_home attempt is made.
-     */
     private void attemptLogin() {
-        // Reset errors.
         mBinding.password.setError(null);
         mBinding.account.setError(null);
 
-        // Store values at the time of the fragment_home attempt.
         if (mIsFirm) mBrokerName = mBinding.broker.getText().toString();
         else mBrokerName = BROKER_ID_SIMULATION;
         mPhoneNumber = mBinding.account.getText().toString();
@@ -441,34 +366,26 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
             mIsLoginEnable = false;
-            if (mBrokerName != null && !(mBrokerName.equals(BROKER_ID_SIMULATION)
-                    || mBrokerName.equals(BROKER_ID_SIMNOW))) {
-                Identify identify = new Identify();
-                long currentTime = System.currentTimeMillis();
-                long initTime = (long) SPUtils.get(sContext, CONFIG_INIT_TIME, currentTime);
-                long loginTime = currentTime - initTime;
-                identify.setOnce(AMP_USER_LOGIN_TIME_FIRST, loginTime);
-                Amplitude.getInstance().identify(identify);
-            }
             sDataManager.BROKER_ID = mBrokerName;
             sDataManager.USER_ID = mPhoneNumber;
             sDataManager.LOGIN_TYPE = AMP_EVENT_LOGIN_TYPE_VALUE_LOGIN;
             //直接保存，解决实盘<->模拟登录不上的问题
-            SPUtils.putAndApply(sContext, CONFIG_LOGIN_DATE, "");
-            SPUtils.putAndApply(sContext, CONFIG_ACCOUNT, mPhoneNumber);
-            SPUtils.putAndApply(sContext, CONFIG_PASSWORD, mPassword);
+
             SPUtils.putAndApply(sContext, CONFIG_BROKER, mBrokerName);
             SPUtils.putAndApply(sContext, CONFIG_IS_FIRM, mIsFirm);
 
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put(AMP_EVENT_LOGIN_TYPE, AMP_EVENT_LOGIN_TYPE_VALUE_LOGIN);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            Amplitude.getInstance().logEventWrap(AMP_LOGIN, jsonObject);
+            if(mIsFirm) {
+                SPUtils.putAndApply(sContext, CONFIG_LOGIN_DATE, "");
+                SPUtils.putAndApply(sContext, CONFIG_ACCOUNT, mPhoneNumber);
+                SPUtils.putAndApply(sContext, CONFIG_PASSWORD, mPassword);
+                BaseApplication.getmTDWebSocket().sendReqLogin(mBrokerName, mPhoneNumber, mPassword);
 
-            BaseApplication.getmTDWebSocket().sendReqLogin(mBrokerName, mPhoneNumber, mPassword);
+            }else{
+                SPUtils.putAndApply(sContext, CONFIG_SIM_LOGIN_DATE, "");
+                SPUtils.putAndApply(sContext, CONFIG_SIM_ACCOUNT, mPhoneNumber);
+                SPUtils.putAndApply(sContext, CONFIG_SIM_PASSWORD, mPassword);
+                BaseApplication.getmTDWebSocket().sendReqLogin(BROKER_ID_SIMULATION, mPhoneNumber, mPassword);
+            }
 
             if (!mLoginDialog.isShowing())mLoginDialog.show();
 
@@ -480,16 +397,9 @@ public class LoginActivity extends AppCompatActivity {
                     inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), HIDE_NOT_ALWAYS);
             }
         }
-
     }
 
-    /**
-     * date: 7/7/17
-     * author: chenli
-     * description: 监控网络状态与登录状态
-     */
     private void registerBroaderCast() {
-
         mReceiverLogin = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -508,10 +418,8 @@ public class LoginActivity extends AppCompatActivity {
                                 && mBinding.account.getText().toString().isEmpty())
                             initBrokerAccount();
                         //先登录实盘，登录失败，再点"进入行情"，断线重连
-                        if (!mIsVisitEnable || !mIsLoginEnable){
-                            mIsVisitEnable = true;
-                            mIsLoginEnable = true;
-                        }
+                        mIsVisitEnable = true;
+                        mIsLoginEnable = true;
                         break;
                     case TD_MESSAGE_LOGIN_FAIL:
                         //登录失败
@@ -527,14 +435,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
         LocalBroadcastManager.getInstance(this).registerReceiver(mReceiverLogin, new IntentFilter(TD_BROADCAST_ACTION));
-
     }
 
-    /**
-     * date: 6/21/17
-     * author: chenli
-     * description: 合约详情页返回,发送原来订阅合约
-     */
+     //合约详情页返回,发送原来订阅合约
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
@@ -553,11 +456,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    /**
-     * date: 1/16/18
-     * author: chenli
-     * description: 检查是否第一次启动APP,弹出免责条款框
-     */
+     // description: 检查是否第一次启动APP,弹出免责条款框
     public void checkResponsibility() {
         try {
             final float nowVersionCode = DataManager.getInstance().APP_CODE;
@@ -580,14 +479,8 @@ public class LoginActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
-    /**
-     * date: 7/7/17
-     * author: chenli
-     * description: 检查网络的状态
-     */
     public void checkNetwork() {
         if (!NetworkUtils.isNetworkConnected(sContext)) {
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -604,11 +497,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * date: 2019/4/2
-     * author: chenli
-     * description: 穿透视监管动态权限检查
-     */
     private void checkPermissions() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_PHONE_STATE)
@@ -623,7 +511,6 @@ public class LoginActivity extends AppCompatActivity {
                             Manifest.permission.ACCESS_COARSE_LOCATION},
                     MY_PERMISSIONS_REQUEST);
         }
-
     }
 
     @Override
@@ -647,11 +534,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * date: 2019/5/30
-     * author: chenli
-     * description: 穿透式监管信息
-     */
     private void getSystemInfo() {
         new Thread(new Runnable() {
             @Override
@@ -667,11 +549,6 @@ public class LoginActivity extends AppCompatActivity {
         }).start();
     }
 
-    /**
-     * date: 2019/6/4
-     * author: chenli
-     * description: 切换模拟
-     */
     private void switchSimulator() {
         mBinding.simulation.setTextColor(getResources().getColor(R.color.white));
         mBinding.simulationUnderline.setVisibility(View.VISIBLE);
@@ -689,25 +566,16 @@ public class LoginActivity extends AppCompatActivity {
         mBinding.account.getEditableText().clear();
         mBinding.account.requestFocus();
         mBinding.password.getEditableText().clear();
-        boolean isFirm = (boolean) SPUtils.get(sContext, CONFIG_IS_FIRM, true);
-        //获取用户登录成功后保存在sharedPreference里的期货公司
-        if (SPUtils.contains(sContext, CONFIG_ACCOUNT) && !isFirm) {
-            String account = (String) SPUtils.get(sContext, CONFIG_ACCOUNT, "");
-            if (account.contains(BROKER_ID_VISITOR)) return;
-            mBinding.account.setText(account);
-            mBinding.account.setSelection(account.length());
-            if (!account.isEmpty()) mBinding.deleteAccount.setVisibility(View.VISIBLE);
-        }
+        String account = (String) SPUtils.get(sContext, CONFIG_SIM_ACCOUNT, "");
+        String passwd = (String) SPUtils.get(sContext, CONFIG_SIM_PASSWORD, "");
+        mBinding.account.setText(account);
+        mBinding.account.setSelection(account.length());
+        mBinding.password.setText(passwd);
 
         if (!mBinding.account.getEditableText().toString().isEmpty())mBinding.password.requestFocus();
     }
 
-    /**
-     * date: 2019/6/4
-     * author: chenli
-     * description: 切换实盘
-     */
-    private void switchFirm() {
+     private void switchFirm() {
         mBinding.firm.setTextColor(getResources().getColor(R.color.white));
         mBinding.firmUnderline.setVisibility(View.VISIBLE);
         mBinding.simulation.setTextColor(getResources().getColor(R.color.login_gray));
@@ -725,22 +593,17 @@ public class LoginActivity extends AppCompatActivity {
         mBinding.account.requestFocus();
         mBinding.password.getEditableText().clear();
         boolean isFirm = (boolean) SPUtils.get(sContext, CONFIG_IS_FIRM, true);
-        List<String> brokers = LatestFileManager.getBrokerIdFromBuildConfig(sDataManager.getBroker().getBrokers());
-        //获取用户登录成功后保存在sharedPreference里的期货公司
-        if (SPUtils.contains(sContext, CONFIG_BROKER) && isFirm) {
-            String brokerName = (String) SPUtils.get(sContext, CONFIG_BROKER, "");
-            String account = (String) SPUtils.get(sContext, CONFIG_ACCOUNT, "");
-            if (brokers.isEmpty() || brokers.contains(brokerName))mBinding.broker.setText(brokerName);
-            else mBinding.broker.setText(brokers.get(0));
-            mBinding.account.setText(account);
-            mBinding.account.setSelection(account.length());
-            if (!account.isEmpty()) mBinding.deleteAccount.setVisibility(View.VISIBLE);
-        } else if (!brokers.isEmpty()) {
-            mBinding.broker.setText(brokers.get(0));
+        String brokerName = (String) SPUtils.get(sContext, CONFIG_BROKER, "X先锋期货");
+        String account = (String) SPUtils.get(sContext, CONFIG_ACCOUNT, "");
+        String passwd = (String) SPUtils.get(sContext, CONFIG_PASSWORD, "");
+        mBinding.broker.setText(brokerName);
+        mBinding.account.setText(account);
+        mBinding.account.setSelection(account.length());
+        mBinding.password.setText(passwd);
+        if (!account.isEmpty()){
+            mBinding.deleteAccount.setVisibility(View.VISIBLE);
+            mBinding.password.requestFocus();
         }
-
-        if (!mBinding.account.getEditableText().toString().isEmpty())mBinding.password.requestFocus();
-
     }
 
     private void changeStatusBarColor(boolean isFirm) {
@@ -770,11 +633,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * date: 2019/8/20
-     * author: chenli
-     * description: 显示不合法登陆提示
-     */
     private void showFailHint(){
         mBinding.loginHint1.setVisibility(View.VISIBLE);
         mBinding.loginHint2.setVisibility(View.VISIBLE);
@@ -782,11 +640,6 @@ public class LoginActivity extends AppCompatActivity {
         mBinding.loginHint4.setVisibility(View.GONE);
     }
 
-    /**
-     * date: 2019/8/20
-     * author: chenli
-     * description: 隐藏不合法登陆提示
-     */
     private void hideHint(){
         mBinding.loginHint1.setVisibility(View.GONE);
         mBinding.loginHint2.setVisibility(View.GONE);
@@ -794,11 +647,6 @@ public class LoginActivity extends AppCompatActivity {
         mBinding.loginHint4.setVisibility(View.GONE);
     }
 
-    /**
-     * date: 2019/8/20
-     * author: chenli
-     * description: 显示登陆超时提示
-     */
     private void showTimeoutHint() {
         mBinding.loginHint1.setVisibility(View.GONE);
         mBinding.loginHint2.setVisibility(View.GONE);
@@ -806,13 +654,6 @@ public class LoginActivity extends AppCompatActivity {
         mBinding.loginHint4.setVisibility(View.VISIBLE);
     }
 
-    /**
-     * date: 6/1/18
-     * author: chenli
-     * description: 点击登录后服务器返回处理
-     * version:
-     * state:
-     */
     static class MyHandler extends Handler {
         WeakReference<LoginActivity> mActivityReference;
 
@@ -833,9 +674,7 @@ public class LoginActivity extends AppCompatActivity {
                         activity.mIsVisitEnable = true;
                         activity.mIsLoginEnable = true;
                         SPUtils.putAndApply(activity.sContext, CONFIG_LOGIN_DATE, TimeUtils.getNowTime());
-                        SPUtils.putAndApply(activity.sContext, CONFIG_ACCOUNT, activity.mPhoneNumber);
-                        SPUtils.putAndApply(activity.sContext, CONFIG_PASSWORD, activity.mPassword);
-                        SPUtils.putAndApply(activity.sContext, CONFIG_BROKER, activity.mBrokerName);
+                        SPUtils.putAndApply(activity.sContext, CONFIG_SIM_LOGIN_DATE, TimeUtils.getNowTime());
                         //关闭键盘
                         View view = activity.getWindow().getCurrentFocus();
                         if (view != null) {
@@ -854,7 +693,6 @@ public class LoginActivity extends AppCompatActivity {
                         if (activity.mLoginDialog.isShowing())activity.mLoginDialog.dismiss();
                         activity.mIsVisitEnable = true;
                         activity.mIsLoginEnable = true;
-                        SPUtils.putAndApply(activity.sContext, SettingConstants.CONFIG_PASSWORD, "");
                         break;
                     case LOGIN_TIMEOUT:
                         if (activity.sDataManager.LOGIN_TYPE.equals(AMP_EVENT_LOGIN_TYPE_VALUE_LOGIN))
@@ -862,7 +700,6 @@ public class LoginActivity extends AppCompatActivity {
                         if (activity.mLoginDialog.isShowing())activity.mLoginDialog.dismiss();
                         activity.mIsVisitEnable = true;
                         activity.mIsLoginEnable = true;
-                        SPUtils.putAndApply(activity.sContext, SettingConstants.CONFIG_PASSWORD, "");
                         break;
                     case LOGIN_TO_CHANGE_PASSWORD:
                         Intent intent = new Intent(activity, ChangePasswordActivity.class);

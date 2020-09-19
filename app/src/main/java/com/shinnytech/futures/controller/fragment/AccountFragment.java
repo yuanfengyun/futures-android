@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.shinnytech.futures.R;
-import com.shinnytech.futures.amplitude.api.Amplitude;
 import com.shinnytech.futures.controller.activity.BankTransferActivity;
 import com.shinnytech.futures.controller.activity.MainActivity;
 import com.shinnytech.futures.databinding.FragmentAccountBinding;
@@ -62,16 +61,7 @@ public class AccountFragment extends LazyLoadFragment {
         mBinding.setAccount(accountEntity);
         mBinding.broker.setText(sDataManager.BROKER_ID);
         ((LazyLoadFragment) mViewPagerFragmentAdapter.getItem(mBinding.vp.getCurrentItem())).show();
-
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put(AMP_EVENT_PAGE_ID, AMP_EVENT_PAGE_ID_VALUE_ACCOUNT);
-            jsonObject.put(AMP_EVENT_SOURCE, sDataManager.SOURCE);
-            sDataManager.SOURCE = AMP_EVENT_PAGE_ID_VALUE_ACCOUNT;
-            Amplitude.getInstance().logEventWrap(AMP_SHOW_PAGE, jsonObject);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        sDataManager.SOURCE = AMP_EVENT_PAGE_ID_VALUE_ACCOUNT;
     }
 
     @Override
@@ -149,15 +139,6 @@ public class AccountFragment extends LazyLoadFragment {
         mBinding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                JSONObject jsonObject1 = new JSONObject();
-                try {
-                    jsonObject1.put(AMP_EVENT_PAGE_ID, AMP_EVENT_PAGE_ID_VALUE_ACCOUNT);
-                    jsonObject1.put(AMP_EVENT_SWITCH_FROM, getTabTitle(mBinding.vp.getCurrentItem()));
-                    jsonObject1.put(AMP_EVENT_SWITCH_TO, getTabTitle(tab.getPosition()));
-                    Amplitude.getInstance().logEventWrap(AMP_SWITCH_TAB, jsonObject1);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
                 mBinding.vp.setCurrentItem(tab.getPosition(), false);
             }
 

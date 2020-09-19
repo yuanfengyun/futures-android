@@ -60,8 +60,11 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">40dp</item>
         <item name="android:button">@null</item>
-        <item name="android:textColor">@drawable/activity_future_info_radio_button_text_selector</item>
-        <item name="android:background">@drawable/activity_future_info_radio_button_handicap_selector</item>
+        <item name="android:textColor">@drawable/activity_future_info_radio_button_text_selector
+        </item>
+        <item name="android:background">
+            @drawable/activity_future_info_radio_button_handicap_selector
+        </item>
         <item name="android:gravity">center</item>
     </style>
 
@@ -70,7 +73,8 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">40dp</item>
         <item name="android:button">@null</item>
-        <item name="android:textColor">@drawable/activity_future_info_radio_button_text_selector</item>
+        <item name="android:textColor">@drawable/activity_future_info_radio_button_text_selector
+        </item>
         <item name="android:background">@drawable/activity_future_info_radio_button_selector</item>
         <item name="android:gravity">center</item>
     </style>
@@ -81,7 +85,9 @@
         <item name="android:layout_height">40dp</item>
         <item name="android:button">@null</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:background">@drawable/activity_future_info_radio_button_transaction_selector</item>
+        <item name="android:background">
+            @drawable/activity_future_info_radio_button_transaction_selector
+        </item>
         <item name="android:gravity">center</item>
     </style>
 

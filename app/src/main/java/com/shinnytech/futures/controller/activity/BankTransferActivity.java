@@ -15,8 +15,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 
 import com.shinnytech.futures.R;
-import com.shinnytech.futures.amplitude.api.Amplitude;
-import com.shinnytech.futures.amplitude.api.Identify;
 import com.shinnytech.futures.application.BaseApplication;
 import com.shinnytech.futures.databinding.ActivityBankTransferBinding;
 import com.shinnytech.futures.model.adapter.BankTransferAdapter;
@@ -109,10 +107,6 @@ public class BankTransferActivity extends BaseActivity {
                 try {
                     float amountF = -abs(Float.parseFloat(amount));
                     BaseApplication.getmTDWebSocket().sendReqTransfer(futureAccount, accountPassword, bankId, bankPassword, currency, amountF);
-                    Identify identify = new Identify()
-                            .setOnce(AMP_USER_BANK_FIRST, bank)
-                            .set(AMP_USER_BANK_LAST, bank);
-                    Amplitude.getInstance().identify(identify);
                 } catch (Exception e) {
                     ToastUtils.showToast(sContext, "输入金额错误！");
                 }
@@ -132,10 +126,6 @@ public class BankTransferActivity extends BaseActivity {
                 try {
                     float amountF = abs(Float.parseFloat(amount));
                     BaseApplication.getmTDWebSocket().sendReqTransfer(futureAccount, accountPassword, bankId, bankPassword, currency, amountF);
-                    Identify identify = new Identify()
-                            .setOnce(AMP_USER_BANK_FIRST, bank)
-                            .set(AMP_USER_BANK_LAST, bank);
-                    Amplitude.getInstance().identify(identify);
                 } catch (Exception e) {
                     ToastUtils.showToast(sContext, "输入金额错误！");
                 }

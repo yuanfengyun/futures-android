@@ -17,7 +17,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.shinnytech.futures.R;
-import com.shinnytech.futures.amplitude.api.Amplitude;
 import com.shinnytech.futures.application.BaseApplication;
 import com.shinnytech.futures.controller.activity.MainActivity;
 import com.shinnytech.futures.controller.activity.MainActivityPresenter;
@@ -300,7 +299,6 @@ public class PositionFragment extends LazyLoadFragment {
                 intent.putExtra(VOLUME_BETWEEN_ACTIVITY, volume);
                 startActivity(intent);
                 popWindow.dismiss();
-                Amplitude.getInstance().logEventWrap(AMP_CONDITION_STOP_LOSS, new JSONObject());
             }
         });
 
@@ -318,7 +316,6 @@ public class PositionFragment extends LazyLoadFragment {
                 Intent intent = new Intent(getActivity(), ManagerConditionOrderActivity.class);
                 startActivity(intent);
                 popWindow.dismiss();
-                Amplitude.getInstance().logEventWrap(AMP_CONDITION_POSITION, new JSONObject());
             }
         });
     }

@@ -4,8 +4,6 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.shinnytech.futures.application.BaseApplication;
-import com.shinnytech.futures.amplitude.api.Amplitude;
-import com.shinnytech.futures.amplitude.api.Identify;
 import com.shinnytech.futures.model.bean.accountinfobean.AccountEntity;
 import com.shinnytech.futures.model.bean.accountinfobean.BankEntity;
 import com.shinnytech.futures.model.bean.accountinfobean.BrokerEntity;
@@ -581,23 +579,14 @@ public class DataManager {
 
                 //warning通知上报
                 if ("WARNING".equals(level)){
-                    JSONObject jsonObject1 = new JSONObject();
-                    try {
-                        jsonObject1.put(AMP_EVENT_NOTIFY_CONTENT, content);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Amplitude.getInstance().logEventWrap(AMP_NOTIFY, jsonObject1);
                 }
 
                 //条件单已被服务器拒绝
                 if (code >= CODE_CONDITION_FAIL_LEFT && code <= CODE_CONDITION_FAIL_RIGHT){
-                    Amplitude.getInstance().logEventWrap(AMP_CONDITION_FAILED, new JSONObject());
                 }
 
                 //条件单下单成功
                 if (code == CODE_CONDITION_SUCCEED){
-                    Amplitude.getInstance().logEventWrap(AMP_CONDITION_SUCCEED, new JSONObject());
                 }
 
                 //修改密码成功通知
@@ -613,14 +602,6 @@ public class DataManager {
                 if ((code >= CODE_LOGIN_FAIL_CTP_LEFT && code <= CODE_LOGIN_FAIL_CTP_RIGHT) ||
                         code == CODE_LOGIN_FAIL_SIMULATOR || code == CODE_LOGIN_PASSWORD_MISMATCH_CTP
                         || code == CODE_LOGIN_PASSWORD_MISMATCH_SIMULATOR){
-                    JSONObject jsonObject = new JSONObject();
-                    try {
-                        jsonObject.put(AMP_EVENT_LOGIN_TYPE, LOGIN_TYPE);
-                        jsonObject.put(AMP_EVENT_LOGIN_FAIL_REASON, content);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Amplitude.getInstance().logEventWrap(AMP_LOGIN_FAILED, jsonObject);
                     sendMessage(TD_MESSAGE_LOGIN_FAIL, TD_BROADCAST);
                 }
 
@@ -697,26 +678,6 @@ public class DataManager {
                                     optString(PARSE_TRADE_KEY_USER_ID);
                             if (USER_ID.equals(userId)) {
                                 userEntity.setUser_id(userId);
-                                Identify identify = new Identify()
-                                        .setOnce(AMP_USER_ACCOUNT_ID_FIRST, USER_ID)
-                                        .set(AMP_USER_ACCOUNT_ID_LAST, USER_ID)
-                                        .setOnce(AMP_USER_BROKER_ID_FIRST, BROKER_ID)
-                                        .set(AMP_USER_BROKER_ID_LAST, BROKER_ID);
-                                if (!(BROKER_ID_SIMULATION.equals(BROKER_ID) || BROKER_ID_SIMNOW.equals(BROKER_ID))) {
-                                    long currentTime = System.currentTimeMillis();
-                                    long initTime = (long) SPUtils.get(BaseApplication.getContext(), CONFIG_INIT_TIME, currentTime);
-                                    long loginTime = currentTime - initTime;
-                                    identify.setOnce(AMP_USER_LOGIN_SUCCESS_TIME_FIRST, loginTime);
-                                }
-                                Amplitude.getInstance().identify(identify);
-
-                                JSONObject jsonObject = new JSONObject();
-                                try {
-                                    jsonObject.put(AMP_EVENT_LOGIN_TYPE, LOGIN_TYPE);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                Amplitude.getInstance().logEventWrap(AMP_LOGIN_SUCCEEDED, jsonObject);
                                 sendMessage(TD_MESSAGE_LOGIN_SUCCEED, TD_BROADCAST);
                             }
                             break;

@@ -7,7 +7,6 @@ import androidx.core.content.ContextCompat;
 
 import com.alibaba.fastjson.JSON;
 import com.neovisionaries.ws.client.WebSocket;
-import com.shinnytech.futures.amplitude.api.Amplitude;
 import com.shinnytech.futures.application.BaseApplication;
 import com.shinnytech.futures.constants.SettingConstants;
 import com.shinnytech.futures.model.bean.accountinfobean.BrokerEntity;
@@ -118,13 +117,6 @@ public class TDWebSocket extends WebSocketBase {
         sDataManager.TD_PACK_COUNT = 0;
 
         LogUtils.e(("reConnectTD"), true);
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put(AMP_EVENT_RECONNECT_SERVER_TYPE, AMP_EVENT_RECONNECT_SERVER_TYPE_VALUE_TD);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Amplitude.getInstance().logEventWrap(AMP_RECONNECT, jsonObject);
     }
 
     /**
@@ -136,41 +128,6 @@ public class TDWebSocket extends WebSocketBase {
         BrokerEntity brokerInfo = JSON.parseObject(message, BrokerEntity.class);
         sDataManager.getBroker().setBrokers(brokerInfo.getBrokers());
         sendMessage(TD_MESSAGE_BROKER_INFO, TD_BROADCAST);
-
-        Context context = BaseApplication.getContext();
-        if (SPUtils.contains(context, SettingConstants.CONFIG_LOGIN_DATE)) {
-            String date = (String) SPUtils.get(context, SettingConstants.CONFIG_LOGIN_DATE, "");
-            String name = (String) SPUtils.get(context, SettingConstants.CONFIG_ACCOUNT, "");
-            String password = (String) SPUtils.get(context, SettingConstants.CONFIG_PASSWORD, "");
-            String broker = SettingConstants.CONFIG_BROKER;
-            boolean isPermissionDenied = ContextCompat.checkSelfPermission(BaseApplication.getContext(),
-                Manifest.permission.READ_PHONE_STATE)
-                    != PackageManager.PERMISSION_GRANTED
-                        || ContextCompat.checkSelfPermission(BaseApplication.getContext(),
-                        Manifest.permission.ACCESS_FINE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED
-                        || ContextCompat.checkSelfPermission(BaseApplication.getContext(),
-                        Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED;
-            boolean notLogin = password.isEmpty() || isPermissionDenied ||
-                    (TDUtils.isVisitor(name, password) && !date.isEmpty() && !TimeUtils.getNowTime().equals(date));
-            if (!notLogin){
-                sDataManager.BROKER_ID = broker;
-                sDataManager.USER_ID = name;
-                //处理切换账号断线重连的情况
-                if (date.isEmpty()) sDataManager.LOGIN_TYPE = AMP_EVENT_LOGIN_TYPE_VALUE_LOGIN;
-                else sDataManager.LOGIN_TYPE = AMP_EVENT_LOGIN_TYPE_VALUE_AUTO;
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put(AMP_EVENT_LOGIN_TYPE, AMP_EVENT_LOGIN_TYPE_VALUE_AUTO);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Amplitude.getInstance().logEventWrap(AMP_LOGIN, jsonObject);
-                sendReqLogin(broker, name, password);
-            }else BaseApplication.sendMessage(TD_MESSAGE_LOGIN_FAIL, TD_BROADCAST);
-        }else BaseApplication.sendMessage(TD_MESSAGE_LOGIN_FAIL, TD_BROADCAST);
-
     }
 
     /**
@@ -214,19 +171,6 @@ public class TDWebSocket extends WebSocketBase {
      */
     public void sendReqInsertOrder(String exchange_id, String instrument_id, String direction,
                                    String offset, int volume, String price_type, double price, String amp_price_type) {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put(AMP_EVENT_PRICE, price);
-            jsonObject.put(AMP_EVENT_PRICE_TYPE, amp_price_type);
-            jsonObject.put(AMP_EVENT_INSTRUMENT_ID, exchange_id + "." + instrument_id);
-            jsonObject.put(AMP_EVENT_VOLUME, volume);
-            jsonObject.put(AMP_EVENT_DIRECTION, direction);
-            jsonObject.put(AMP_EVENT_OFFSET, offset);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        LogUtils.e(amp_price_type, true);
-        Amplitude.getInstance().logEventWrap(AMP_INSERT_ORDER, jsonObject);
         String user_id = DataManager.getInstance().USER_ID;
         ReqInsertOrderEntity reqInsertOrderEntity = new ReqInsertOrderEntity();
         reqInsertOrderEntity.setAid(REQ_INSERT_ORDER);
@@ -257,19 +201,6 @@ public class TDWebSocket extends WebSocketBase {
         UserEntity userEntity = sDataManager.getTradeBean().getUsers().get(user_id);
         if (userEntity != null) {
             OrderEntity orderEntity = userEntity.getOrders().get(order_id);
-            if (orderEntity != null) {
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put(AMP_EVENT_PRICE, orderEntity.getLimit_price());
-                    jsonObject.put(AMP_EVENT_INSTRUMENT_ID, orderEntity.getExchange_id() + "." + orderEntity.getInstrument_id());
-                    jsonObject.put(AMP_EVENT_VOLUME, orderEntity.getVolume_left());
-                    jsonObject.put(AMP_EVENT_DIRECTION, orderEntity.getDirection());
-                    jsonObject.put(AMP_EVENT_OFFSET, orderEntity.getOffset());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Amplitude.getInstance().logEventWrap(AMP_CANCEL_ORDER, jsonObject);
-            }
         }
         ReqCancelOrderEntity reqCancelOrderEntity = new ReqCancelOrderEntity();
         reqCancelOrderEntity.setAid(REQ_CANCEL_ORDER);

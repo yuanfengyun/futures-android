@@ -25,7 +25,6 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 
 import com.shinnytech.futures.R;
-import com.shinnytech.futures.amplitude.api.Amplitude;
 import com.shinnytech.futures.application.BaseApplication;
 import com.shinnytech.futures.databinding.ActivityStopLossTakeProfitBinding;
 import com.shinnytech.futures.model.bean.accountinfobean.PositionEntity;
@@ -517,7 +516,6 @@ public class StopLossTakeProfitActivity extends BaseActivity {
         mBinding.triggerSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                JSONObject jsonObject = new JSONObject();
                 boolean isInsertOrder = true;
 
                 //报单列表
@@ -614,10 +612,6 @@ public class StopLossTakeProfitActivity extends BaseActivity {
                 orderEntity.setVolume(volumeInt);
                 orderEntity.setClose_today_prior(true);
                 try {
-                    jsonObject.put(AMP_EVENT_CONDITION_INSTRUMENT_ID, instrument_id);
-                    if (volumeType.equals(CONDITION_VOLUME_TYPE_NUM)) jsonObject.put(AMP_EVENT_CONDITION_TRIGGER_VOLUME, volumeInt);
-                    else if (volumeType.equals(CONDITION_VOLUME_TYPE_ALL))jsonObject.put(AMP_EVENT_CONDITION_TRIGGER_VOLUME, volumeType);
-                    jsonObject.put(AMP_EVENT_CONDITION_TRIGGER_INSERT_PRICE, priceTypeTitle);
                     String directionTitle = "";
                     switch (mDirection){
                         case CONDITION_DIRECTION_SELL:
@@ -629,7 +623,6 @@ public class StopLossTakeProfitActivity extends BaseActivity {
                         default:
                             break;
                     }
-                    jsonObject.put(AMP_EVENT_CONDITION_DIRECTION, directionTitle);
                     String offsetTitle = "";
                     switch (offset){
                         case CONDITION_OFFSET_OPEN:
@@ -644,8 +637,7 @@ public class StopLossTakeProfitActivity extends BaseActivity {
                         default:
                             break;
                     }
-                    jsonObject.put(AMP_EVENT_CONDITION_OFFSET, offsetTitle);
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -662,11 +654,6 @@ public class StopLossTakeProfitActivity extends BaseActivity {
                         break;
                     default:
                         break;
-                }
-                try {
-                    jsonObject.put(AMP_EVENT_CONDITION_EXPIRY, time_condition_type);
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
                 boolean is_cancel_ori_close_order = true;
                 String conditions_logic_oper = CONDITION_LOGIC_OR;
@@ -698,13 +685,6 @@ public class StopLossTakeProfitActivity extends BaseActivity {
                                 ToastUtils.showToast(sContext, "止盈价输入不合法");
                                 isInsertOrder = false;
                             }
-
-                            try {
-                                jsonObject.put(AMP_EVENT_CONDITION_TRIGGER_PRICE,
-                                        contingentTakeProfitPriceRelation + " " + contingentTakeProfitPrice);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
                         }else if (contingentTakeProfitPrice.isEmpty() && !contingentStopLossPrice.isEmpty()){
                             if (DIRECTION_BUY.equals(mDirection)) priceRelation = CONDITION_CONTINGENT_PRICE_RELATION_LE;
                             else priceRelation = CONDITION_CONTINGENT_PRICE_RELATION_GE;
@@ -716,12 +696,6 @@ public class StopLossTakeProfitActivity extends BaseActivity {
                                 isInsertOrder = false;
                             }
 
-                            try {
-                                jsonObject.put(AMP_EVENT_CONDITION_TRIGGER_PRICE,
-                                        contingentStopLossPriceRelation + " " + contingentStopLossPrice);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
                         }else {
                             String priceRelationLoss;
                             if (DIRECTION_BUY.equals(mDirection)){
@@ -754,23 +728,10 @@ public class StopLossTakeProfitActivity extends BaseActivity {
                             conditionEntityLoss.setPrice_relation(priceRelationLoss);
                             conditionEntityLoss.setContingent_type(contingentType);
                             conditionList.add(conditionEntityLoss);
-
-                            try {
-                                jsonObject.put(AMP_EVENT_CONDITION_TRIGGER_PRICE,
-                                        contingentTakeProfitPriceRelation + " " + contingentTakeProfitPrice + " or "
-                                + contingentStopLossPriceRelation + " " + contingentStopLossPrice);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
                         }
                         conditionEntity.setContingent_price(contingentPrice);
                         conditionEntity.setPrice_relation(priceRelation);
-                        try {
-                            jsonObject.put(AMP_EVENT_CONDITION_TYPE, AMP_EVENT_CONDITION_TYPE_VALUE_STOP_LOSS_PRICE_TRIGGER);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        break;
+                         break;
                     case R.id.radioButton_time:
                         contingentType = CONDITION_CONTINGENT_TYPE_TIME;
                         long contingentTime = 0;
@@ -785,18 +746,10 @@ public class StopLossTakeProfitActivity extends BaseActivity {
                             isInsertOrder = false;
                         }
                         conditionEntity.setContingent_time(contingentTime);
-                        try {
-                            jsonObject.put(AMP_EVENT_CONDITION_TYPE, AMP_EVENT_CONDITION_TYPE_VALUE_STOP_LOSS_TIME_TRIGGER);
-                            jsonObject.put(AMP_EVENT_CONDITION_TRIGGER_TIME, contingentTimeS);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
                         break;
                     default:
                         break;
                 }
-
-                Amplitude.getInstance().logEventWrap(AMP_CONDITION_SAVE, jsonObject);
 
                 if (!isInsertOrder)return;
                 conditionEntity.setContingent_type(contingentType);

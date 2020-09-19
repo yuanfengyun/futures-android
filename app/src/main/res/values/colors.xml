@@ -81,7 +81,7 @@
     <color name="future_info_background">#000000</color>
     <color name="future_info_toolbar">#121212</color>
     <!--加多按钮颜色-->
-    <color name="bid">#b54d48</color>
+    <color name="bid">#ea2118</color>
     <!--加空按钮颜色-->
     <color name="ask">#4e8b62</color>
     <!--平仓按钮颜色-->
