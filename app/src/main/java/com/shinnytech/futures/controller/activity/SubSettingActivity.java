@@ -136,47 +136,6 @@ public class SubSettingActivity extends BaseActivity {
     }
 
     private void upload() {
-        /* 创建logGroup */
-        final LogGroup logGroup = new LogGroup("user log", "V" + sDataManager.APP_VERSION + " User Id: " + sDataManager.USER_ID);
-
-        List<LogEntity> list = SLSDatabaseManager.getInstance().queryRecordFromDB();
-        for (LogEntity logEntity : list) {
-            Log log = new Log();
-            log.PutContent("timeStamp", getDate(logEntity.getTimestamp()));
-            log.PutContent("content", logEntity.getJsonString());
-            logGroup.PutLog(log);
-        }
-
-        try {
-            PostLogRequest request = new PostLogRequest("kq-xq", "kq-xq", logGroup);
-            LOGClient logClient = BaseApplication.getLOGClient();
-            if (logClient == null) return;
-            logClient.asyncPostLog(request, new CompletedCallback<PostLogRequest, PostLogResult>() {
-                @Override
-                public void onSuccess(PostLogRequest request, PostLogResult result) {
-                    Message message = new Message();
-                    message.what = HANDLER_MESSAGE_UPLOAD_SUCCESS;
-                    myHandler.sendMessage(message);
-//                    List<LogEntity> list = SLSDatabaseManager.getInstance().queryRecordFromDB();
-//                    if (list != null && list.size() > 1000){
-//                        for (int i = 0; i < 500; i++){
-//                            LogEntity logEntity = list.get(i);
-//                            SLSDatabaseManager.getInstance().deleteRecordFromDB(logEntity);
-//                        }
-//                    }
-                }
-
-                @Override
-                public void onFailure(PostLogRequest request, LogException exception) {
-                    Message message = new Message();
-                    message.what = HANDLER_MESSAGE_UPLOAD_FAILED;
-                    myHandler.sendMessage(message);
-                }
-
-            });
-        } catch (LogException e) {
-            e.printStackTrace();
-        }
     }
 
     private String getDate(long time) {

@@ -5,11 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
-import com.aliyun.sls.android.sdk.ClientConfiguration;
-import com.aliyun.sls.android.sdk.LOGClient;
-import com.aliyun.sls.android.sdk.SLSDatabaseManager;
-import com.aliyun.sls.android.sdk.SLSLog;
-import com.aliyun.sls.android.sdk.core.auth.PlainTextAKSKCredentialProvider;
 import com.sfit.ctp.info.DeviceInfoManager;
 import com.shinnytech.futures.BuildConfig;
 import com.shinnytech.futures.constants.CommonConstants;
@@ -136,7 +131,6 @@ public class BaseApplication extends Application {
     private static DataManager sDataManager;
     private List<String> mMDURLs;
     private List<String> mTDURLs;
-    private static LOGClient sLOGClient;
     private static boolean sBackGround;
     private AppLifecycleObserver mAppLifecycleObserver;
     private static MDWebSocket mMDWebSocket;
@@ -148,10 +142,6 @@ public class BaseApplication extends Application {
 
     public static boolean issBackGround() {
         return sBackGround;
-    }
-
-    public static LOGClient getLOGClient() {
-        return sLOGClient;
     }
 
     public static MDWebSocket getmMDWebSocket() {
@@ -315,27 +305,7 @@ public class BaseApplication extends Application {
         String AMP_KEY = "github";
         String AK = "github";
         String SK = "github";
-        try {
-            Class cl = Class.forName("com.shinnytech.futures.constants.LocalCommonConstants");
-            BUGLY_KEY = (String) cl.getMethod("getBuglyKey").invoke(null);
-            AMP_KEY = (String) cl.getMethod("getAmpKey").invoke(null);
-            AK = (String) cl.getMethod("getAK").invoke(null);
-            SK = (String) cl.getMethod("getSK").invoke(null);
-            String user_agent = (String) cl.getMethod("getUserAgent").invoke(null);
-            String client_app_id = (String) cl.getMethod("getClientAppId").invoke(null);
-            sDataManager.USER_AGENT = user_agent;
-            sDataManager.CLIENT_APP_ID = client_app_id;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
         initBugly(BUGLY_KEY);
-        initAliLog(AK, SK);
     }
 
     /**
@@ -355,30 +325,6 @@ public class BaseApplication extends Application {
         });
         Beta.enableHotfix = false;
         Bugly.init(sContext, BUGLY_KEY, false, strategy);
-    }
-
-    /**
-     * date: 2019/3/24
-     * author: chenli
-     * description: 配置阿里日志服务
-     */
-    private void initAliLog(String ak, String sk) {
-        SLSDatabaseManager.getInstance().setupDB(sContext);
-
-        PlainTextAKSKCredentialProvider credentialProvider =
-                new PlainTextAKSKCredentialProvider(ak, sk);
-
-        ClientConfiguration conf = new ClientConfiguration();
-        conf.setCachable(false);
-        conf.setConnectType(ClientConfiguration.NetworkPolicy.WWAN_OR_WIFI);
-        conf.setConnectionTimeout(15 * 1000); // 连接超时，默认15秒
-        conf.setSocketTimeout(15 * 1000); // socket超时，默认15秒
-        conf.setMaxConcurrentRequest(5); // 最大并发请求书，默认5个
-        conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
-        SLSLog.enableLog(); // log打印在控制台
-
-        String endpoint = "https://cn-shanghai.log.aliyuncs.com";
-        sLOGClient = new LOGClient(sContext, endpoint, credentialProvider, conf);
     }
 
     /**

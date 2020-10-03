@@ -33,11 +33,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.app.hubert.guide.NewbieGuide;
-import com.app.hubert.guide.core.Controller;
-import com.app.hubert.guide.listener.OnHighlightDrewListener;
-import com.app.hubert.guide.model.GuidePage;
-import com.app.hubert.guide.model.HighlightOptions;
 import com.shinnytech.futures.R;
 import com.shinnytech.futures.application.BaseApplication;
 import com.shinnytech.futures.constants.CommonConstants;
@@ -137,7 +132,6 @@ public class MainActivityPresenter {
     private String mInstrumentId;
     private DataManager sDataManager;
     private boolean mIsUpdate;
-    private Controller mController;
 
     public MainActivityPresenter(final MainActivity mainActivity, Context context,
                                  ActivityMainDrawerBinding binding, TextView toolbarTitle) {
@@ -245,36 +239,6 @@ public class MainActivityPresenter {
      * description: 注册各类监听事件
      */
     public void registerListeners() {
-        HighlightOptions options = new HighlightOptions.Builder()
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mController.remove();
-                        mToolbarTitle.performClick();
-                    }
-                })
-                .setOnHighlightDrewListener(new OnHighlightDrewListener() {
-                    @Override
-                    public void onHighlightDrew(Canvas canvas, RectF rectF) {
-                        Paint paint = new Paint();
-                        paint.setColor(Color.argb(255, 255,173,6));
-                        paint.setStyle(Paint.Style.STROKE);
-                        paint.setStrokeWidth(5);
-                        paint.setPathEffect(new DashPathEffect(new float[]{10, 10}, 0));
-                        canvas.drawRect(rectF, paint);
-                    }
-                })
-                .build();
-
-        GuidePage page = GuidePage.newInstance()
-                .addHighLightWithOptions(mToolbarTitle, options)
-                .setLayoutRes(R.layout.activity_main_guide1);
-
-        mController = NewbieGuide.with(mMainActivity)
-                .setLabel("guide1")
-                .addGuidePage(page)
-                .show();
-
         //合约导航左右移动
         mBinding.quoteNavLeft.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -470,6 +434,9 @@ public class MainActivityPresenter {
                         break;
                     case R.id.trade:
                         switchToAccount();
+                        break;
+                    case R.id.auto_gride:
+                        switchToAutoGride();
                         break;
                     default:
                         break;
@@ -755,6 +722,12 @@ public class MainActivityPresenter {
         mBinding.vpContent.setCurrentItem(3, false);
         mToolbarTitle.setText("gride");
         mToolbarTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+    }
+
+    public void updateAutoGrideInstrumentid(String id){
+        mToolbarTitle.setText(id);
+        AutoGrideFragment fragment = (AutoGrideFragment)mViewPagerFragmentAdapter.getItem(3);
+        fragment.updateInstrumentid(id);
     }
     /**
      * date: 2019/4/17

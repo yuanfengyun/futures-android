@@ -122,7 +122,6 @@ public class SPUtils {
                 Class cls = SharedPreferences.class;
                 return cls.getMethod("apply");
             } catch (NoSuchMethodException e) {
-                e.printStackTrace();
             }
             return null;
         }

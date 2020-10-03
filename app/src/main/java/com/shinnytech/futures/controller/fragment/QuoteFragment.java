@@ -577,7 +577,9 @@ public class QuoteFragment extends LazyLoadFragment {
         //防止相邻合约列表页面刷新
         if (!mToolbarTitle.getText().toString().equals(mTitle) || !mIsUpdate) return;
         try {
-            String[] insList = sDataManager.getRtnData().getIns_list().split(",");
+            String inslistStr = sDataManager.getRtnData().getIns_list();
+            if(inslistStr == null) return;
+            String[] insList = inslistStr.split(",");
             for (String ins : insList) {
                 try {
                     //防止合约页切换时,前一页的数据加载

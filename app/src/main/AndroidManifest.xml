@@ -165,9 +165,10 @@
             android:name=".controller.activity.StopLossTakeProfitActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MainActivityTheme" />
-        <activity android:name=".controller.activity.ShinnyTechActivity"
+        <activity
+            android:name=".controller.activity.ShinnyTechActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MainActivityTheme"></activity>
+            android:theme="@style/MainActivityTheme" />
     </application>
 
 </manifest>

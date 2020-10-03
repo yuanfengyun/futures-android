@@ -36,6 +36,10 @@ public class DiffEntity {
         return quotes;
     }
 
+    public QuoteEntity getQuote(String key){
+        return quotes.get(key);
+    }
+
     public void setQuotes(Map<String, QuoteEntity> quotes) {
         this.quotes = quotes;
     }

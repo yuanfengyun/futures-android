@@ -5,36 +5,49 @@
     <data></data>
 
     <LinearLayout
-        android:id="@+id/ll_quote"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/layout_height_item_fragment_quote"
-        android:background="@drawable/fragment_item_touch_bg"
-        android:clickable="true"
-        android:focusable="true"
+        android:layout_height="match_parent"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_c"
+            android:id="@+id/button_cancel"
+            style="@android:style/Widget.Material.Button.Borderless.Colored"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="30sp"
+            android:layout_margin="@dimen/padding_0dp"
+            android:layout_weight="1"
+            android:background="#21303d"
+            android:text="撤消" />
 
         <Button
-            android:id="@+id/btn_b"
+            android:id="@+id/button23"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="30sp"
+            android:layout_margin="@dimen/padding_0dp"
+            android:layout_weight="1"
+            android:background="#700707"
+            android:text="买" />
 
         <Button
-            android:id="@+id/btn_s"
+            android:id="@+id/button24"
+            android:layout_margin="@dimen/padding_0dp"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:background="#57993d"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="30sp"
+            android:layout_weight="1"
+            android:text="卖" />
 
         <Button
-            android:id="@+id/btn_p"
+            android:id="@+id/button25"
+            android:layout_margin="@dimen/padding_0dp"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:background="#324e76"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="30sp"
+            android:layout_weight="1"
+            android:text="价" />
     </LinearLayout>
 </layout>

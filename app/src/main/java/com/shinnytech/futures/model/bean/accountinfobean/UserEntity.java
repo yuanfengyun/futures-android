@@ -33,12 +33,20 @@ public class UserEntity {
         return orders;
     }
 
+    public OrderEntity getOrder(String id) {
+        return orders.get(id);
+    }
+
     public void setOrders(Map<String, OrderEntity> orders) {
         this.orders = orders;
     }
 
     public Map<String, PositionEntity> getPositions() {
         return positions;
+    }
+
+    public PositionEntity getPosition(String name){
+        return positions.get(name);
     }
 
     public void setPositions(Map<String, PositionEntity> positions) {

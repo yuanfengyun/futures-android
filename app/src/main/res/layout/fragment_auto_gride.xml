@@ -1,19 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        <layout xmlns:tools="http://schemas.android.com/tools"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-        <import type="com.shinnytech.futures.utils.MathUtils"></import>
+            <data>
+                <import type="com.shinnytech.futures.utils.MathUtils"></import>
 
-        <variable
-            name="account"
-            type="com.shinnytech.futures.model.bean.accountinfobean.AccountEntity"></variable>
-    </data>
+                <variable
+                    name="bean"
+                    type="com.shinnytech.futures.model.bean.AutoGrideBean"></variable>
+            </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:background="@color/quote_background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:background="@color/quote_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/LinearLayout1"
+                    android:baselineAligned="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:background="#ADFF2F"
+                android:layout_weight="2">
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" >
+
+                        <TextView
+                            android:id="@+id/textView12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="合约名称："
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/quoteName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="viewStart"
+                            android:textStyle="bold" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" >
+
+                        <TextView
+                            android:id="@+id/textView14"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="下单手数："
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/editText3"
+                            android:layout_width="@dimen/font_size_large"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="number"
+                            android:singleLine="true"
+                            android:text="1"
+                            android:textAlignment="viewStart"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" >
+
+                        <TextView
+                            android:id="@+id/textView15"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="网格大小"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/gride_point"
+                            android:layout_width="@dimen/font_size_large_high"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="numberDecimal"
+                            android:singleLine="true"
+                            android:text="10"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" >
+
+                        <TextView
+                            android:id="@+id/textView18"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="网格模式："
+                            android:textStyle="bold" />
+
+                        <Switch
+                            android:id="@+id/gride_switch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:textAlignment="viewStart"
+                            android:textStyle="bold" />
+                    </TableRow>
+                </TableLayout>
+
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:background="#222222"
+                android:orientation="vertical"
+                android:layout_weight="3">
+
+               <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:id="@+id/scroll_linear"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/button_cancel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="25sp"
+                                android:layout_margin="@dimen/line_width_half"
+                                android:layout_weight="1"
+                                android:background="@color/bg_gray_light"
+                                android:padding="@dimen/padding_0dp"
+                                android:text="撤消" />
+                            <Button
+                                android:id="@+id/button23"
+                                android:layout_width="wrap_content"
+                                android:layout_height="25sp"
+                                android:layout_margin="@dimen/line_width_half"
+                                android:layout_weight="1"
+                                android:background="@color/bg_gray_light"
+                                android:padding="0dp"
+                                android:text="买" />
+
+                            <Button
+                                android:id="@+id/button24"
+                                android:layout_width="wrap_content"
+                                android:layout_height="25sp"
+                                android:layout_margin="@dimen/line_width_half"
+                                android:layout_weight="1"
+                                android:background="@color/bg_gray_light"
+                                android:padding="0dp"
+                                android:text="卖" />
+
+                            <Button
+                                android:id="@+id/button25"
+                                android:layout_width="wrap_content"
+                                android:layout_height="25sp"
+                                android:layout_margin="@dimen/line_width_half"
+                                android:layout_weight="1"
+                                android:background="@color/bg_gray_light"
+                                android:padding="0dp"
+                                android:text="价" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </ScrollView>
+            </LinearLayout>
+        </LinearLayout>
+   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

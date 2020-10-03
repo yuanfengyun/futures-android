@@ -75,6 +75,7 @@ import static com.shinnytech.futures.constants.CommonConstants.MENU_TITLE_NAVIGA
 import static com.shinnytech.futures.constants.CommonConstants.OFFLINE;
 import static com.shinnytech.futures.constants.CommonConstants.OPTIONAL;
 import static com.shinnytech.futures.constants.CommonConstants.SOURCE_ACTIVITY;
+import static com.shinnytech.futures.constants.CommonConstants.SOURCE_ACTIVITY_AUTO_GRIDE;
 import static com.shinnytech.futures.constants.CommonConstants.SOURCE_ACTIVITY_FUTURE_INFO;
 import static com.shinnytech.futures.constants.CommonConstants.SOURCE_ACTIVITY_MAIN;
 import static com.shinnytech.futures.constants.ConditionConstants.CONDITION_STATUS_LIVE;
@@ -219,6 +220,7 @@ public class MainActivity extends BaseActivity {
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                 int index = mMainActivityPresenter.getmBinding().vpContent.getCurrentItem();
                 if (index == 2) intent.putExtra(SOURCE_ACTIVITY, SOURCE_ACTIVITY_FUTURE_INFO);
+                else if(index == 3) intent.putExtra(SOURCE_ACTIVITY,SOURCE_ACTIVITY_AUTO_GRIDE);
                 else intent.putExtra(SOURCE_ACTIVITY, SOURCE_ACTIVITY_MAIN);
                 startActivityForResult(intent, MAIN_ACTIVITY_TO_SEARCH_ACTIVITY);
                 return true;
@@ -561,6 +563,11 @@ public class MainActivity extends BaseActivity {
                 if (accountFragment != null) accountFragment.refreshTD();
             }
 
+            int index = mMainActivityPresenter.getmBinding().vpContent.getCurrentItem();
+            if(index==3){
+                String ins = data.getStringExtra(INS_BETWEEN_ACTIVITY);
+                mMainActivityPresenter.updateAutoGrideInstrumentid(ins);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

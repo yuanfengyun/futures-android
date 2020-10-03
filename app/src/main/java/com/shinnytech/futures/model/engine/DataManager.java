@@ -278,11 +278,6 @@ public class DataManager {
         return INSTANCE;
     }
 
-    /**
-     * date: 6/16/17
-     * author: chenli
-     * description: 获取实例
-     */
     public DiffEntity getRtnData() {
         return RTN_DATA.getData();
     }
@@ -638,6 +633,11 @@ public class DataManager {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public UserEntity getCurrentUser() {
+        Map<String, UserEntity> userEntities = TRADE_DATA.getUsers();
+        return userEntities.get(USER_ID);
     }
 
     private void parseTrade(JSONObject data){
