@@ -110,6 +110,8 @@ public class BaseApplication extends Application {
      */
     public static final String CO_BROADCAST = "CO_BROADCAST";
 
+    public static final String NORMAL_BROADCAST = "NORMAL_BROADCAST";
+
     /**
      * date: 7/9/17
      * description: 行情广播信息
@@ -126,6 +128,9 @@ public class BaseApplication extends Application {
      * description: 条件单广播信息
      */
     public static final String CO_BROADCAST_ACTION = BaseApplication.class.getName() + "." + CO_BROADCAST;
+
+    public static final String NORMAL_BROADCAST_ACTION = BaseApplication.class.getName() + "." + NORMAL_BROADCAST;
+
     private static LocalBroadcastManager mLocalBroadcastManager;
     private static Context sContext;
     private static DataManager sDataManager;
@@ -168,6 +173,11 @@ public class BaseApplication extends Application {
                 Intent intentCondition = new Intent(CO_BROADCAST_ACTION);
                 intentCondition.putExtra("msg", message);
                 mLocalBroadcastManager.sendBroadcast(intentCondition);
+                break;
+            case NORMAL_BROADCAST:
+                Intent intentNormal = new Intent(NORMAL_BROADCAST_ACTION);
+                intentNormal.putExtra("msg", message);
+                mLocalBroadcastManager.sendBroadcast(intentNormal);
                 break;
             default:
                 break;

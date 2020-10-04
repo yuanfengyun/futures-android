@@ -48,6 +48,7 @@ import static com.shinnytech.futures.constants.AmpConstants.AMP_EVENT_OPTIONAL_D
 import static com.shinnytech.futures.constants.AmpConstants.AMP_EVENT_OPTIONAL_INSTRUMENT_ID;
 import static com.shinnytech.futures.constants.AmpConstants.AMP_OPTIONAL_SEARCH;
 import static com.shinnytech.futures.constants.CommonConstants.SOURCE_ACTIVITY_AUTO_GRIDE;
+import static com.shinnytech.futures.constants.CommonConstants.SOURCE_ACTIVITY_CUSTOMIZE;
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_IS_FIRM;
 import static com.shinnytech.futures.constants.CommonConstants.INS_BETWEEN_ACTIVITY;
 import static com.shinnytech.futures.constants.CommonConstants.SOURCE_ACTIVITY;
@@ -129,6 +130,10 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
                             Intent intent2= new Intent();
                             intent2.putExtra(INS_BETWEEN_ACTIVITY, instrument_id);
                             setResult(RESULT_OK, intent2);
+                        case SOURCE_ACTIVITY_CUSTOMIZE:
+                            Intent intent3= new Intent();
+                            intent3.putExtra(INS_BETWEEN_ACTIVITY, instrument_id);
+                            setResult(RESULT_OK, intent3);
                         default:
                             break;
                     }

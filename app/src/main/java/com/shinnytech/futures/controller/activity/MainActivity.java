@@ -55,6 +55,7 @@ import q.rorbin.badgeview.QBadgeView;
 
 import static com.shinnytech.futures.application.BaseApplication.CO_BROADCAST_ACTION;
 import static com.shinnytech.futures.application.BaseApplication.MD_BROADCAST_ACTION;
+import static com.shinnytech.futures.application.BaseApplication.NORMAL_BROADCAST_ACTION;
 import static com.shinnytech.futures.application.BaseApplication.TD_BROADCAST_ACTION;
 import static com.shinnytech.futures.constants.AmpConstants.AMP_EVENT_OPTIONAL_DIRECTION;
 import static com.shinnytech.futures.constants.AmpConstants.AMP_EVENT_OPTIONAL_DIRECTION_VALUE_ADD;
@@ -63,6 +64,7 @@ import static com.shinnytech.futures.constants.AmpConstants.AMP_EVENT_OPTIONAL_I
 import static com.shinnytech.futures.constants.AmpConstants.AMP_OPTIONAL_FUTURE_INFO;
 import static com.shinnytech.futures.constants.BroadcastConstants.CO_MESSAGE;
 import static com.shinnytech.futures.constants.BroadcastConstants.MD_MESSAGE;
+import static com.shinnytech.futures.constants.BroadcastConstants.NORMAL_MESSAGE;
 import static com.shinnytech.futures.constants.BroadcastConstants.TD_MESSAGE;
 import static com.shinnytech.futures.constants.BroadcastConstants.TD_MESSAGE_BROKER_INFO;
 import static com.shinnytech.futures.constants.BroadcastConstants.TD_MESSAGE_SETTLEMENT;
@@ -76,6 +78,7 @@ import static com.shinnytech.futures.constants.CommonConstants.OFFLINE;
 import static com.shinnytech.futures.constants.CommonConstants.OPTIONAL;
 import static com.shinnytech.futures.constants.CommonConstants.SOURCE_ACTIVITY;
 import static com.shinnytech.futures.constants.CommonConstants.SOURCE_ACTIVITY_AUTO_GRIDE;
+import static com.shinnytech.futures.constants.CommonConstants.SOURCE_ACTIVITY_CUSTOMIZE;
 import static com.shinnytech.futures.constants.CommonConstants.SOURCE_ACTIVITY_FUTURE_INFO;
 import static com.shinnytech.futures.constants.CommonConstants.SOURCE_ACTIVITY_MAIN;
 import static com.shinnytech.futures.constants.ConditionConstants.CONDITION_STATUS_LIVE;
@@ -90,6 +93,7 @@ public class MainActivity extends BaseActivity {
     private BroadcastReceiver mReceiverMarket;
     private BroadcastReceiver mReceiverTrade;
     private BroadcastReceiver mReceiverCondition;
+    private BroadcastReceiver mReceiverNormal;
     private boolean mIsInit;
     private Badge mBadgeView;
     private boolean mIsShowConditionHint;
@@ -150,6 +154,8 @@ public class MainActivity extends BaseActivity {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(mReceiverTrade);
         if (mReceiverCondition != null)
             LocalBroadcastManager.getInstance(this).unregisterReceiver(mReceiverCondition);
+        if(mReceiverNormal != null)
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(mReceiverNormal);
     }
 
     @Override
@@ -447,6 +453,23 @@ public class MainActivity extends BaseActivity {
             }
         };
         LocalBroadcastManager.getInstance(this).registerReceiver(mReceiverCondition, new IntentFilter(CO_BROADCAST_ACTION));
+
+        mReceiverNormal = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String mDataString = intent.getStringExtra("msg");
+                switch (mDataString) {
+                    case NORMAL_MESSAGE:
+                        Intent intent1 = new Intent(MainActivity.this, SearchActivity.class);
+                        intent1.putExtra(SOURCE_ACTIVITY,SOURCE_ACTIVITY_CUSTOMIZE);
+                        startActivityForResult(intent1, MAIN_ACTIVITY_TO_SEARCH_ACTIVITY);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
+        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiverNormal, new IntentFilter(NORMAL_BROADCAST_ACTION));
     }
 
     /**
@@ -567,6 +590,9 @@ public class MainActivity extends BaseActivity {
             if(index==3){
                 String ins = data.getStringExtra(INS_BETWEEN_ACTIVITY);
                 mMainActivityPresenter.updateAutoGrideInstrumentid(ins);
+            }else if(index==4){
+                String ins = data.getStringExtra(INS_BETWEEN_ACTIVITY);
+                mMainActivityPresenter.updateCustomizeInstrumentid(ins);
             }
         } catch (Exception e) {
             e.printStackTrace();

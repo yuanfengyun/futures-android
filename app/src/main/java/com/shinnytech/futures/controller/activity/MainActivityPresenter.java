@@ -4,13 +4,9 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.net.Uri;
 import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -38,6 +34,8 @@ import com.shinnytech.futures.application.BaseApplication;
 import com.shinnytech.futures.constants.CommonConstants;
 import com.shinnytech.futures.constants.SettingConstants;
 import com.shinnytech.futures.controller.fragment.AccountFragment;
+import com.shinnytech.futures.controller.fragment.AutoGrideFragment;
+import com.shinnytech.futures.controller.fragment.CustomizeFragment;
 import com.shinnytech.futures.controller.fragment.FutureInfoFragment;
 import com.shinnytech.futures.controller.fragment.QuotePagerFragment;
 import com.shinnytech.futures.databinding.ActivityMainDrawerBinding;
@@ -61,8 +59,6 @@ import com.shinnytech.futures.utils.TDUtils;
 import com.shinnytech.futures.utils.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,18 +68,6 @@ import java.util.TreeMap;
 import static com.shinnytech.futures.constants.CommonConstants.ABOUT;
 import static com.shinnytech.futures.constants.CommonConstants.ACCOUNT;
 import static com.shinnytech.futures.constants.CommonConstants.ACCOUNT_DETAIL;
-import static com.shinnytech.futures.constants.AmpConstants.AMP_CONDITION_MENU;
-import static com.shinnytech.futures.constants.AmpConstants.AMP_EVENT_LOGIN_TYPE;
-import static com.shinnytech.futures.constants.AmpConstants.AMP_EVENT_MENU;
-import static com.shinnytech.futures.constants.AmpConstants.AMP_EVENT_PAGE_ID;
-import static com.shinnytech.futures.constants.AmpConstants.AMP_EVENT_PAGE_ID_VALUE_MAIN;
-import static com.shinnytech.futures.constants.AmpConstants.AMP_EVENT_SWITCH_FROM;
-import static com.shinnytech.futures.constants.AmpConstants.AMP_EVENT_SWITCH_TO;
-import static com.shinnytech.futures.constants.AmpConstants.AMP_EVENT_TAB_ACCOUNT;
-import static com.shinnytech.futures.constants.AmpConstants.AMP_EVENT_TAB_MARKET;
-import static com.shinnytech.futures.constants.AmpConstants.AMP_LOGOUT;
-import static com.shinnytech.futures.constants.AmpConstants.AMP_MENU;
-import static com.shinnytech.futures.constants.AmpConstants.AMP_SWITCH_TAB;
 import static com.shinnytech.futures.constants.CommonConstants.CONDITIONAL_ORDER;
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_PASSWORD;
 import static com.shinnytech.futures.constants.CommonConstants.DALIAN;
@@ -168,6 +152,7 @@ public class MainActivityPresenter {
         fragmentList.add(new AccountFragment());
         fragmentList.add(new FutureInfoFragment());
         fragmentList.add(new AutoGrideFragment());
+        fragmentList.add(new CustomizeFragment());
         //初始化适配器类
         mViewPagerFragmentAdapter = new ViewPagerFragmentAdapter(mMainActivity.getSupportFragmentManager(), fragmentList);
         mBinding.vpContent.setAdapter(mViewPagerFragmentAdapter);
@@ -437,6 +422,9 @@ public class MainActivityPresenter {
                         break;
                     case R.id.auto_gride:
                         switchToAutoGride();
+                        break;
+                    case R.id.customize:
+                        switchToCustomize();
                         break;
                     default:
                         break;
@@ -728,6 +716,21 @@ public class MainActivityPresenter {
         mToolbarTitle.setText(id);
         AutoGrideFragment fragment = (AutoGrideFragment)mViewPagerFragmentAdapter.getItem(3);
         fragment.updateInstrumentid(id);
+    }
+
+    public void updateCustomizeInstrumentid(String id) {
+        mToolbarTitle.setText(id);
+        CustomizeFragment fragment = (CustomizeFragment) mViewPagerFragmentAdapter.getItem(4);
+        fragment.updateInstrumentid(id);
+    }
+
+    public void switchToCustomize() {
+        mMainActivity.setTitle("gride");
+        mBinding.llNavigation.setVisibility(View.GONE);
+        mBinding.bottomNavigation.setVisibility(View.VISIBLE);
+        mBinding.vpContent.setCurrentItem(4, false);
+        mToolbarTitle.setText("自定义组合");
+        mToolbarTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
     }
     /**
      * date: 2019/4/17

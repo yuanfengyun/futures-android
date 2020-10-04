@@ -18,6 +18,12 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/customize"
+        android:icon="@mipmap/ic_assessment_white_18dp"
+        android:orderInCategory="101"
+        android:title="自定义组合"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/trade"
         android:icon="@mipmap/ic_account_circle_white_18dp"
         android:orderInCategory="101"

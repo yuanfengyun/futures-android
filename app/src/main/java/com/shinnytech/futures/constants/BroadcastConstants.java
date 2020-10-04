@@ -3,6 +3,7 @@ package com.shinnytech.futures.constants;
 public final class BroadcastConstants {
 
     //广播信息类型
+    public static final String NORMAL_MESSAGE = "NORMAL_MESSAGE";
     public static final String MD_MESSAGE = "MD_MESSAGE";
     public static final String TD_MESSAGE = "TD_MESSAGE";
     public static final String CO_MESSAGE = "CO_MESSAGE";

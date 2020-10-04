@@ -1,7 +1,6 @@
-package com.shinnytech.futures.controller.activity;
+package com.shinnytech.futures.controller.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,7 +8,6 @@ import android.os.Bundle;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import android.provider.CalendarContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -21,7 +19,6 @@ import android.widget.LinearLayout;
 
 import com.shinnytech.futures.application.BaseApplication;
 import com.shinnytech.futures.autogride.AutoGrideEngine;
-import com.shinnytech.futures.controller.fragment.LazyLoadFragment;
 import com.shinnytech.futures.R;
 import com.shinnytech.futures.databinding.FragmentAutoGrideBinding;
 import com.shinnytech.futures.model.bean.accountinfobean.OrderEntity;
@@ -32,11 +29,8 @@ import com.shinnytech.futures.utils.LogUtils;
 import com.shinnytech.futures.utils.TDUtils;
 
 import java.util.HashMap;
-import java.util.List;
 
-import static com.shinnytech.futures.constants.CommonConstants.INS_BETWEEN_ACTIVITY;
 import static com.shinnytech.futures.constants.TradeConstants.STATUS_ALIVE;
-import static com.shinnytech.futures.constants.TradeConstants.STATUS_FINISHED;
 
 
 /**

@@ -57,6 +57,7 @@ public final class CommonConstants {
     public static final String SOURCE_ACTIVITY_FUTURE_INFO = "source_activity_future_info";
     public static final String SOURCE_ACTIVITY_CONDITION_ORDER = "source_activity_condition";
     public static final String SOURCE_ACTIVITY_AUTO_GRIDE = "source_activity_auto_gride";
+    public static final String SOURCE_ACTIVITY_CUSTOMIZE = "source_activity_customize";
 
     //推荐标的
     public static final String RECOMMEND_INS = "螺纹,豆粕,菜粕,甲醇,铁矿,沥青,焦炭," +
