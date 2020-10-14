@@ -36,6 +36,10 @@ public class OrderEntity implements Comparable<OrderEntity>, Serializable {
 
     private String seqno = "";
 
+    private String frozen_commission = "";
+    private String frozen_margin = "";
+    private String frozen_premium = "";
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }

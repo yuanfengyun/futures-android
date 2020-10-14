@@ -63,8 +63,9 @@ public class CustomizeQuoteAdapter extends ArrayAdapter<CustomizeQuote> {
         this.selectedItem = selectedItem;
     }
 
-    public int getSelectedItem(){
-        return selectedItem;
+    public CustomizeQuote getSelectedItem(){
+        if(-1==selectedItem) return null;
+        return getItem(selectedItem);
     }
 
     public void removeSelectedItem(){
@@ -93,6 +94,8 @@ public class CustomizeQuoteAdapter extends ArrayAdapter<CustomizeQuote> {
             viewHolder.quoteBidVolume = view.findViewById(R.id.quote_bid_volume);
             viewHolder.quoteAskPrice = view.findViewById(R.id.quote_ask_price);
             viewHolder.quoteAskVolume = view.findViewById(R.id.quote_ask_volume);
+            viewHolder.quoteOpen = view.findViewById(R.id.quote_open);
+            viewHolder.quoteLastClose = view.findViewById(R.id.quote_last_close);
 
             // 将ViewHolder存储在View中（即将控件的实例存储在其中）
             view.setTag(viewHolder);
@@ -107,6 +110,8 @@ public class CustomizeQuoteAdapter extends ArrayAdapter<CustomizeQuote> {
         viewHolder.quoteBidVolume.setText(quote.getBidVolume());
         viewHolder.quoteAskPrice.setText(quote.getAskPrice());
         viewHolder.quoteAskVolume.setText(quote.getAskVolume());
+        viewHolder.quoteOpen.setText(quote.getOpen());
+        viewHolder.quoteLastClose.setText(quote.getLastClose());
 
         if(position == selectedItem){
             view.setBackgroundColor(Color.parseColor("#880000"));
@@ -124,5 +129,7 @@ public class CustomizeQuoteAdapter extends ArrayAdapter<CustomizeQuote> {
         TextView quoteBidVolume;
         TextView quoteAskPrice;
         TextView quoteAskVolume;
+        TextView quoteOpen;
+        TextView quoteLastClose;
     }
 }

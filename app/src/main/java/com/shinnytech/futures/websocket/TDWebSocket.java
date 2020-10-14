@@ -130,11 +130,6 @@ public class TDWebSocket extends WebSocketBase {
         sendMessage(TD_MESSAGE_BROKER_INFO, TD_BROADCAST);
     }
 
-    /**
-     * date: 7/9/17
-     * author: chenli
-     * description: 用户登录
-     */
     public void sendReqLogin(String bid, String user_name, String password) {
         String systemInfo = (String) SPUtils.get(BaseApplication.getContext(), CONFIG_SYSTEM_INFO, "");
         ReqLoginEntity reqLoginEntity = new ReqLoginEntity();
@@ -150,11 +145,6 @@ public class TDWebSocket extends WebSocketBase {
         LatestFileManager.insertLogToDB(reqLogin);
     }
 
-    /**
-     * date: 7/9/17
-     * author: chenli
-     * description: 确认结算单
-     */
     public void sendReqConfirmSettlement() {
         ReqConfirmSettlementEntity reqConfirmSettlementEntity = new ReqConfirmSettlementEntity();
         reqConfirmSettlementEntity.setAid(REQ_CONFIRM_SETTLEMENT);
@@ -164,13 +154,8 @@ public class TDWebSocket extends WebSocketBase {
         LatestFileManager.insertLogToDB(confirmSettlement);
     }
 
-    /**
-     * date: 7/9/17
-     * author: chenli
-     * description: 下单
-     */
     public void sendReqInsertOrder(String exchange_id, String instrument_id, String direction,
-                                   String offset, int volume, String price_type, double price, String amp_price_type) {
+                                   String offset, int volume, String price_type, double price) {
         String user_id = DataManager.getInstance().USER_ID;
         ReqInsertOrderEntity reqInsertOrderEntity = new ReqInsertOrderEntity();
         reqInsertOrderEntity.setAid(REQ_INSERT_ORDER);
@@ -185,17 +170,12 @@ public class TDWebSocket extends WebSocketBase {
         reqInsertOrderEntity.setLimit_price(price);
         reqInsertOrderEntity.setVolume_condition("ANY");
         reqInsertOrderEntity.setTime_condition("GFD");
+
         String reqInsertOrder = JSON.toJSONString(reqInsertOrderEntity);
-        mWebSocketClient.sendText(reqInsertOrder);
+    //    mWebSocketClient.sendText(reqInsertOrder);
         LogUtils.e(reqInsertOrder, true);
-        LatestFileManager.insertLogToDB(reqInsertOrder);
     }
 
-    /**
-     * date: 7/9/17
-     * author: chenli
-     * description: 撤单
-     */
     public void sendReqCancelOrder(String order_id) {
         String user_id = DataManager.getInstance().USER_ID;
         UserEntity userEntity = sDataManager.getTradeBean().getUsers().get(user_id);
@@ -250,8 +230,6 @@ public class TDWebSocket extends WebSocketBase {
     }
 
     /**
-     * date: 7/9/17
-     * author: chenli
      * description: 新建条件单
      */
     public void sendReqInsertConditionOrder(ReqConditionEntity[] condition_list,
@@ -277,8 +255,6 @@ public class TDWebSocket extends WebSocketBase {
     }
 
     /**
-     * date: 2019/8/10
-     * author: chenli
      * description: 撤销、暂停、重启条件单
      */
     public void sendReqControlConditionOrder(String aid, String order_id){
@@ -294,8 +270,6 @@ public class TDWebSocket extends WebSocketBase {
     }
 
     /**
-     * date: 2019/8/11
-     * author: chenli
      * description: 查询历史条件单
      */
     public void sendReqQueryConditionOrder(int action_day){
@@ -311,8 +285,6 @@ public class TDWebSocket extends WebSocketBase {
     }
 
     /**
-     * date: 2019/7/14
-     * author: chenli
      * description: 在splash页判断是否链接成功
      */
     public boolean isOpen(){

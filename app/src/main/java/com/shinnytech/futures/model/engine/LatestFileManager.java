@@ -4,8 +4,6 @@ import android.content.Context;
 import android.os.Environment;
 import androidx.core.content.ContextCompat;
 
-import com.aliyun.sls.android.sdk.LogEntity;
-import com.aliyun.sls.android.sdk.SLSDatabaseManager;
 import com.shinnytech.futures.BuildConfig;
 import com.shinnytech.futures.R;
 import com.shinnytech.futures.application.BaseApplication;
@@ -788,11 +786,6 @@ public class LatestFileManager {
     }
 
     public static void insertLogToDB(String jsonString) {
-        LogEntity entity = new LogEntity();
-        entity.setJsonString(jsonString);
-        Date date = new Date();
-        entity.setTimestamp(new Long(date.getTime()));
-        SLSDatabaseManager.getInstance().insertRecordIntoDB(entity);
     }
 
     /* Checks if external storage is available for read and write */

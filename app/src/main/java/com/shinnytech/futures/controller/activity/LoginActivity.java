@@ -331,6 +331,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void attemptLogin() {
+
         mBinding.password.setError(null);
         mBinding.account.setError(null);
 
@@ -361,6 +362,10 @@ public class LoginActivity extends AppCompatActivity {
             // form field with an error.
             focusView.requestFocus();
         } else {
+            if(!BaseApplication.getmTDWebSocket().isOpen()){
+                ToastUtils.showToast(sContext, "登陆服务器连接中，请稍后");
+                return;
+            }
             if (!mIsLoginEnable){
                 ToastUtils.showToast(sContext, "登录请求已发送，请稍候");
                 return;

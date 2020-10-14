@@ -93,7 +93,7 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                android:layout_weight="2"
+                                android:layout_weight="1.5"
                                 android:background="@color/black_light"
                                 android:gravity="start|center_vertical"
                                 android:maxLines="1"
@@ -167,6 +167,42 @@
                                 android:paddingStart="@dimen/padding_0dp"
                                 android:paddingEnd="@dimen/padding_5dp"
                                 android:text="卖量"
+                                android:textColor="@color/title_white"
+                                android:textSize="@dimen/font_size_normal"
+                                app:autoSizeMaxTextSize="@dimen/font_size_normal"
+                                app:autoSizeMinTextSize="@dimen/font_size_tiny_high"
+                                app:autoSizeStepGranularity="1sp"
+                                app:autoSizeTextType="uniform" />
+
+                            <TextView
+                                android:id="@+id/textView3"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@color/black_light"
+                                android:gravity="end|center_vertical"
+                                android:maxLines="1"
+                                android:paddingStart="@dimen/padding_0dp"
+                                android:paddingEnd="@dimen/padding_5dp"
+                                android:text="开盘"
+                                android:textColor="@color/title_white"
+                                android:textSize="@dimen/font_size_normal"
+                                app:autoSizeMaxTextSize="@dimen/font_size_normal"
+                                app:autoSizeMinTextSize="@dimen/font_size_tiny_high"
+                                app:autoSizeStepGranularity="1sp"
+                                app:autoSizeTextType="uniform" />
+
+                            <TextView
+                                android:id="@+id/textView10"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@color/black_light"
+                                android:gravity="end|center_vertical"
+                                android:maxLines="1"
+                                android:paddingStart="@dimen/padding_0dp"
+                                android:paddingEnd="@dimen/padding_5dp"
+                                android:text="昨收"
                                 android:textColor="@color/title_white"
                                 android:textSize="@dimen/font_size_normal"
                                 app:autoSizeMaxTextSize="@dimen/font_size_normal"
@@ -185,124 +221,111 @@
 
                     <LinearLayout
                         android:layout_width="fill_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
+                        android:layout_height="60dp"
                         android:background="#555555"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
                         <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="5"
+                            android:layout_width="fill_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
                             android:orientation="horizontal">
 
-                            <TableLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                            <TextView
+                                android:id="@+id/textView13"
+                                android:layout_width="45dp"
+                                android:layout_height="match_parent"
+                                android:paddingTop="@dimen/padding_5dp"
+                                android:text="手数："
+                                android:textSize="14sp" />
 
-                                <TableRow
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
+                            <Spinner
+                                android:id="@+id/spin"
+                                android:layout_width="55dp"
+                                android:layout_height="match_parent"
+                                android:entries="@array/trade_volume"
+                                android:padding="@dimen/padding_0dp" />
 
-                                    <TextView
-                                        android:id="@+id/textView3"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="合约：" />
+                            <RadioGroup
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="4"
+                                android:orientation="horizontal">
 
-                                    <TextView
-                                        android:id="@+id/trade_quote"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:textAlignment="center" />
-                                </TableRow>
+                                <RadioButton
+                                    android:id="@+id/radioButton3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:checked="true"
+                                    android:text="市价"
+                                    android:textSize="12sp" />
 
-                                <TableRow
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
+                                <RadioButton
+                                    android:id="@+id/radioButton2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:text="对价"
+                                    android:textSize="12sp" />
 
-                                    <TextView
-                                        android:id="@+id/textView13"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="手数：" />
+                                <RadioButton
+                                    android:id="@+id/radioButton4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:text="对价追单"
+                                    android:textSize="12sp" />
+                            </RadioGroup>
 
-                                    <Spinner
-                                        android:id="@+id/spin"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:entries="@array/trade_volume"
-                                        android:paddingLeft="3dp"
-                                        android:paddingTop="10px" />
-                                </TableRow>
-
-                                <TableRow
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
-
-                                    <TextView
-                                        android:id="@+id/textView11"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="方向：" />
-
-                                    <Switch
-                                        android:id="@+id/open_close_switch"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:checked="true"
-                                        android:text="开"
-                                        android:textAlignment="center"
-                                        tools:checked="false" />
-
-                                </TableRow>
-
-                                <TableRow
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent" />
-                            </TableLayout>
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2"
-                            android:orientation="vertical">
+                            android:layout_width="fill_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
 
                             <Button
-                                android:id="@+id/button2"
-                                android:layout_width="fill_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="3"
-                                android:text="买开" />
+                                android:id="@+id/customize_buy_open"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_margin="@dimen/margin_1dp"
+                                android:layout_weight="1"
+                                android:background="#880000"
+                                android:padding="@dimen/margin_1dp"
+                                android:text="买多" />
 
                             <Button
-                                android:id="@+id/button"
-                                android:layout_width="fill_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="3"
-                                android:text="卖开" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2"
-                            android:orientation="vertical">
+                                android:id="@+id/customize_sell_open"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_margin="@dimen/margin_1dp"
+                                android:layout_weight="1"
+                                android:background="#008800"
+                                android:padding="@dimen/margin_1dp"
+                                android:text="卖空" />
 
                             <Button
-                                android:id="@+id/button3"
-                                android:layout_width="fill_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="3"
-                                android:text="买平" />
+                                android:id="@+id/customize_sell_close"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_margin="@dimen/margin_1dp"
+                                android:layout_weight="1"
+                                android:background="#660000"
+                                android:padding="@dimen/margin_1dp"
+                                android:text="平多" />
 
                             <Button
-                                android:id="@+id/button4"
-                                android:layout_width="fill_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="3"
-                                android:text="卖平" />
+                                android:id="@+id/customize_buy_close"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_margin="@dimen/margin_1dp"
+                                android:layout_weight="1"
+                                android:background="#006600"
+                                android:padding="@dimen/margin_1dp"
+                                android:text="平空" />
+
                         </LinearLayout>
 
                     </LinearLayout>
@@ -310,29 +333,9 @@
                     <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="0dp"
-                        android:background="#777777"
-                        android:orientation="vertical"
-                        android:layout_weight="3">
-
-                        <com.google.android.material.tabs.TabLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="25dp">
-
-                            <com.google.android.material.tabs.TabItem
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="挂单" />
-
-                            <com.google.android.material.tabs.TabItem
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="持仓" />
-
-                            <com.google.android.material.tabs.TabItem
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="成交记录" />
-                        </com.google.android.material.tabs.TabLayout>
+                        android:layout_weight="2"
+                        android:background="#000000"
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -344,84 +347,49 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:background="@color/black_light"
-                                android:gravity="start|center_vertical"
-                                android:maxLines="1"
-                                android:padding="@dimen/padding_5dp"
                                 android:text="合约"
                                 android:textColor="@color/title_white"
-                                android:textSize="@dimen/font_size_normal"
-                                app:autoSizeMaxTextSize="@dimen/font_size_normal"
-                                app:autoSizeMinTextSize="@dimen/font_size_tiny_high"
-                                app:autoSizeStepGranularity="1sp"
-                                app:autoSizeTextType="uniform" />
+                                android:textSize="@dimen/font_size_normal"/>
 
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:background="@color/black_light"
-                                android:gravity="end|center_vertical"
-                                android:maxLines="1"
-                                android:paddingStart="@dimen/padding_0dp"
-                                android:paddingEnd="@dimen/padding_5dp"
                                 android:text="买价"
+                                android:textAlignment="center"
                                 android:textColor="@color/title_white"
-                                android:textSize="@dimen/font_size_normal"
-                                app:autoSizeMaxTextSize="@dimen/font_size_normal"
-                                app:autoSizeMinTextSize="@dimen/font_size_tiny_high"
-                                app:autoSizeStepGranularity="1sp"
-                                app:autoSizeTextType="uniform" />
+                                android:textSize="@dimen/font_size_normal" />
 
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:background="@color/black_light"
-                                android:gravity="start|center_vertical"
-                                android:maxLines="1"
-                                android:padding="@dimen/padding_5dp"
                                 android:text="买量"
-                                android:textAlignment="viewEnd"
+                                android:textAlignment="center"
                                 android:textColor="@color/title_white"
-                                android:textSize="@dimen/font_size_normal"
-                                app:autoSizeMaxTextSize="@dimen/font_size_normal"
-                                app:autoSizeMinTextSize="@dimen/font_size_tiny_high"
-                                app:autoSizeStepGranularity="1sp"
-                                app:autoSizeTextType="uniform" />
+                                android:textSize="@dimen/font_size_normal" />
 
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:background="@color/black_light"
-                                android:gravity="end|center_vertical"
-                                android:maxLines="1"
-                                android:paddingStart="@dimen/padding_0dp"
-                                android:paddingEnd="@dimen/padding_5dp"
                                 android:text="卖价"
+                                android:textAlignment="center"
                                 android:textColor="@color/title_white"
-                                android:textSize="@dimen/font_size_normal"
-                                app:autoSizeMaxTextSize="@dimen/font_size_normal"
-                                app:autoSizeMinTextSize="@dimen/font_size_tiny_high"
-                                app:autoSizeStepGranularity="1sp"
-                                app:autoSizeTextType="uniform" />
+                                android:textSize="@dimen/font_size_normal" />
 
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:background="@color/black_light"
-                                android:gravity="end|center_vertical"
-                                android:maxLines="1"
-                                android:paddingStart="@dimen/padding_0dp"
-                                android:paddingEnd="@dimen/padding_5dp"
                                 android:text="卖量"
+                                android:textAlignment="center"
                                 android:textColor="@color/title_white"
-                                android:textSize="@dimen/font_size_normal"
-                                app:autoSizeMaxTextSize="@dimen/font_size_normal"
-                                app:autoSizeMinTextSize="@dimen/font_size_tiny_high"
-                                app:autoSizeStepGranularity="1sp"
-                                app:autoSizeTextType="uniform" />
+                                android:textSize="@dimen/font_size_normal" />
                         </LinearLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -434,7 +402,7 @@
                             android:scrollbarThumbVertical="@color/text_gray_light"
                             android:scrollbars="vertical" />
 
-                        </LinearLayout>
+                    </LinearLayout>
 
                 </LinearLayout>
             </androidx.coordinatorlayout.widget.CoordinatorLayout>

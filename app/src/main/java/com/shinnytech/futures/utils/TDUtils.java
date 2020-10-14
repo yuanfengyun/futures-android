@@ -9,7 +9,6 @@ import com.shinnytech.futures.model.engine.DataManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.shinnytech.futures.constants.AmpConstants.AMP_EVENT_PRICE_TYPE_VALUE_NUMBER;
 import static com.shinnytech.futures.constants.TradeConstants.DIRECTION_BUY;
 import static com.shinnytech.futures.constants.TradeConstants.DIRECTION_SELL;
 import static com.shinnytech.futures.constants.TradeConstants.OFFSET_CLOSE;
@@ -32,7 +31,7 @@ public class TDUtils {
         else return false;
     }
 
-    public static  List<OrderEntity> getOrdersByInstrument(String exchange_id, String instrument_id) {
+    public static  List<OrderEntity> getOrdersByInstrument(String instrument_id) {
         List<OrderEntity> orders = new ArrayList<>();
 
         UserEntity userEntity = DataManager.getInstance().getCurrentUser();
@@ -44,17 +43,17 @@ public class TDUtils {
             String insId = orderEntity.getInstrument_id();
             String offset = orderEntity.getOffset();
             String status = orderEntity.getStatus();
-            if (STATUS_ALIVE.equals(status) && exchange_id.equals(exId) && instrument_id.equals(insId)) {
+            if (STATUS_ALIVE.equals(status) && instrument_id.equals(exId+"."+insId)) {
                 orders.add(orderEntity);
             }
         }
         return orders;
     }
 
-    public static void cancelOrderByInstrumentAndPrice(String exchange_id, String instrument_id, float price){
-        List<OrderEntity> orders = TDUtils.getOrdersByInstrument(exchange_id,instrument_id);
+    public static void cancelOrderByInstrumentAndPrice(String instrument_id, float price){
+        List<OrderEntity> orders = TDUtils.getOrdersByInstrument(instrument_id);
         for(OrderEntity orderEntity : orders){
-            if(orderEntity.getLimit_price() == Float.toString(price)){
+            if(Float.parseFloat(orderEntity.getLimit_price()) == price){
                 BaseApplication.getmTDWebSocket().sendReqCancelOrder(orderEntity.getOrder_id());
             }
         }
@@ -65,6 +64,8 @@ public class TDUtils {
         if(null == userEntity) return ;
         PositionEntity pe = userEntity.getPosition(instrument_id);
         if(pe == null) return;
+
+        exchange_id = instrument_id.substring(0,instrument_id.indexOf("."));
 
         // 优先平空
         int volume_short = Integer.parseInt(pe.getVolume_short());
@@ -78,12 +79,12 @@ public class TDUtils {
             }else{
                 volume = 0;
             }
-            BaseApplication.getmTDWebSocket().sendReqInsertOrder(exchange_id, instrument_id, DIRECTION_BUY, OFFSET_CLOSE, close_volume, PRICE_TYPE_LIMIT, price, AMP_EVENT_PRICE_TYPE_VALUE_NUMBER);
+            BaseApplication.getmTDWebSocket().sendReqInsertOrder(exchange_id, instrument_id.split("\\.")[1], DIRECTION_BUY, OFFSET_CLOSE, close_volume, PRICE_TYPE_LIMIT, price);
         }
 
         if(volume<=0) return;
 
-        BaseApplication.getmTDWebSocket().sendReqInsertOrder(exchange_id, instrument_id, DIRECTION_BUY, OFFSET_OPEN, volume, PRICE_TYPE_LIMIT, price, AMP_EVENT_PRICE_TYPE_VALUE_NUMBER);
+        BaseApplication.getmTDWebSocket().sendReqInsertOrder(exchange_id, instrument_id.split("\\.")[1], DIRECTION_BUY, OFFSET_OPEN, volume, PRICE_TYPE_LIMIT, price);
     }
 
     public static void trySell(String exchange_id, String instrument_id, float price, int volume){
@@ -91,6 +92,7 @@ public class TDUtils {
         if(null == userEntity) return ;
         PositionEntity pe = userEntity.getPosition(instrument_id);
         if(pe == null) return;
+        exchange_id = instrument_id.substring(0,instrument_id.indexOf("."));
 
         // 优先平多
         int volume_long = Integer.parseInt(pe.getVolume_long());
@@ -104,11 +106,36 @@ public class TDUtils {
             }else{
                 volume = 0;
             }
-            BaseApplication.getmTDWebSocket().sendReqInsertOrder(exchange_id, instrument_id, DIRECTION_SELL, OFFSET_CLOSE, close_volume, PRICE_TYPE_LIMIT, price, AMP_EVENT_PRICE_TYPE_VALUE_NUMBER);
+            BaseApplication.getmTDWebSocket().sendReqInsertOrder(exchange_id, instrument_id.split("\\.")[1], DIRECTION_SELL, OFFSET_CLOSE, close_volume, PRICE_TYPE_LIMIT, price);
         }
 
         if(volume<=0) return;
 
-        BaseApplication.getmTDWebSocket().sendReqInsertOrder(exchange_id, instrument_id, DIRECTION_SELL, OFFSET_OPEN, volume, PRICE_TYPE_LIMIT, price, AMP_EVENT_PRICE_TYPE_VALUE_NUMBER);
+        BaseApplication.getmTDWebSocket().sendReqInsertOrder(exchange_id, instrument_id.split("\\.")[1], DIRECTION_SELL, OFFSET_OPEN, volume, PRICE_TYPE_LIMIT, price);
+    }
+
+    public static boolean isCombine(String id){
+        if (id.contains("&") && id.contains(" ")) {
+            return true;
+        }
+        return false;
+    }
+
+    public static String getLeftLeg(String id){
+        if (!id.contains("&") || !id.contains(" ")) {
+            return "";
+        }
+        String exchangeId = id.substring(0,id.indexOf(".")+1);
+        String left = id.substring(id.indexOf(" ")+1,id.indexOf("&"));
+        return exchangeId + left;
+    }
+
+    public static String getRightLeg(String id){
+        if (!id.contains("&") || !id.contains(" ")) {
+            return "";
+        }
+        String exchangeId = id.substring(0,id.indexOf(".")+1);
+        String right = id.substring(id.indexOf("&")+1);
+        return exchangeId + right;
     }
 }

@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.google.android.material.snackbar.Snackbar;
 import com.shinnytech.futures.R;
 import com.shinnytech.futures.application.BaseApplication;
+import com.shinnytech.futures.autogride.AutoGrideEngine;
 import com.shinnytech.futures.controller.fragment.AccountFragment;
 import com.shinnytech.futures.controller.fragment.LazyLoadFragment;
 import com.shinnytech.futures.controller.fragment.QuoteFragment;
@@ -424,6 +425,7 @@ public class MainActivity extends BaseActivity {
                 switch (mDataString) {
                     case TD_MESSAGE:
                         refreshTD();
+                        AutoGrideEngine.getInstance().RefreshTD();
                         break;
                     case TD_MESSAGE_SETTLEMENT:
                         showSettlement();

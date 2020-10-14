@@ -468,8 +468,6 @@ public class MainActivityPresenter {
     }
 
     /**
-     * date: 7/7/17
-     * author: chenli
      * description: 点击合约导航滑动行情列表
      */
     private void scrollQuotes(String title, int position, String instrumentId) {
@@ -521,8 +519,6 @@ public class MainActivityPresenter {
     }
 
     /**
-     * date: 7/7/17
-     * author: chenli
      * description: 根据页面标题匹配对应的导航栏，自选合约页不显示导航栏
      */
     public void switchQuotesNavigation(String mTitle) {
@@ -538,9 +534,8 @@ public class MainActivityPresenter {
         layoutParams.height = sContext.getResources().getDimensionPixelSize(R.dimen.text_view_height);
         layoutParams.width = width;
         mToolbarTitle.setLayoutParams(layoutParams);
-        if (OPTIONAL.equals(mTitle)) mBinding.llNavigation.setVisibility(View.GONE);
-        else mBinding.llNavigation.setVisibility(View.VISIBLE);
 
+        boolean updatelist = true;
         switch (mTitle) {
             case DOMINANT:
                 mInsListNameNav = LatestFileManager.getMainInsListNameNav();
@@ -567,15 +562,18 @@ public class MainActivityPresenter {
                 mInsListNameNav = LatestFileManager.getZhengzhouzuheInsListNameNav();
                 break;
             default:
+                updatelist = false;
                 break;
         }
-        if (!OPTIONAL.equals(mTitle)) mNavAdapter.updateList(mInsListNameNav);
-
+        if (updatelist){
+            mBinding.llNavigation.setVisibility(View.VISIBLE);
+            mNavAdapter.updateList(mInsListNameNav);
+        }else{
+            mBinding.llNavigation.setVisibility(View.GONE);
+        }
     }
 
     /**
-     * date: 2019/7/2
-     * author: chenli
      * description: 点击某个具体合约时改变标题
      */
     public void changeToolbar(String instrumentId) {
@@ -625,9 +623,9 @@ public class MainActivityPresenter {
      */
     public void switchToAccount() {
         mMainActivity.setTitle(ACCOUNT_DETAIL);
-        mBinding.llNavigation.setVisibility(View.GONE);
         mBinding.bottomNavigation.setVisibility(View.VISIBLE);
         mBinding.vpContent.setCurrentItem(1, false);
+        mBinding.llNavigation.setVisibility(View.GONE);
         mToolbarTitle.setText(ACCOUNT_DETAIL);
         mToolbarTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
     }
@@ -704,28 +702,25 @@ public class MainActivityPresenter {
      * 切换到网格刷单页
      */
     public void switchToAutoGride() {
-        mMainActivity.setTitle("gride");
-        mBinding.llNavigation.setVisibility(View.GONE);
         mBinding.bottomNavigation.setVisibility(View.VISIBLE);
         mBinding.vpContent.setCurrentItem(3, false);
-        mToolbarTitle.setText("gride");
+        mToolbarTitle.setText("网格刷单");
         mToolbarTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        mBinding.llNavigation.setVisibility(View.GONE);
     }
 
     public void updateAutoGrideInstrumentid(String id){
-        mToolbarTitle.setText(id);
+        mToolbarTitle.setText("网格刷单");
         AutoGrideFragment fragment = (AutoGrideFragment)mViewPagerFragmentAdapter.getItem(3);
         fragment.updateInstrumentid(id);
     }
 
     public void updateCustomizeInstrumentid(String id) {
-        mToolbarTitle.setText(id);
         CustomizeFragment fragment = (CustomizeFragment) mViewPagerFragmentAdapter.getItem(4);
         fragment.updateInstrumentid(id);
     }
 
     public void switchToCustomize() {
-        mMainActivity.setTitle("gride");
         mBinding.llNavigation.setVisibility(View.GONE);
         mBinding.bottomNavigation.setVisibility(View.VISIBLE);
         mBinding.vpContent.setCurrentItem(4, false);

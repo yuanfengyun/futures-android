@@ -15,7 +15,7 @@
             android:id="@+id/quote_name"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="1.5"
             android:gravity="start|center_vertical"
             android:maxLines="1"
             android:padding="@dimen/padding_5dp"
@@ -77,6 +77,38 @@
 
         <TextView
             android:id="@+id/quote_ask_volume"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical"
+            android:maxLines="1"
+            android:padding="@dimen/padding_5dp"
+            android:text=""
+            android:textColor="@color/text_white"
+            android:textSize="@dimen/font_size_normal"
+            app:autoSizeMaxTextSize="@dimen/font_size_normal"
+            app:autoSizeMinTextSize="@dimen/font_size_tiny_high"
+            app:autoSizeStepGranularity="1sp"
+            app:autoSizeTextType="uniform" />
+
+        <TextView
+            android:id="@+id/quote_open"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical"
+            android:maxLines="1"
+            android:padding="@dimen/padding_5dp"
+            android:text=""
+            android:textColor="@color/text_white"
+            android:textSize="@dimen/font_size_normal"
+            app:autoSizeMaxTextSize="@dimen/font_size_normal"
+            app:autoSizeMinTextSize="@dimen/font_size_tiny_high"
+            app:autoSizeStepGranularity="1sp"
+            app:autoSizeTextType="uniform" />
+
+        <TextView
+            android:id="@+id/quote_last_close"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

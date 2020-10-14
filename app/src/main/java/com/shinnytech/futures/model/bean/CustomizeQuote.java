@@ -40,8 +40,10 @@ public class CustomizeQuote {
 
         if(bid_price_str.equals("") || ask_price_str.equals("")) return "";
 
-        float bid_price = Float.parseFloat(bid_price_str);
-        float ask_price = Float.parseFloat(ask_price_str);
+        float bid_price = MathUtils.toFloat(bid_price_str,0);
+        float ask_price = MathUtils.toFloat(ask_price_str,0);
+
+        if(bid_price==0 || ask_price==0) return "";
 
         String ret = Float.toString(bid_price-ask_price);
         return MathUtils.subZeroAndDot(ret);
@@ -68,8 +70,10 @@ public class CustomizeQuote {
 
         if(bid_price_str.equals("") || ask_price_str.equals("")) return "";
 
-        float ask_price = Float.parseFloat(ask_price_str);
-        float bid_price = Float.parseFloat(bid_price_str);
+        float ask_price = MathUtils.toFloat(ask_price_str,0);
+        float bid_price = MathUtils.toFloat(bid_price_str,0);
+
+        if(bid_price==0 || ask_price==0) return "";
 
         String ret = Float.toString(ask_price-bid_price);
         return MathUtils.subZeroAndDot(ret);
@@ -86,5 +90,37 @@ public class CustomizeQuote {
         if(volume == 0) return "";
 
         return Integer.toString(volume);
+    }
+
+    public String getOpen(){
+        if(quote1==null || quote2==null) return "";
+
+        String bid_price_str = quote1.getOpen();
+        String ask_price_str = quote2.getOpen();
+
+        if(bid_price_str.equals("") || ask_price_str.equals("")) return "";
+
+        float bid_price = MathUtils.toFloat(bid_price_str,0);
+        float ask_price = MathUtils.toFloat(ask_price_str,0);
+
+        if(bid_price==0 || ask_price==0) return "";
+        String ret = Float.toString(bid_price-ask_price);
+        return MathUtils.subZeroAndDot(ret);
+    }
+
+    public String getLastClose(){
+        if(quote1==null || quote2==null) return "";
+
+        String bid_price_str = quote1.getPre_close();
+        String ask_price_str = quote2.getPre_close();
+
+        if(bid_price_str.equals("") || ask_price_str.equals("")) return "";
+
+        float bid_price = MathUtils.toFloat(bid_price_str,0);
+        float ask_price = MathUtils.toFloat(ask_price_str,0);
+
+        if(bid_price==0 || ask_price==0) return "";
+        String ret = Float.toString(bid_price-ask_price);
+        return MathUtils.subZeroAndDot(ret);
     }
 }

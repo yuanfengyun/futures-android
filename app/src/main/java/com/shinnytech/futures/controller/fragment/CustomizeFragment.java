@@ -27,6 +27,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.shinnytech.futures.constants.BroadcastConstants.NORMAL_MESSAGE;
+import static com.shinnytech.futures.constants.TradeConstants.DIRECTION_BUY;
+import static com.shinnytech.futures.constants.TradeConstants.DIRECTION_SELL;
+import static com.shinnytech.futures.constants.TradeConstants.OFFSET_CLOSE;
+import static com.shinnytech.futures.constants.TradeConstants.OFFSET_OPEN;
+import static com.shinnytech.futures.constants.TradeConstants.PRICE_TYPE_ANY;
+import static com.shinnytech.futures.constants.TradeConstants.PRICE_TYPE_LIMIT;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -75,21 +81,9 @@ public class CustomizeFragment extends LazyLoadFragment {
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 adapter.setSelectedItem(arg2);
                 adapter.notifyDataSetInvalidated();
-                CustomizeQuote q = adapter.getItem(arg2);
-                mBinding.tradeQuote.setText(q.getName());
             }
         });
 
-        mBinding.openCloseSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    mBinding.openCloseSwitch.setText("开");
-                }else{
-                    mBinding.openCloseSwitch.setText("平");
-                }
-            }
-        });
         mBinding.selectQuote1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,8 +113,76 @@ public class CustomizeFragment extends LazyLoadFragment {
 
         mBinding.delCustomizeQuote.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v){
                 adapter.removeSelectedItem();
+                adapter.setSelectedItem(-1);
+            }
+        });
+
+        mBinding.customizeBuyOpen.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                CustomizeQuote q = adapter.getSelectedItem();
+                if(q==null) return;
+                if(q.quote1==null || q.quote2==null) return;
+                String str = getResources().getStringArray(R.array.trade_volume)[mBinding.spin.getSelectedItemPosition()];
+                Integer volume = Integer.parseInt(str);
+                String exchange_id1 = q.quoteName1.substring(0,q.quoteName1.indexOf("."));
+                String exchange_id2 = q.quoteName1.substring(0,q.quoteName2.indexOf("."));
+
+                BaseApplication.getmTDWebSocket().sendReqInsertOrder(exchange_id1, q.quoteName1.split("\\.")[1], DIRECTION_BUY, OFFSET_OPEN, volume, PRICE_TYPE_ANY, Double.NaN);
+                BaseApplication.getmTDWebSocket().sendReqInsertOrder(exchange_id2, q.quoteName2.split("\\.")[1], DIRECTION_SELL, OFFSET_OPEN, volume, PRICE_TYPE_ANY, Double.NaN);
+            }
+        });
+
+        mBinding.customizeSellOpen.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                CustomizeQuote q = adapter.getSelectedItem();
+                if(q==null) return;
+                if(q.quote1==null || q.quote2==null) return;
+                String str = getResources().getStringArray(R.array.trade_volume)[mBinding.spin.getSelectedItemPosition()];
+                Integer volume = Integer.parseInt(str);
+                String exchange_id1 = q.quoteName1.substring(0,q.quoteName1.indexOf("."));
+                String exchange_id2 = q.quoteName1.substring(0,q.quoteName2.indexOf("."));
+
+                BaseApplication.getmTDWebSocket().sendReqInsertOrder(exchange_id1, q.quoteName1.split("\\.")[1], DIRECTION_SELL, OFFSET_OPEN, volume, PRICE_TYPE_ANY, Double.NaN);
+                BaseApplication.getmTDWebSocket().sendReqInsertOrder(exchange_id2, q.quoteName2.split("\\.")[1], DIRECTION_BUY, OFFSET_OPEN, volume, PRICE_TYPE_ANY, Double.NaN);
+            }
+        });
+
+        mBinding.customizeBuyClose.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                CustomizeQuote q = adapter.getSelectedItem();
+                if(q==null) return;
+                if(q.quote1==null || q.quote2==null) return;
+                String str = getResources().getStringArray(R.array.trade_volume)[mBinding.spin.getSelectedItemPosition()];
+                Integer volume = Integer.parseInt(str);
+
+                String exchange_id1 = q.quoteName1.substring(0,q.quoteName1.indexOf("."));
+                String exchange_id2 = q.quoteName1.substring(0,q.quoteName2.indexOf("."));
+
+                BaseApplication.getmTDWebSocket().sendReqInsertOrder(exchange_id1, q.quoteName1.split("\\.")[1], DIRECTION_BUY, OFFSET_CLOSE, volume, PRICE_TYPE_ANY, Double.NaN);
+                BaseApplication.getmTDWebSocket().sendReqInsertOrder(exchange_id2, q.quoteName2.split("\\.")[1], DIRECTION_SELL, OFFSET_CLOSE, volume, PRICE_TYPE_ANY, Double.NaN);
+
+            }
+        });
+
+        mBinding.customizeSellClose.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                CustomizeQuote q = adapter.getSelectedItem();
+                if(q==null) return;
+                if(q.quote1==null || q.quote2==null) return;
+                String str = getResources().getStringArray(R.array.trade_volume)[mBinding.spin.getSelectedItemPosition()];
+                Integer volume = Integer.parseInt(str);
+
+                String exchange_id1 = q.quoteName1.substring(0,q.quoteName1.indexOf("."));
+                String exchange_id2 = q.quoteName1.substring(0,q.quoteName2.indexOf("."));
+
+                BaseApplication.getmTDWebSocket().sendReqInsertOrder(exchange_id1, q.quoteName1.split("\\.")[1], DIRECTION_SELL, OFFSET_CLOSE, volume, PRICE_TYPE_ANY, Double.NaN);
+                BaseApplication.getmTDWebSocket().sendReqInsertOrder(exchange_id2, q.quoteName2.split("\\.")[1], DIRECTION_BUY, OFFSET_CLOSE, volume, PRICE_TYPE_ANY, Double.NaN);
             }
         });
     }

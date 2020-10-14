@@ -4,6 +4,7 @@ import com.shinnytech.futures.model.bean.accountinfobean.OrderEntity;
 import com.shinnytech.futures.model.bean.accountinfobean.TradeEntity;
 import com.shinnytech.futures.model.bean.accountinfobean.UserEntity;
 import com.shinnytech.futures.model.engine.DataManager;
+import com.shinnytech.futures.utils.LogUtils;
 import com.shinnytech.futures.utils.TDUtils;
 
 import java.util.HashMap;
@@ -15,6 +16,7 @@ class SingleGride{
     public String instructment_id="";
     public float gride=0;
     public boolean enable=false;
+    public double time = 0;
 };
 
 public class AutoGrideEngine {
@@ -32,11 +34,16 @@ public class AutoGrideEngine {
         SingleGride item = grideConfig.get(id);
         if(item==null){
             item = new SingleGride();
+            item.time = System.currentTimeMillis()*1000000 + 1000000000;
             grideConfig.put(id,item);
         }
         item.instructment_id = id;
         item.gride = gride;
+        if(item.enable==false && enable==true){
+            item.time = System.currentTimeMillis()*1000000 + 1000000000;
+        }
         item.enable = enable;
+        LogUtils.d("updateSchedule: "+ " "+ id + " "+Float.toString(gride)+" "+Boolean.toString(enable),true);
     }
 
     public void initTrades(){
@@ -53,17 +60,19 @@ public class AutoGrideEngine {
         if (userEntity == null) return;
         for (TradeEntity trade :
                 userEntity.getTrades().values()) {
-            if(trades.add(trade.getTrade_id())) continue;
+            if(trades.add(trade.getTrade_id())==false) continue;
 
             OrderEntity order = userEntity.getOrder(trade.getOrder_id());
-            if(order.getDirection() != trade.getDirection()) continue;
 
-            SingleGride item = grideConfig.get(trade.getInstrument_id());
-            if(item==null || item.gride==0) continue;
-            if(trade.getDirection()=="SELL"){
-                TDUtils.trySell(trade.getExchange_id(),trade.getInstrument_id(),Float.parseFloat(order.getLimit_price())-item.gride,Integer.parseInt(trade.getVolume()));
+            if(!order.getDirection().equals(trade.getDirection())) continue;
+
+            SingleGride item = grideConfig.get(trade.getExchange_id()+"."+order.getInstrument_id());
+            if(item==null || item.gride==0 || (item.enable==false)) continue;
+            if(Double.parseDouble(trade.getTrade_date_time()) < item.time) continue;
+            if(trade.getDirection().equals("BUY")){
+                TDUtils.trySell(trade.getExchange_id(),trade.getExchange_id()+"."+order.getInstrument_id(),Float.parseFloat(order.getLimit_price())+item.gride,Integer.parseInt(trade.getVolume()));
             }else{
-                TDUtils.tryBuy(trade.getExchange_id(),trade.getInstrument_id(),Float.parseFloat(order.getLimit_price())+item.gride,Integer.parseInt(trade.getVolume()));
+                TDUtils.tryBuy(trade.getExchange_id(),trade.getExchange_id()+"."+order.getInstrument_id(),Float.parseFloat(order.getLimit_price())-item.gride,Integer.parseInt(trade.getVolume()));
             }
         }
     }

@@ -32,6 +32,10 @@ public class AccountEntity {
     private String available = "";
     private String risk_ratio = "";
 
+    private String market_value = "";
+    private String ctp_available = "";
+    private String ctp_balance = "";
+
     public String getKey() {
         return key;
     }

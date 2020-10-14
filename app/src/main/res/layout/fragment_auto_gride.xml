@@ -23,118 +23,303 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:background="#ADFF2F"
-                android:layout_weight="2">
 
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                 <LinearLayout
+                     android:layout_width="0dp"
+                     android:layout_height="fill_parent"
+                     android:layout_weight="3"
+                     android:background="#666666"
+                     android:orientation="vertical">
 
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" >
+                     <TableLayout
+                         android:layout_width="match_parent"
+                         android:layout_height="400dp"
+                         android:layout_weight="3"
+                         android:stretchColumns="*">
 
-                        <TextView
-                            android:id="@+id/textView12"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="合约名称："
-                            android:textStyle="bold" />
+                         <TableRow>
 
-                        <TextView
-                            android:id="@+id/quoteName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAlignment="viewStart"
-                            android:textStyle="bold" />
-                    </TableRow>
+                             <TextView
+                                 android:id="@+id/textView12"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="25sp"
+                                 android:text="合约："
+                                 android:textColor="@color/black"
+                                 android:textStyle="bold" />
 
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" >
+                             <TextView
+                                 android:id="@+id/quoteName"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="25sp"
+                                 android:textAlignment="center"
+                                 android:textColor="@color/black"
+                                 android:textStyle="bold|italic" />
+                         </TableRow>
 
-                        <TextView
-                            android:id="@+id/textView14"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="下单手数："
-                            android:textStyle="bold" />
+                         <TableRow>
 
-                        <EditText
-                            android:id="@+id/editText3"
-                            android:layout_width="@dimen/font_size_large"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:inputType="number"
-                            android:singleLine="true"
-                            android:text="1"
-                            android:textAlignment="viewStart"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </TableRow>
+                             <TextView
+                                 android:id="@+id/textView14"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="25sp"
+                                 android:text="手数："
+                                 android:textColor="@color/black"
+                                 android:textStyle="bold" />
 
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" >
+                             <EditText
+                                 android:id="@+id/editText3"
+                                 android:layout_width="10sp"
+                                 android:layout_height="35sp"
+                                 android:ems="10"
+                                 android:inputType="number"
+                                 android:singleLine="true"
+                                 android:text="1"
+                                 android:textAlignment="center"
+                                 android:textAllCaps="false"
+                                 android:textColor="@color/black"
+                                 android:textSize="12sp"
+                                 android:textStyle="bold|italic" />
+                         </TableRow>
 
-                        <TextView
-                            android:id="@+id/textView15"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="网格大小"
-                            android:textStyle="bold" />
+                         <TableRow>
 
-                        <EditText
-                            android:id="@+id/gride_point"
-                            android:layout_width="@dimen/font_size_large_high"
-                            android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:inputType="numberDecimal"
-                            android:singleLine="true"
-                            android:text="10"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </TableRow>
+                             <TextView
+                                 android:id="@+id/textView15"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="25sp"
+                                 android:text="网格:"
+                                 android:textColor="@color/black"
+                                 android:textStyle="bold" />
 
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" >
+                             <EditText
+                                 android:id="@+id/gride_point"
+                                 android:layout_width="10sp"
+                                 android:layout_height="35sp"
+                                 android:ems="10"
+                                 android:inputType="numberDecimal"
+                                 android:singleLine="true"
+                                 android:text="10"
+                                 android:textAlignment="center"
+                                 android:textColor="@color/black"
+                                 android:textSize="12sp"
+                                 android:textStyle="bold|italic" />
+                         </TableRow>
 
-                        <TextView
-                            android:id="@+id/textView18"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="网格模式："
-                            android:textStyle="bold" />
+                         <TableRow>
 
-                        <Switch
-                            android:id="@+id/gride_switch"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checked="true"
-                            android:textAlignment="viewStart"
-                            android:textStyle="bold" />
-                    </TableRow>
-                </TableLayout>
+                             <TextView
+                                 android:id="@+id/textView18"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="35sp"
+                                 android:paddingTop="6dp"
+                                 android:text="模式："
+                                 android:textColor="@color/black"
+                                 android:textStyle="bold" />
 
-                <ListView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
+                             <RadioGroup
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="match_parent"
+                                 android:orientation="horizontal">
 
-            <LinearLayout
+                                 <RadioButton
+                                     android:id="@+id/radioButton5"
+                                     android:layout_width="wrap_content"
+                                     android:layout_height="wrap_content"
+                                     android:layout_weight="1"
+                                     android:checked="true"
+                                     android:text="手动"
+                                     android:textColor="@color/black"
+                                     android:textSize="10sp"
+                                     android:textStyle="bold|italic" />
+
+                                 <RadioButton
+                                     android:id="@+id/radioButton6"
+                                     android:layout_width="wrap_content"
+                                     android:layout_height="wrap_content"
+                                     android:layout_weight="1"
+                                     android:text="网格"
+                                     android:textColor="@color/black"
+                                     android:textSize="10sp"
+                                     android:textStyle="bold|italic" />
+                             </RadioGroup>
+
+                         </TableRow>
+
+                         <TableRow>
+
+                             <TextView
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="35sp"
+                                 android:text="多单："
+                                 android:textColor="@color/black"
+                                 android:textSize="14sp"
+                                 android:textStyle="bold" />
+
+                             <TextView
+                                 android:id="@+id/long_pos"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:text="0手"
+                                 android:textAlignment="center"
+                                 android:textColor="@color/black"
+                                 android:textStyle="bold|italic" />
+                         </TableRow>
+
+                         <TableRow>
+
+                             <TextView
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="25sp"
+                                 android:text="空单："
+                                 android:textColor="@color/black"
+                                 android:textStyle="bold" />
+
+                             <TextView
+                                 android:id="@+id/short_pos"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:text="0手"
+                                 android:textAlignment="center"
+                                 android:textColor="@color/black"
+                                 android:textStyle="bold|italic" />
+                         </TableRow>
+                     </TableLayout>
+
+                     <LinearLayout
+                         android:layout_width="match_parent"
+                         android:layout_height="match_parent"
+                         android:layout_weight="3"
+                         android:background="#666666">
+
+                         <ScrollView
+                             android:layout_width="match_parent"
+                             android:layout_height="match_parent">
+
+                             <LinearLayout
+                                 android:id="@+id/scroll_trade"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="match_parent"
+                                 android:orientation="vertical">
+
+                                 <LinearLayout
+                                     android:layout_width="match_parent"
+                                     android:layout_height="20sp"
+                                     android:orientation="horizontal">
+
+                                     <TextView
+                                         android:id="@+id/text_direction"
+                                         android:layout_width="0dp"
+                                         android:layout_height="wrap_content"
+                                         android:layout_weight="1"
+                                         android:background="#888888"
+                                         android:text="开平"
+                                         android:textAlignment="viewStart"
+                                         android:textSize="12sp"
+                                         android:textStyle="bold" />
+
+                                     <TextView
+                                         android:id="@+id/text_price"
+                                         android:layout_width="0dp"
+                                         android:layout_height="wrap_content"
+                                         android:layout_weight="1"
+                                         android:background="#888888"
+                                         android:text="价格"
+                                         android:textAlignment="center"
+                                         android:textSize="12sp"
+                                         android:textStyle="bold" />
+
+                                     <TextView
+                                         android:id="@+id/text_volume"
+                                         android:layout_width="0dp"
+                                         android:layout_height="wrap_content"
+                                         android:layout_weight="1"
+                                         android:background="#888888"
+                                         android:text="数量"
+                                         android:textAlignment="center"
+                                         android:textSize="12sp"
+                                         android:textStyle="bold" />
+
+                                     <TextView
+                                         android:id="@+id/text_status"
+                                         android:layout_width="0dp"
+                                         android:layout_height="wrap_content"
+                                         android:layout_weight="1"
+                                         android:background="#888888"
+                                         android:text="状态"
+                                         android:textAlignment="center"
+                                         android:textSize="12sp"
+                                         android:textStyle="bold" />
+
+                                     <TextView
+                                         android:id="@+id/text_time"
+                                         android:layout_width="0dp"
+                                         android:layout_height="wrap_content"
+                                         android:layout_weight="1.5"
+                                         android:background="#888888"
+                                         android:text="委托时间"
+                                         android:textAlignment="center"
+                                         android:textSize="12sp"
+                                         android:textStyle="bold" />
+                                 </LinearLayout>
+                             </LinearLayout>
+                         </ScrollView>
+                     </LinearLayout>
+                 </LinearLayout>
+
+                 <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:background="#222222"
                 android:orientation="vertical"
                 android:layout_weight="3">
 
-               <ScrollView
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="25sp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="25sp"
+                        android:layout_margin="@dimen/line_width_half"
+                        android:layout_weight="1"
+                        android:background="@color/bg_gray_light"
+                        android:padding="@dimen/padding_0dp"
+                        android:text="撤消" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="25sp"
+                        android:layout_margin="@dimen/line_width_half"
+                        android:layout_weight="1"
+                        android:background="@color/bg_gray_light"
+                        android:padding="0dp"
+                        android:text="买" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="25sp"
+                        android:layout_margin="@dimen/line_width_half"
+                        android:layout_weight="1"
+                        android:background="@color/bg_gray_light"
+                        android:padding="0dp"
+                        android:text="卖" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="25sp"
+                        android:layout_margin="@dimen/line_width_half"
+                        android:layout_weight="1"
+                        android:background="@color/bg_gray_light"
+                        android:padding="0dp"
+                        android:text="价" />
+                </LinearLayout>
+
+                <ScrollView
+                    android:id="@+id/scroll"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <LinearLayout
                         android:id="@+id/scroll_linear"
                         android:layout_width="match_parent"
@@ -142,48 +327,50 @@
                         android:orientation="vertical">
 
                         <LinearLayout
+                            android:id="@+id/scroll_linear0"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="horizontal">
 
                             <Button
-                                android:id="@+id/button_cancel"
+                                android:id="@+id/button_cancel0"
                                 android:layout_width="wrap_content"
                                 android:layout_height="25sp"
                                 android:layout_margin="@dimen/line_width_half"
                                 android:layout_weight="1"
-                                android:background="@color/bg_gray_light"
+                                android:background="#21303d"
                                 android:padding="@dimen/padding_0dp"
-                                android:text="撤消" />
-                            <Button
-                                android:id="@+id/button23"
-                                android:layout_width="wrap_content"
-                                android:layout_height="25sp"
-                                android:layout_margin="@dimen/line_width_half"
-                                android:layout_weight="1"
-                                android:background="@color/bg_gray_light"
-                                android:padding="0dp"
-                                android:text="买" />
+                                android:text="" />
 
                             <Button
-                                android:id="@+id/button24"
+                                android:id="@+id/button_buy0"
                                 android:layout_width="wrap_content"
                                 android:layout_height="25sp"
                                 android:layout_margin="@dimen/line_width_half"
                                 android:layout_weight="1"
-                                android:background="@color/bg_gray_light"
+                                android:background="#700707"
                                 android:padding="0dp"
-                                android:text="卖" />
+                                android:text="" />
 
                             <Button
-                                android:id="@+id/button25"
+                                android:id="@+id/button_sell0"
                                 android:layout_width="wrap_content"
                                 android:layout_height="25sp"
                                 android:layout_margin="@dimen/line_width_half"
                                 android:layout_weight="1"
-                                android:background="@color/bg_gray_light"
+                                android:background="#57993d"
                                 android:padding="0dp"
-                                android:text="价" />
+                                android:text="" />
+
+                            <Button
+                                android:id="@+id/button_price0"
+                                android:layout_width="wrap_content"
+                                android:layout_height="25sp"
+                                android:layout_margin="@dimen/line_width_half"
+                                android:layout_weight="1"
+                                android:background="#324e76"
+                                android:padding="0dp"
+                                android:text="" />
                         </LinearLayout>
                     </LinearLayout>
                 </ScrollView>

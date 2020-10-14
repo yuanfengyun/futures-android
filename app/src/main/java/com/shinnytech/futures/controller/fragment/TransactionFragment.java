@@ -1061,9 +1061,9 @@ public class TransactionFragment extends LazyLoadFragment implements View.OnClic
                         }
                     }else {
                         BaseApplication.getmTDWebSocket().sendReqInsertOrder(exchange_id, instrument_id,
-                                direction, offset, volume, price_type, price, getAmpPriceType());
+                                direction, offset, volume, price_type, price);
                         BaseApplication.getmTDWebSocket().sendReqInsertOrder(exchange_id, instrument_id,
-                                direction, offset1, volume1, price_type, price, getAmpPriceType());
+                                direction, offset1, volume1, price_type, price);
                         refreshPosition();
                         mIsRefreshPosition = true;
                     }
@@ -1087,9 +1087,9 @@ public class TransactionFragment extends LazyLoadFragment implements View.OnClic
                 }
             }else {
                 BaseApplication.getmTDWebSocket().sendReqInsertOrder(exchange_id, instrument_id,
-                        direction, offset, volume, price_type, price, getAmpPriceType());
+                        direction, offset, volume, price_type, price);
                 BaseApplication.getmTDWebSocket().sendReqInsertOrder(exchange_id, instrument_id,
-                        direction, offset1, volume1, price_type, price, getAmpPriceType());
+                        direction, offset1, volume1, price_type, price);
                 refreshPosition();
                 mIsRefreshPosition = true;
             }
@@ -1168,7 +1168,7 @@ public class TransactionFragment extends LazyLoadFragment implements View.OnClic
                         }
                     }else {
                         BaseApplication.getmTDWebSocket().sendReqInsertOrder(exchange_id, instrument_id,
-                                direction, offset, volume, price_type, price, getAmpPriceType());
+                                direction, offset, volume, price_type, price);
                         refreshPosition();
                         mIsRefreshPosition = true;
                     }
@@ -1192,7 +1192,7 @@ public class TransactionFragment extends LazyLoadFragment implements View.OnClic
                 }
             }else {
                 BaseApplication.getmTDWebSocket().sendReqInsertOrder(exchange_id, instrument_id,
-                        direction, offset, volume, price_type, price, getAmpPriceType());
+                        direction, offset, volume, price_type, price);
                 refreshPosition();
                 mIsRefreshPosition = true;
             }
@@ -1628,34 +1628,6 @@ public class TransactionFragment extends LazyLoadFragment implements View.OnClic
         else mInstrumentIdTransaction = mInstrumentId;
         mExchangeId = mInstrumentIdTransaction.split("\\.")[0];
     }
-
-    /**
-     * date: 2019/7/5
-     * author: chenli
-     * description: 获取上报价格类型
-     */
-    private String getAmpPriceType(){
-        String ampPriceType;
-        switch (mBinding.price.getText().toString()) {
-            case QUEUED_PRICE:
-                ampPriceType = AMP_EVENT_PRICE_TYPE_VALUE_QUEUED;
-                break;
-            case OPPONENT_PRICE:
-                ampPriceType = AMP_EVENT_PRICE_TYPE_VALUE_OPPONENT;
-                break;
-            case MARKET_PRICE:
-                ampPriceType = AMP_EVENT_PRICE_TYPE_VALUE_MARKET;
-                break;
-            case LATEST_PRICE:
-                ampPriceType = AMP_EVENT_PRICE_TYPE_VALUE_LAST;
-                break;
-            default:
-                ampPriceType = AMP_EVENT_PRICE_TYPE_VALUE_NUMBER;
-                break;
-        }
-        return ampPriceType;
-    }
-
 
     /**
      * date: 2019/5/28

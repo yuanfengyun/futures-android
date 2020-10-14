@@ -213,4 +213,19 @@ public class MathUtils {
         return false;
     }
 
+    public static float toFloat(String str,float default_value){
+        try{
+            return Float.parseFloat(str);
+        }catch (Exception e){
+            return default_value;
+        }
+    }
+
+    public static int toInt(String str,int default_value){
+        try{
+            return Integer.parseInt(str);
+        }catch (Exception e){
+            return default_value;
+        }
+    }
 }

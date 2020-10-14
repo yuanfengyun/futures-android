@@ -18,6 +18,7 @@ public final class TradeConstants {
     public static final String STATUS_FINISHED_ZN = "已成";
     public static final String STATUS_CANCELED_ZN = "已撤";
     public static final String PRICE_TYPE_LIMIT = "LIMIT";
+    public static final String PRICE_TYPE_ANY = "ANY";
     public static final String DIRECTION_BUY = "BUY";
     public static final String DIRECTION_SELL = "SELL";
     public static final String DIRECTION_BUY_ZN = "多";
