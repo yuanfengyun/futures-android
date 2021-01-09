@@ -29,7 +29,6 @@ import com.shinnytech.futures.model.engine.LatestFileManager;
 import com.shinnytech.futures.utils.NetworkUtils;
 import com.shinnytech.futures.utils.SPUtils;
 
-import static com.shinnytech.futures.constants.SettingConstants.CONFIG_IS_FIRM;
 import static com.shinnytech.futures.constants.CommonConstants.OFFLINE;
 
 /**
@@ -69,8 +68,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         initData();
         initEvent();
         updateToolbarFromNetwork(sContext, mTitle);
-        boolean isFirm = (boolean) SPUtils.get(sContext, CONFIG_IS_FIRM, true);
-        changeStatusBarColor(isFirm);
+        changeStatusBarColor();
     }
 
     /**
@@ -92,7 +90,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected void changeStatusBarColor(boolean isFirm) {
+    protected void changeStatusBarColor() {
         Window window = getWindow();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
@@ -103,16 +101,12 @@ public abstract class BaseActivity extends AppCompatActivity {
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             view.getLayoutParams().height = statusBarHeight;
             ((ViewGroup) window.getDecorView()).addView(view);
-            if (isFirm) view.setBackground(getResources().getDrawable(R.color.colorPrimaryDark));
-            else view.setBackground(getResources().getDrawable(R.color.login_simulation_hint));
+            view.setBackground(getResources().getDrawable(R.color.colorPrimaryDark));
 
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            if (isFirm)
-                window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
-            else
-                window.setStatusBarColor(ContextCompat.getColor(this, R.color.login_simulation_hint));
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
         }
     }
 

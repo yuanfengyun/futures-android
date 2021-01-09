@@ -29,10 +29,6 @@
                 android:gravity="center"
                 android:text="@string/order_fragment_instrument_id"
                 android:maxLines="1"
-                app:autoSizeTextType="uniform"
-                app:autoSizeMinTextSize="@dimen/font_size_tiny_high"
-                app:autoSizeMaxTextSize="@dimen/font_size_normal"
-                app:autoSizeStepGranularity="1sp"
                 android:textColor="@color/title_white"
                 android:textSize="@dimen/font_size_normal" />
 
@@ -43,10 +39,6 @@
                 android:gravity="center"
                 android:text="@string/order_fragment_date"
                 android:maxLines="1"
-                app:autoSizeTextType="uniform"
-                app:autoSizeMinTextSize="@dimen/font_size_tiny_high"
-                app:autoSizeMaxTextSize="@dimen/font_size_normal"
-                app:autoSizeStepGranularity="1sp"
                 android:textColor="@color/title_white"
                 android:textSize="@dimen/font_size_normal" />
 
@@ -57,10 +49,6 @@
                 android:gravity="center"
                 android:text="@string/order_fragment_status"
                 android:maxLines="1"
-                app:autoSizeTextType="uniform"
-                app:autoSizeMinTextSize="@dimen/font_size_tiny_high"
-                app:autoSizeMaxTextSize="@dimen/font_size_normal"
-                app:autoSizeStepGranularity="1sp"
                 android:textColor="@color/title_white"
                 android:textSize="@dimen/font_size_normal" />
 
@@ -72,10 +60,6 @@
                 android:gravity="center"
                 android:text="@string/order_fragment_direction"
                 android:maxLines="1"
-                app:autoSizeTextType="uniform"
-                app:autoSizeMinTextSize="@dimen/font_size_tiny_high"
-                app:autoSizeMaxTextSize="@dimen/font_size_normal"
-                app:autoSizeStepGranularity="1sp"
                 android:textColor="@color/title_white"
                 android:textSize="@dimen/font_size_normal" />
 
@@ -86,10 +70,6 @@
                 android:gravity="center"
                 android:text="@string/order_fragment_volume"
                 android:maxLines="1"
-                app:autoSizeTextType="uniform"
-                app:autoSizeMinTextSize="@dimen/font_size_tiny_high"
-                app:autoSizeMaxTextSize="@dimen/font_size_normal"
-                app:autoSizeStepGranularity="1sp"
                 android:textColor="@color/title_white"
                 android:textSize="@dimen/font_size_normal" />
 
@@ -100,10 +80,6 @@
                 android:gravity="end|center_vertical"
                 android:text="委托价"
                 android:maxLines="1"
-                app:autoSizeTextType="uniform"
-                app:autoSizeMinTextSize="@dimen/font_size_tiny_high"
-                app:autoSizeMaxTextSize="@dimen/font_size_normal"
-                app:autoSizeStepGranularity="1sp"
                 android:textColor="@color/title_white"
                 android:textSize="@dimen/font_size_normal" />
 

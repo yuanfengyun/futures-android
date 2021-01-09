@@ -42,6 +42,8 @@ public class BrokerListActivity extends BaseActivity {
                 new DividerItemDecorationUtils(this, DividerItemDecorationUtils.VERTICAL_LIST));
         List<String> brokers = new ArrayList<>();
         brokers.add("X先锋期货");
+ //       brokers.add("H华安期货");
+ //       brokers.add("Y银何期货");
         mBrokerAdapter = new BrokerAdapter(this, brokers);
         mBinding.rv.setAdapter(mBrokerAdapter);
         try {

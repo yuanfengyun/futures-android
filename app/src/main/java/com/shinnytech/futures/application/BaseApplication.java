@@ -69,13 +69,13 @@ import static com.shinnytech.futures.constants.CommonConstants.JSON_FILE_URL;
 import static com.shinnytech.futures.constants.CommonConstants.MARKET_URL;
 import static com.shinnytech.futures.constants.CommonConstants.OPTIONAL_INS_LIST;
 import static com.shinnytech.futures.constants.CommonConstants.TRANSACTION_URL;
+import static com.shinnytech.futures.constants.CommonConstants.TRANSACTION_URL_HA;
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_AVERAGE_LINE;
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_BROKER;
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_CANCEL_ORDER_CONFIRM;
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_INIT_TIME;
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_INSERT_ORDER_CONFIRM;
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_IS_CONDITION;
-import static com.shinnytech.futures.constants.SettingConstants.CONFIG_IS_FIRM;
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_KLINE_DURATION_DEFAULT;
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_MD5;
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_ORDER_LINE;
@@ -250,17 +250,6 @@ public class BaseApplication extends Application {
             kline = kline.replace("钟", "");
             kline = kline.replace("小", "");
             SPUtils.putAndApply(sContext, CONFIG_KLINE_DURATION_DEFAULT, kline);
-        }
-
-        if (!SPUtils.contains(sContext, CONFIG_IS_FIRM)) {
-            if (SPUtils.contains(sContext, CONFIG_BROKER)) {
-                String broker = (String) SPUtils.get(sContext, CONFIG_BROKER, "");
-                if (!broker.isEmpty()) {
-                    if (broker.equals(BROKER_ID_SIMULATION))
-                        SPUtils.putAndApply(sContext, CONFIG_IS_FIRM, false);
-                    else SPUtils.putAndApply(sContext, CONFIG_IS_FIRM, true);
-                } else SPUtils.putAndApply(sContext, CONFIG_IS_FIRM, true);
-            } else SPUtils.putAndApply(sContext, CONFIG_IS_FIRM, true);
         }
 
         if (!SPUtils.contains(sContext, CONFIG_INIT_TIME)) {

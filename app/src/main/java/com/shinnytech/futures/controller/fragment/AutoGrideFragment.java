@@ -435,6 +435,8 @@ public class AutoGrideFragment extends LazyLoadFragment {
     public void refreshTD() {
         UserEntity userEntity = sDataManager.getTradeBean().getUsers().get(sDataManager.USER_ID);
         if (userEntity == null) return;
+
+        if(mInstrumentId.equals("")) return;
         HashMap<Float, Integer> m = new HashMap<Float, Integer>();
         for (OrderEntity orderEntity :
                 userEntity.getOrders().values()) {
@@ -517,16 +519,27 @@ public class AutoGrideFragment extends LazyLoadFragment {
             for(OrderEntity o:orderList) {
                 if(o.getOrder_id()==orderEntity.getOrder_id()){
                     find = true;
-                    break;
                 }
                 if(Double.parseDouble(o.getInsert_date_time()) > Double.parseDouble(orderEntity.getInsert_date_time()))
                 {
                     index++;
                 }
             }
-            if(find) continue;
-            orderList.add(index,orderEntity);
-            {
+            if(find){
+                LinearLayout layout = (LinearLayout) scrollTrade.getChildAt(index+1);
+                TextView volumeText = (TextView) layout.getChildAt(+2);
+                Integer voluemeLeft = Integer.parseInt(orderEntity.getVolume_left());
+                String volumeStr = Integer.toString(Integer.parseInt(orderEntity.getVolume_orign()) - voluemeLeft) + "/" + orderEntity.getVolume_orign();
+                volumeText.setText(volumeStr);
+
+                TextView statusText = (TextView) layout.getChildAt(3);
+                if(orderEntity.getStatus().length()>5){
+                    statusText.setText(orderEntity.getStatus().substring(0,6));
+                }else {
+                    statusText.setText(orderEntity.getStatus());
+                }
+            }else{
+                orderList.add(index,orderEntity);
                 String directionStr = "买";
                 if (DIRECTION_SELL.equals(orderEntity.getDirection())) {
                     directionStr = "卖";
@@ -564,7 +577,11 @@ public class AutoGrideFragment extends LazyLoadFragment {
                 text.setTextAlignment(TEXT_ALIGNMENT_CENTER);
                 line.addView(text);
                 text = new TextView(this.getActivity());
-                text.setText(orderEntity.getStatus().substring(0,6));
+                if(orderEntity.getStatus().length()>5){
+                    text.setText(orderEntity.getStatus().substring(0,6));
+                }else {
+                    text.setText(orderEntity.getStatus());
+                }
                 text.setTextSize(10);
                 text.setLayoutParams(textStatus.getLayoutParams());
                 text.setTextAlignment(TEXT_ALIGNMENT_CENTER);

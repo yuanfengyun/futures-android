@@ -109,12 +109,12 @@
     <string name="transaction_fragment_close_status">先开先平</string>
 
     <!--related to quote fragment-->
-    <string name="quote_fragment_up_down_rate">涨跌幅% ⇲</string>
-    <string name="quote_fragment_open_interest">持仓量 ⇲</string>
+    <string name="quote_fragment_up_down_rate">涨跌</string>
+    <string name="quote_fragment_open_interest">持仓量</string>
     <string name="quote_fragment_latest">最新价</string>
     <string name="quote_fragment_name">合约名称</string>
-    <string name="quote_fragment_ask_price1">卖价 ⇲</string>
-    <string name="quote_fragment_bid_price1">买价 ⇲</string>
+    <string name="quote_fragment_ask_price1">卖价</string>
+    <string name="quote_fragment_bid_price1">买价</string>
 
     <!--related to dialog change quote view-->
     <string name="init_optional">正在给您推荐自选合约</string>

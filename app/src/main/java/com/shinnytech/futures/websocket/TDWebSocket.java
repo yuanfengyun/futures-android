@@ -172,7 +172,7 @@ public class TDWebSocket extends WebSocketBase {
         reqInsertOrderEntity.setTime_condition("GFD");
 
         String reqInsertOrder = JSON.toJSONString(reqInsertOrderEntity);
-    //    mWebSocketClient.sendText(reqInsertOrder);
+        mWebSocketClient.sendText(reqInsertOrder);
         LogUtils.e(reqInsertOrder, true);
     }
 

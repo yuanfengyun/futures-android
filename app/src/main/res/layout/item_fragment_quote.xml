@@ -17,20 +17,19 @@
             android:id="@+id/quote_name"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="1.5"
             android:gravity="start|center_vertical"
+            android:maxLines="1"
             android:padding="@dimen/padding_5dp"
             android:text=""
-            android:maxLines="1"
-            app:autoSizeTextType="uniform"
-            app:autoSizeMinTextSize="@dimen/font_size_tiny_high"
-            app:autoSizeMaxTextSize="@dimen/font_size_normal"
-            app:autoSizeStepGranularity="1sp"
             android:textColor="@color/text_yellow"
-            android:textSize="@dimen/font_size_normal" />
-
+            android:textSize="@dimen/font_size_normal"
+            app:autoSizeMaxTextSize="@dimen/font_size_normal"
+            app:autoSizeMinTextSize="@dimen/font_size_tiny_high"
+            app:autoSizeStepGranularity="1sp"
+            app:autoSizeTextType="uniform" />
         <TextView
-            android:id="@+id/quote_latest"
+            android:id="@+id/quote_change_percent"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -44,6 +43,7 @@
             app:autoSizeStepGranularity="1sp"
             android:textColor="@color/text_white"
             android:textSize="@dimen/font_size_normal" />
+
 
         <TextView
         android:id="@+id/quote_bid"
@@ -78,7 +78,37 @@
         android:textSize="@dimen/font_size_normal" />
 
         <TextView
-            android:id="@+id/quote_change_percent"
+            android:id="@+id/quote_open"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical"
+            android:padding="@dimen/padding_5dp"
+            android:text=""
+            android:maxLines="1"
+            app:autoSizeTextType="uniform"
+            app:autoSizeMinTextSize="@dimen/font_size_tiny_high"
+            app:autoSizeMaxTextSize="@dimen/font_size_normal"
+            app:autoSizeStepGranularity="1sp"
+            android:textColor="@color/text_white"
+            android:textSize="@dimen/font_size_normal" />
+        <TextView
+            android:id="@+id/quote_high"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="end|center_vertical"
+            android:padding="@dimen/padding_5dp"
+            android:text=""
+            android:maxLines="1"
+            app:autoSizeTextType="uniform"
+            app:autoSizeMinTextSize="@dimen/font_size_tiny_high"
+            app:autoSizeMaxTextSize="@dimen/font_size_normal"
+            app:autoSizeStepGranularity="1sp"
+            android:textColor="@color/text_white"
+            android:textSize="@dimen/font_size_normal" />
+        <TextView
+            android:id="@+id/quote_low"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -102,10 +132,6 @@
             android:padding="@dimen/padding_5dp"
             android:text=""
             android:maxLines="1"
-            app:autoSizeTextType="uniform"
-            app:autoSizeMinTextSize="@dimen/font_size_tiny_high"
-            app:autoSizeMaxTextSize="@dimen/font_size_normal"
-            app:autoSizeStepGranularity="1sp"
             android:textColor="@color/text_white"
             android:textSize="@dimen/font_size_normal" />
 

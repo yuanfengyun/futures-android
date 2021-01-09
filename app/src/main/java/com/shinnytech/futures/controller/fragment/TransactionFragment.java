@@ -342,7 +342,6 @@ public class TransactionFragment extends LazyLoadFragment implements View.OnClic
             @Override
             public void onClick(View v) {
                 MainActivity mainActivity = (MainActivity) getActivity();
-                if (!mainActivity.checkConditionResponsibility())return;
 
                 Context sContext = BaseApplication.getContext();
                 String name = sDataManager.USER_ID;

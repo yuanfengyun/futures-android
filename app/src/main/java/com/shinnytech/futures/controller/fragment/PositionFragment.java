@@ -286,8 +286,6 @@ public class PositionFragment extends LazyLoadFragment {
             @Override
             public void onClick(View v) {
                 MainActivity mainActivity = (MainActivity) getActivity();
-                if (!mainActivity.checkConditionResponsibility())return;
-
                 if (isVisitor){
                     ToastUtils.showToast(sContext, "游客模式暂不支持条件单/止盈止损");
                     popWindow.dismiss();
@@ -306,7 +304,6 @@ public class PositionFragment extends LazyLoadFragment {
             @Override
             public void onClick(View v) {
                 MainActivity mainActivity = (MainActivity) getActivity();
-                if (!mainActivity.checkConditionResponsibility())return;
 
                 if (isVisitor){
                     ToastUtils.showToast(sContext, "游客模式暂不支持条件单/止盈止损");

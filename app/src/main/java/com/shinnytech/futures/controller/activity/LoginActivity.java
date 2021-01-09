@@ -75,13 +75,8 @@ import static com.shinnytech.futures.constants.CommonConstants.BROKER_ID_VISITOR
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_ACCOUNT;
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_BROKER;
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_INIT_TIME;
-import static com.shinnytech.futures.constants.SettingConstants.CONFIG_IS_FIRM;
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_LOGIN_DATE;
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_PASSWORD;
-import static com.shinnytech.futures.constants.SettingConstants.CONFIG_SIM_LOGIN_DATE;
-
-import static com.shinnytech.futures.constants.SettingConstants.CONFIG_SIM_ACCOUNT;
-import static com.shinnytech.futures.constants.SettingConstants.CONFIG_SIM_PASSWORD;
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_SYSTEM_INFO;
 import static com.shinnytech.futures.constants.SettingConstants.CONFIG_VERSION_CODE;
 import static com.shinnytech.futures.constants.CommonConstants.LOGIN_ACTIVITY_TO_BROKER_LIST_ACTIVITY;
@@ -159,28 +154,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initBrokerAccount() {
-        mIsFirm = (boolean) SPUtils.get(sContext, CONFIG_IS_FIRM, true);
-        if (mIsFirm) switchFirm();
-        else switchSimulator();
+        switchFirm();
     }
 
     private void initEvent() {
-        mBinding.llFirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchFirm();
-                hideHint();
-            }
-        });
-
-        mBinding.llSimulation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchSimulator();
-                hideHint();
-            }
-        });
-
         mBinding.visitor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -377,20 +354,12 @@ public class LoginActivity extends AppCompatActivity {
             //直接保存，解决实盘<->模拟登录不上的问题
 
             SPUtils.putAndApply(sContext, CONFIG_BROKER, mBrokerName);
-            SPUtils.putAndApply(sContext, CONFIG_IS_FIRM, mIsFirm);
 
-            if(mIsFirm) {
-                SPUtils.putAndApply(sContext, CONFIG_LOGIN_DATE, "");
-                SPUtils.putAndApply(sContext, CONFIG_ACCOUNT, mPhoneNumber);
-                SPUtils.putAndApply(sContext, CONFIG_PASSWORD, mPassword);
-                BaseApplication.getmTDWebSocket().sendReqLogin(mBrokerName, mPhoneNumber, mPassword);
+            SPUtils.putAndApply(sContext, CONFIG_LOGIN_DATE, "");
+            SPUtils.putAndApply(sContext, CONFIG_ACCOUNT, mPhoneNumber);
+            SPUtils.putAndApply(sContext, CONFIG_PASSWORD, mPassword);
+            BaseApplication.getmTDWebSocket().sendReqLogin(mBrokerName, mPhoneNumber, mPassword);
 
-            }else{
-                SPUtils.putAndApply(sContext, CONFIG_SIM_LOGIN_DATE, "");
-                SPUtils.putAndApply(sContext, CONFIG_SIM_ACCOUNT, mPhoneNumber);
-                SPUtils.putAndApply(sContext, CONFIG_SIM_PASSWORD, mPassword);
-                BaseApplication.getmTDWebSocket().sendReqLogin(BROKER_ID_SIMULATION, mPhoneNumber, mPassword);
-            }
 
             if (!mLoginDialog.isShowing())mLoginDialog.show();
 
@@ -554,50 +523,17 @@ public class LoginActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void switchSimulator() {
-        mBinding.simulation.setTextColor(getResources().getColor(R.color.white));
-        mBinding.simulationUnderline.setVisibility(View.VISIBLE);
-        mBinding.firm.setTextColor(getResources().getColor(R.color.login_gray));
-        mBinding.firmUnderline.setVisibility(View.INVISIBLE);
-
-        mBinding.tvBroker.setVisibility(View.GONE);
-        mBinding.llBroker.setVisibility(View.GONE);
-        mBinding.tvAccount.setText("手机号码");
-        mBinding.simulationHint.setVisibility(View.VISIBLE);
-
-        changeStatusBarColor(false);
-        mIsFirm = false;
-
-        mBinding.account.getEditableText().clear();
-        mBinding.account.requestFocus();
-        mBinding.password.getEditableText().clear();
-        String account = (String) SPUtils.get(sContext, CONFIG_SIM_ACCOUNT, "");
-        String passwd = (String) SPUtils.get(sContext, CONFIG_SIM_PASSWORD, "");
-        mBinding.account.setText(account);
-        mBinding.account.setSelection(account.length());
-        mBinding.password.setText(passwd);
-
-        if (!mBinding.account.getEditableText().toString().isEmpty())mBinding.password.requestFocus();
-    }
-
      private void switchFirm() {
-        mBinding.firm.setTextColor(getResources().getColor(R.color.white));
-        mBinding.firmUnderline.setVisibility(View.VISIBLE);
-        mBinding.simulation.setTextColor(getResources().getColor(R.color.login_gray));
-        mBinding.simulationUnderline.setVisibility(View.INVISIBLE);
-
         mBinding.tvBroker.setVisibility(View.VISIBLE);
         mBinding.llBroker.setVisibility(View.VISIBLE);
         mBinding.tvAccount.setText("资金账号");
-        mBinding.simulationHint.setVisibility(View.GONE);
 
-        changeStatusBarColor(true);
+        changeStatusBarColor();
         mIsFirm = true;
 
         mBinding.account.getEditableText().clear();
         mBinding.account.requestFocus();
         mBinding.password.getEditableText().clear();
-        boolean isFirm = (boolean) SPUtils.get(sContext, CONFIG_IS_FIRM, true);
         String brokerName = (String) SPUtils.get(sContext, CONFIG_BROKER, "X先锋期货");
         String account = (String) SPUtils.get(sContext, CONFIG_ACCOUNT, "");
         String passwd = (String) SPUtils.get(sContext, CONFIG_PASSWORD, "");
@@ -611,7 +547,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void changeStatusBarColor(boolean isFirm) {
+    private void changeStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Window w = getWindow();
             w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -621,9 +557,7 @@ public class LoginActivity extends AppCompatActivity {
             view.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             view.getLayoutParams().height = statusBarHeight;
             ((ViewGroup) w.getDecorView()).addView(view);
-            if (isFirm) view.setBackground(getResources().getDrawable(R.color.colorPrimaryDark));
-            else view.setBackground(getResources().getDrawable(R.color.login_simulation_hint));
-
+            view.setBackground(getResources().getDrawable(R.color.colorPrimaryDark));
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
 
@@ -631,10 +565,7 @@ public class LoginActivity extends AppCompatActivity {
 
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
-            if (isFirm)
-                window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
-            else
-                window.setStatusBarColor(ContextCompat.getColor(this, R.color.login_simulation_hint));
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
         }
     }
 
@@ -679,7 +610,6 @@ public class LoginActivity extends AppCompatActivity {
                         activity.mIsVisitEnable = true;
                         activity.mIsLoginEnable = true;
                         SPUtils.putAndApply(activity.sContext, CONFIG_LOGIN_DATE, TimeUtils.getNowTime());
-                        SPUtils.putAndApply(activity.sContext, CONFIG_SIM_LOGIN_DATE, TimeUtils.getNowTime());
                         //关闭键盘
                         View view = activity.getWindow().getCurrentFocus();
                         if (view != null) {

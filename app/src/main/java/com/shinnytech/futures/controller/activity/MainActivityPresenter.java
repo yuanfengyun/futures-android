@@ -158,7 +158,7 @@ public class MainActivityPresenter {
         mBinding.vpContent.setAdapter(mViewPagerFragmentAdapter);
         mBinding.vpContent.setPagingEnabled(false);
         //保证lazyLoad的效用,每次加载一个fragment
-        mBinding.vpContent.setOffscreenPageLimit(3);
+        mBinding.vpContent.setOffscreenPageLimit(5);
 
         //设置右导航宽度
         ViewGroup.LayoutParams paramsR = mBinding.nvMenuRight.getLayoutParams();
@@ -292,7 +292,6 @@ public class MainActivityPresenter {
                         mMainActivity.startActivity(intentBankOut);
                         break;
                     case CONDITIONAL_ORDER:
-                        if (!mMainActivity.checkConditionResponsibility())break;
                                  String name = sDataManager.USER_ID;
                         String password = (String) SPUtils.get(sContext, CONFIG_PASSWORD, "");
                         if (TDUtils.isVisitor(name, password)){

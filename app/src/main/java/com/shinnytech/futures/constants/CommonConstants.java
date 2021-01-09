@@ -3,6 +3,7 @@ package com.shinnytech.futures.constants;
 public final class CommonConstants {
     //服务器地址
     public static String TRANSACTION_URL = "ws://180.169.71.113:37480/trade";
+    public static String TRANSACTION_URL_HA = "wss://otg-haqh.shinnytech.com/trade";
     public static String JSON_FILE_URL = "https://openmd.shinnytech.com/t/md/symbols/latest.json";
     public static final String MARKET_URL = "wss://openmd.shinnytech.com/t/md/front/mobile";
     public static final String FEED_BACK_URL = "https://ask.shinnytech.com/src/indexm.html";

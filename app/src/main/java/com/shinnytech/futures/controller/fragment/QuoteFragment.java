@@ -112,11 +112,6 @@ public class QuoteFragment extends LazyLoadFragment {
     private DragDialogAdapter mDragDialogAdapter;
     private View mView;
 
-    /**
-     * date: 7/9/17
-     * author: chenli
-     * description: 创建行情页实例
-     */
     public static QuoteFragment newInstance(String title) {
         QuoteFragment fragment = new QuoteFragment();
         Bundle bundle = new Bundle();
@@ -144,12 +139,14 @@ public class QuoteFragment extends LazyLoadFragment {
 
     private void initData() {
         mToolbarTitle = getActivity().findViewById(R.id.title_toolbar);
-        mBinding.rvQuote.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mBinding.rvQuote.addItemDecoration(
-                new DividerItemDecorationUtils(getActivity(), DividerItemDecorationUtils.VERTICAL_LIST));
-        mBinding.rvQuote.setItemAnimator(new DefaultItemAnimator());
+        mBinding.rvQuote.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.VERTICAL,false));
+
         mAdapter = new QuoteAdapter(getActivity(), mOldData, mTitle);
         mBinding.rvQuote.setAdapter(mAdapter);
+   //     mBinding.rvQuote.addItemDecoration(
+   //             new DividerItemDecorationUtils(getActivity(), DividerItemDecorationUtils.VERTICAL_LIST));
+   //     mBinding.rvQuote.setItemAnimator(new DefaultItemAnimator());
+
     }
 
     /**
@@ -258,12 +255,12 @@ public class QuoteFragment extends LazyLoadFragment {
             @Override
             public void onClick(View view) {
                     switch (mBinding.tvBid.getText().toString()) {
-                        case "买价 ⇲":
-                            mBinding.tvBid.setText("买量 ⇲");
+                        case "买价":
+                            mBinding.tvBid.setText("买量");
                             mAdapter.switchBidView();
                             break;
-                        case "买量 ⇲":
-                            mBinding.tvBid.setText("买价 ⇲");
+                        case "买量":
+                            mBinding.tvBid.setText("买价");
                             mAdapter.switchBidView();
                             break;
                     }
@@ -273,16 +270,7 @@ public class QuoteFragment extends LazyLoadFragment {
         mBinding.tvChangePercent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (mBinding.tvChangePercent.getText().toString()) {
-                    case "涨跌幅% ⇲":
-                        mBinding.tvChangePercent.setText("涨跌 ⇲");
-                        mAdapter.switchChangeView();
-                        break;
-                    case "涨跌 ⇲":
-                        mBinding.tvChangePercent.setText("涨跌幅% ⇲");
-                        mAdapter.switchChangeView();
-                        break;
-                }
+                mAdapter.switchChangeView();
             }
         });
 
@@ -290,12 +278,12 @@ public class QuoteFragment extends LazyLoadFragment {
             @Override
             public void onClick (View view){
                 switch (mBinding.tvAsk.getText().toString()) {
-                    case "卖价 ⇲":
-                        mBinding.tvAsk.setText("卖量 ⇲");
+                    case "卖价":
+                        mBinding.tvAsk.setText("卖量");
                         mAdapter.switchAskView();
                         break;
-                    case "卖量 ⇲":
-                        mBinding.tvAsk.setText("卖价 ⇲");
+                    case "卖量":
+                        mBinding.tvAsk.setText("卖价");
                         mAdapter.switchAskView();
                         break;
                 }
@@ -307,23 +295,23 @@ public class QuoteFragment extends LazyLoadFragment {
             public void onClick(View view) {
                 if (DALIANZUHE.equals(mTitle) || ZHENGZHOUZUHE.equals(mTitle)) {
                     switch (mBinding.tvOpenInterest.getText().toString()) {
-                        case "卖价 ⇲":
-                            mBinding.tvOpenInterest.setText("卖量 ⇲");
+                        case "卖价":
+                            mBinding.tvOpenInterest.setText("卖量");
                             mAdapter.switchVolView();
                             break;
-                        case "卖量 ⇲":
-                            mBinding.tvOpenInterest.setText("卖价 ⇲");
+                        case "卖量":
+                            mBinding.tvOpenInterest.setText("卖价");
                             mAdapter.switchVolView();
                             break;
                     }
                 } else {
                     switch (mBinding.tvOpenInterest.getText().toString()) {
-                        case "持仓量 ⇲":
-                            mBinding.tvOpenInterest.setText("成交量 ⇲");
+                        case "持仓量":
+                            mBinding.tvOpenInterest.setText("成交量");
                             mAdapter.switchVolView();
                             break;
-                        case "成交量 ⇲":
-                            mBinding.tvOpenInterest.setText("持仓量 ⇲");
+                        case "成交量":
+                            mBinding.tvOpenInterest.setText("持仓量");
                             mAdapter.switchVolView();
                             break;
                     }

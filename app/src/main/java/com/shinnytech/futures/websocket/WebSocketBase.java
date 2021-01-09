@@ -67,7 +67,7 @@ public class WebSocketBase extends WebSocketAdapter {
     @Override
     public void onConnectError(WebSocket websocket, WebSocketException exception) throws Exception {
         super.onConnectError(websocket, exception);
-        LogUtils.e("onConnectError", true);
+        LogUtils.e("onConnectError: "+exception.getMessage(), true);
         reConnect();
     }
 

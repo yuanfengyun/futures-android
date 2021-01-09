@@ -158,11 +158,16 @@ public class QuoteAdapter extends RecyclerView.Adapter<QuoteAdapter.ItemViewHold
                     mBinding.llQuote.setBackground(sContext.getResources().getDrawable(R.drawable.fragment_item_touch_bg));
 
                 String instrumentName = instrumentId;
-                SearchEntity searchEntity = LatestFileManager.getSearchEntities().get(instrumentId);
-                if (searchEntity != null) instrumentName = searchEntity.getInstrumentName();
-                if (instrumentName.contains("&")) mBinding.quoteName.setTextSize(10);
-                else mBinding.quoteName.setTextSize(15);
+                if (instrumentName.contains(".")){
+                    instrumentName = instrumentName.substring(instrumentName.indexOf(".")+1);
+                }
+                if (instrumentName.contains("&")){
+                    mBinding.quoteName.setTextSize(6);
+                    instrumentName = instrumentName.substring(instrumentName.indexOf(" ")+1);
+                }
+                else mBinding.quoteName.setTextSize(14);
                 mBinding.quoteName.setText(instrumentName);
+
 
                 String pre_settlement = LatestFileManager.saveScaleByPtick(quoteEntity.getPre_settlement(), instrumentId);
                 String latest = LatestFileManager.saveScaleByPtick(quoteEntity.getLast_price(), instrumentId);
@@ -173,7 +178,12 @@ public class QuoteAdapter extends RecyclerView.Adapter<QuoteAdapter.ItemViewHold
                 String askPrice1 = LatestFileManager.saveScaleByPtick(quoteEntity.getAsk_price1(), instrumentId);
                 String bidPrice1 = LatestFileManager.saveScaleByPtick(quoteEntity.getBid_price1(), instrumentId);
 
-                setTextColor(mBinding.quoteLatest, latest, pre_settlement);
+                mBinding.quoteOpen.setText(LatestFileManager.saveScaleByPtick(quoteEntity.getOpen(), instrumentId));
+                mBinding.quoteHigh.setText(LatestFileManager.saveScaleByPtick(quoteEntity.getHighest(),instrumentId));
+                mBinding.quoteHigh.setTextColor(ContextCompat.getColor(sContext, R.color.text_red));
+                mBinding.quoteLow.setText(LatestFileManager.saveScaleByPtick(quoteEntity.getLowest(),instrumentId));
+                mBinding.quoteLow.setTextColor(ContextCompat.getColor(sContext, R.color.text_green));
+
                 if (mSwitchBid) {
                     mBinding.quoteBid.setText(quoteEntity.getBid_volume1());
                     mBinding.quoteBid.setTextColor(ContextCompat.getColor(sContext, R.color.text_white));
@@ -208,8 +218,14 @@ public class QuoteAdapter extends RecyclerView.Adapter<QuoteAdapter.ItemViewHold
                     bundle.keySet()) {
                 String value = bundle.getString(key);
                 switch (key) {
-                    case "latest":
-                        setTextColor(mBinding.quoteLatest, value, bundle.getString("pre_settlement"));
+                    case "open":
+                        setTextColor(mBinding.quoteOpen, value, bundle.getString("pre_settlement"));
+                        break;
+                    case "highest":
+                        setTextColor(mBinding.quoteOpen, value, bundle.getString("pre_settlement"));
+                        break;
+                    case "lowest":
+                        setTextColor(mBinding.quoteOpen, value, bundle.getString("pre_settlement"));
                         break;
                     case "change":
                         if (!(DALIANZUHE.equals(mTitle) || ZHENGZHOUZUHE.equals(mTitle)) && mSwitchChange) {

@@ -116,7 +116,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initEvent() {
         mMainActivityPresenter.registerListeners();
-        checkResponsibility();
         registerBroaderCast();
     }
 
@@ -291,67 +290,6 @@ public class MainActivity extends BaseActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    /**
-     * date: 1/16/18
-     * author: chenli
-     * description: 检查是否第一次启动APP,弹出免责条款框
-     */
-    private void checkResponsibility() {
-        try {
-            final float nowVersionCode = DataManager.getInstance().APP_CODE;
-            float versionCode = (float) SPUtils.get(sContext, CONFIG_VERSION_CODE, 0.0f);
-            if (nowVersionCode > versionCode) {
-                final Dialog dialog = new Dialog(this, R.style.AppTheme);
-                View view = View.inflate(this, R.layout.view_dialog_responsibility, null);
-                dialog.setContentView(view);
-                dialog.setCanceledOnTouchOutside(false);
-                dialog.setCancelable(false);
-                dialog.show();
-                view.findViewById(R.id.agree).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        SPUtils.putAndApply(MainActivity.this, CONFIG_VERSION_CODE, nowVersionCode);
-                        dialog.dismiss();
-                    }
-                });
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * date: 2019/8/19
-     * author: chenli
-     * description: 条件单免责检查，入口：导航菜单、持仓长按(止盈止损/新建条件单)、交易页条件
-     */
-    public boolean checkConditionResponsibility() {
-        final boolean[] isCondition = {(boolean) SPUtils.get(sContext, CONFIG_IS_CONDITION, false)};
-        if (!isCondition[0]) {
-            final Dialog dialog = new Dialog(this, R.style.AppTheme);
-            View view = View.inflate(this, R.layout.view_dialog_responsibility_condition, null);
-            dialog.setContentView(view);
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.setCancelable(false);
-            dialog.show();
-            view.findViewById(R.id.agree).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    SPUtils.putAndApply(MainActivity.this, CONFIG_IS_CONDITION, true);
-                    dialog.dismiss();
-                    isCondition[0] = true;
-                }
-            });
-            view.findViewById(R.id.disagree).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
-        }
-        return isCondition[0];
     }
 
     @Override

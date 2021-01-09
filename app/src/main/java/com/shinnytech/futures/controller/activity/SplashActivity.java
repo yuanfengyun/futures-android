@@ -32,7 +32,6 @@ import java.util.TimerTask;
 
 import static com.shinnytech.futures.application.BaseApplication.TD_BROADCAST_ACTION;
 import static com.shinnytech.futures.constants.BroadcastConstants.TD_MESSAGE_LOGIN_TIMEOUT;
-import static com.shinnytech.futures.constants.SettingConstants.CONFIG_IS_FIRM;
 import static com.shinnytech.futures.constants.BroadcastConstants.TD_MESSAGE_LOGIN_FAIL;
 import static com.shinnytech.futures.constants.BroadcastConstants.TD_MESSAGE_LOGIN_SUCCEED;
 import static com.shinnytech.futures.utils.ScreenUtils.getStatusBarHeight;
@@ -45,8 +44,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        boolean isFirm = (boolean) SPUtils.get(BaseApplication.getContext(), CONFIG_IS_FIRM, true);
-        changeStatusBarColor(isFirm);
+        changeStatusBarColor();
 
         if (isTaskRoot()) {
             mTimer = new Timer();
@@ -72,7 +70,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
 
-    private void changeStatusBarColor(boolean isFirm) {
+    private void changeStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Window w = getWindow();
             w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -82,8 +80,7 @@ public class SplashActivity extends AppCompatActivity {
             view.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             view.getLayoutParams().height = statusBarHeight;
             ((ViewGroup) w.getDecorView()).addView(view);
-            if (isFirm) view.setBackground(getResources().getDrawable(R.color.colorPrimaryDark));
-            else view.setBackground(getResources().getDrawable(R.color.login_simulation_hint));
+            view.setBackground(getResources().getDrawable(R.color.colorPrimaryDark));
 
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
@@ -92,10 +89,7 @@ public class SplashActivity extends AppCompatActivity {
 
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
-            if (isFirm)
-                window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
-            else
-                window.setStatusBarColor(ContextCompat.getColor(this, R.color.login_simulation_hint));
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
         }
     }
 

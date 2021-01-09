@@ -16,16 +16,11 @@ public final class SettingConstants {
     public static final String CONFIG_PASSWORD = "password";
     public static final String CONFIG_LOGIN_DATE = "loginDate";
 
-    public static final String CONFIG_SIM_ACCOUNT = "sim_account";
-    public static final String CONFIG_SIM_PASSWORD = "sim_password";
-    public static final String CONFIG_SIM_LOGIN_DATE = "sim_loginDate";
-
     public static final String CONFIG_RECOMMEND_OPTIONAL = "recommendOptional";
     public static final String CONFIG_RECOMMEND = "recommend";
     public static final String CONFIG_INIT_TIME = "initTime";
     public static final String CONFIG_VERSION_CODE = "versionCode";
     public static final String CONFIG_SYSTEM_INFO = "systemInfo";
-    public static final String CONFIG_IS_FIRM = "isFirm";
     public static final String CONFIG_IS_CONDITION = "is_condition";
     public static final String CHART_SETTING = "图表设置";
     public static final String TRANSACTION_SETTING = "交易设置";
